@@ -1,0 +1,52 @@
+# Created by https://www.gitignore.io
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+.nb-gradle/
+
+
+### Java ###
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+src/com/longlinkislong/gloop/GLVec2D.java
+src/com/longlinkislong/gloop/GLVec2F.java
+src/com/longlinkislong/gloop/GLVec3D.java
+src/com/longlinkislong/gloop/GLVec3F.java
+src/com/longlinkislong/gloop/GLVec4F.java
+src/com/longlinkislong/gloop/GLVec4D.java
+src/com/longlinkislong/gloop/GLVecNF.java
+src/com/longlinkislong/gloop/GLVecND.java
+src/com/longlinkislong/gloop/MappedVec2D.java
+src/com/longlinkislong/gloop/MappedVec2F.java
+src/com/longlinkislong/gloop/MappedVec3D.java
+src/com/longlinkislong/gloop/MappedVec3F.java
+src/com/longlinkislong/gloop/MappedVec4D.java
+src/com/longlinkislong/gloop/MappedVec4F.java
+src/com/longlinkislong/gloop/MappedVecND.java
+src/com/longlinkislong/gloop/MappedVecNF.java
+src/com/longlinkislong/gloop/StaticVec2D.java
+src/com/longlinkislong/gloop/StaticVec2F.java
+src/com/longlinkislong/gloop/StaticVec3D.java
+src/com/longlinkislong/gloop/StaticVec3F.java
+src/com/longlinkislong/gloop/StaticVec3D.java
+src/com/longlinkislong/gloop/StaticVec4F.java
+src/com/longlinkislong/gloop/StaticVec4D.java
+src/com/longlinkislong/gloop/StaticVecNF.java
+src/com/longlinkislong/gloop/StaticVecND.java

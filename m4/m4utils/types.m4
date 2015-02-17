@@ -1,0 +1,1 @@
+m4_define(`_real', `m4_ifelse($1, `float', $2f, $2)')m4_dnl 
