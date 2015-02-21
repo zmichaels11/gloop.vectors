@@ -28,6 +28,8 @@ foreach(`type', `m4_dnl
     _lengthN(type)
     _negateN(type)
     _inverseN(type)
+    _multN(type)
+    _maddN(type)
 forloop(`i', 2, 4, `m4_dnl
     _plus(i, type)
     _minus(i, type)
@@ -36,5 +38,7 @@ forloop(`i', 2, 4, `m4_dnl
     _length(i, type)
     _negate(i, type)
     _inverse(i, type)
+    _mult(i, type)
+    _madd(i, type)
 ')', `float', `double')    
 }

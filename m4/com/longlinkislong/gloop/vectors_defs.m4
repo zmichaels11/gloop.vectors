@@ -425,5 +425,106 @@ m4_define(`_crossN', `m4_dnl
                 throw new UnsupportedOperationException();
         }
     }
+')    
+
+m4_define(`_mult', `m4_dnl
+/**
+     * Multiplies each element of a $1x1 vector by another $1x1 vector and stores
+     * the results in another $1x1 vector
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector array
+     * @param in0Offset the offset to the first input vector
+     * @param in1 the second input vector array
+     * @param in1Offset the offset to teh second input vector
+     * @since 15.02.20
+     */
+    public static void _fdef(`multiply', $1, $2) (
+        final $2[] out, final int outOffset,
+        final $2[] in0, final int in0Offset,
+        final $2[] in1, final int in1Offset) {
+
+forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
+        out[outOffset + i] = in0[in0Offset + i] * in1[in1Offset + i];
 ')
     }
+')
+
+m4_define(`_multN', `m4_dnl
+/**
+     * Multiplies each element of a Nx1 vector by another Nx1 vector and stores
+     * the results in another Nx1 vector
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector array
+     * @param in0Offset the offset to the first input vector
+     * @param in1 the second input vector array
+     * @param in1Offset the offset to the second input vector
+     * @param size the length of the vector
+     * @since 15.02.20
+     */
+    public static void _fdef(`multiply', `N', $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final $1[] in1, final int in1Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            out[outOffset + i] = in0[in0Offset + i] * in1[in1Offset + i];
+        }
+    }
+')
+
+m4_define(`_madd', `m4_dnl
+/**
+     * Multiplies two $1x1 vectors together then adds a third $1x1 vector. The
+     * results are stored in another $1x1 vector.
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector array
+     * @param in0Offset the offset to the first input vector
+     * @param in1 the second input vector array
+     * @param in1Offset the offset to the second input vector
+     * @param in2 the third input vector array
+     * @param in2Offset the offset to the third input vector
+     * @since 15.02.20
+     */
+    public static void _fdef(`multiplyAdd', $1, $2) (
+        final $2[] out, final int outOffset,
+        final $2[] in0, final int in0Offset,
+        final $2[] in1, final int in1Offset,
+        final $2[] in2, final int in2Offset) {
+
+forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
+        out[outOffset + i] = in0[in0Offset + i] * in1[in1Offset + i] + in2[in2Offset + i];
+')
+    }
+')
+
+m4_define(`_maddN', `m4_dnl
+/**
+     * Multiplies each element of a Nx1 vector by another Nx1 vector and stores
+     * the results in another Nx1 vector
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector array
+     * @param in0Offset the offset to the first input vector
+     * @param in1 the second input vector array
+     * @param in1Offset the offset to the second input vector
+     * @param in2 the third input vector array
+     * @param in2Offset the offset to the third input vector
+     * @param size the length of the vector
+     * @since 15.02.20
+     */
+    public static void _fdef(`multiply', `N', $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final $1[] in1, final int in1Offset,
+        final $1[] in2, final int in2Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            out[outOffset + i] = in0[in0Offset + i] * in1[in1Offset + i] + in2[in2Offset + i];
+        }
+    }
+')
