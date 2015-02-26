@@ -12,9 +12,24 @@ import java.util.Arrays;
  * @author zmichaels
  * @param <GLMatT>
  */
-public abstract class GLMatF<GLMatT extends GLMatF> implements GLMat<GLMatT> {
+public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> implements GLMat<GLMatT, GLVecF> {
 
     public static final float EPSILON = 1.19e-7f;
+
+    @Override
+    public abstract GLMatT inverse();
+
+    @Override
+    public abstract GLMatT transpose();
+
+    @Override
+    public abstract GLMatT multiply(GLMat other);
+    
+    @Override
+    public abstract GLVecT multiply(GLVec vec);
+    
+    @Override
+    public abstract GLMatT asStaticMat();
 
     protected abstract float[] data();
 
@@ -37,19 +52,19 @@ public abstract class GLMatF<GLMatT extends GLMatF> implements GLMat<GLMatT> {
     public final GLMatT set(float... values) {
         return this.set(0, 0, values, 0, values.length, this.size());
     }
-    
+
     @Override
     public final GLMatT set(final GLMat other) {
         final int length = Math.min(other.size(), this.size());
         final GLMatF mat = other.asGLMatF();
-        
+
         this.zero();
-        
+
         return this.set(0, 0, mat.data(), mat.offset(), length * length, length);
     }
 
     public abstract GLMatT scale(float value);
-    
+
     public abstract float determinant();
 
     @Override
@@ -88,5 +103,23 @@ public abstract class GLMatF<GLMatT extends GLMatF> implements GLMat<GLMatT> {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public final String toString() {
+        final StringBuilder out = new StringBuilder();
+        int k = 0;
+
+        out.append("GLMat/F:[");
+        for (int i = 0; i < this.size(); i++) {
+            out.append("[");
+            for (int j = 0; j < this.size(); j++) {
+                out.append(this.data()[k++ + this.offset()]);
+                out.append((j < this.size() - 1) ? ", " : "]");
+            }
+            out.append((i < this.size() - 1) ? ", " : "]");
+        }
+
+        return out.toString();
     }
 }

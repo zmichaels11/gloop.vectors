@@ -6,6 +6,20 @@ m4_divert(0)m4_dnl
 package com.longlinkislong.gloop;
 
 public abstract class VecT extends BaseT<VecT> {
+
+    public static VecT create(final int size, final TYPE... values) {
+        return create(size, values, 0, values.length);
+    }
+
+    public static VecT create(
+        final int size,
+        final TYPE[] data, final int offset, final int length) {
+
+        return Vectors.DEFAULT_FACTORY._fdef(`nextGLVec', `N', TYPE)(size)
+            .zero()
+            .set(data, offset, length);
+    }
+
     @Override
     public final _fdef(`GLVec',,OTHER) _fdef(`asGLVec',,OTHER)() {
         final _fdef(`GLVec',,OTHER) out = _next(`N', OTHER, this.size());

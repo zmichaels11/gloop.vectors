@@ -6,7 +6,9 @@ m4_divert(0)m4_dnl
 package com.longlinkislong.gloop;
 
 public final class Matrices {    
-    private Matrices() {}    
+    private Matrices() {}   
+    protected static final MatrixFactory DEFAULT_FACTORY = new CyclicalMatrixFactory();
+ 
 
     protected static final float[] NULL_MATRIXF = {
         0f, 0f, 0f, 0f,
@@ -22,6 +24,20 @@ public final class Matrices {
         0d, 0d, 0d, 0d
     };
 
+    protected static final float[] IDENTITY_MATRIXF = {
+        1f, 0f, 0f, 0f,
+        0f, 1f, 0f, 0f,
+        0f, 0f, 1f, 0f,
+        0f, 0f, 0f, 1f
+    };
+
+    protected static final double[] IDENTITY_MATRIXD = {
+        1d, 0d, 0d, 0d,
+        0d, 1d, 0d, 0d,
+        0d, 0d, 1d, 0d,
+        0d, 0d, 0d, 1d
+    };
+
 foreach(`type', `m4_dnl 
     _det2(type)
     _det3(type)
@@ -29,6 +45,10 @@ foreach(`type', `m4_dnl
     _inverse2(type)
     _inverse3(type)
     _inverse4(type)
+    _matmultN(type)
+    _scaleN(type)
+    _transposeN(type)
+    _vecmultN(type)
 ', `float', `double')  
 
 forloop(`i', 2, 4, `m4_dnl 

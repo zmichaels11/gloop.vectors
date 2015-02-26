@@ -5,7 +5,7 @@ m4_include(`m4/com/longlinkislong/gloop/glmatnx_def.m4')
 m4_divert(0)m4_dnl 
 package com.longlinkislong.gloop;
 
-public abstract class MatT extends BaseT<MatT> {
+public abstract class MatT extends BaseT<MatT, VecT> {
     @Override
     public final _fdef(`GLMat',,OTHER) _fdef(`asGLMat',,OTHER)() {
         final _fdef(`GLMat',,OTHER) out = _next(`N', OTHER, this.size());
@@ -55,6 +55,34 @@ public abstract class MatT extends BaseT<MatT> {
 
         return this.data()[index];
     }
+
+    @Override
+    public final MatT multiply(final GLMat other) {
+        final MatT out = _next(`N', TYPE, this.size());
+        final MatT in1 = _cast(_cast(other, BaseT), MatT, this.size());
+
+        _call(`multiplyMat')(
+            out.data(), out.offset(),
+            this.data(), this.offset(),
+            in1.data(), in1.offset(),
+            this.size());
+
+        return out;
+    }
+
+    @Override
+    public final _fdef(`GLVec', `N', TYPE) multiply(final GLVec vec) {
+        final VecT out = Vectors.DEFAULT_FACTORY._fdef(`nextGLVec',`N',TYPE)(this.size());
+        final VecT in1 = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')().`as'VecT (this.size());
+
+        _call(`multiplyVec')(
+            out.data(), out.offset(),
+            this.data(), this.offset(),
+            in1.data(), in1.offset(),
+            this.size());
+
+        return out;
+    }
     
     @Override
     public final MatT zero() {
@@ -66,7 +94,72 @@ public abstract class MatT extends BaseT<MatT> {
     }
 
     @Override
+    public final MatT identity() {
+        for(int i = 0; i < this.size(); i++) {
+            for(int j = 0; j < this.size(); j++) {
+                this.set(i, j, (i == j) ? _real(TYPE, 1.0) : _real(TYPE, 0.0));
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public final MatT inverse() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public final MatT transpose() {
+        final MatT out = _next(`N', TYPE, this.size());
+
+        _call(`transpose')(
+            out.data(), out.offset(),
+            this.data(), this.offset(),
+            this.size());
+
+        return out;
+    }
+
+    @Override
+    public final MatT scale(final TYPE value) {
+        final MatT out = _next(`N', TYPE, this.size());
+
+        _call(`scale')(
+            out.data(), out.offset(),
+            this.data(), this.offset(),
+            value, this.size());
+
+        return out;
+    }
+
+    @Override
+    public TYPE determinant() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public final MatT set(
+        final int i, final int j,
+        final TYPE[] data, final int offset, final int length,
+        final int stride) {
+
+        final int scanlineSize = this.size();
+        int yOff = this.offset() + i * this.size() + j;
+        int off = offset;
+
+        for(int yStart = 0; yStart < this.size(); yStart++) {
+            System.arraycopy(data, off, this.data(), yOff, this.size());
+            off += stride;
+            yOff += scanlineSize;
+        }
+
+        return this;
+    }
+
+    @Override
     public MatT asStaticMat() {
-        throw new UnsupportedOperationException("Not supported yet");
+        return new _fdef(`StaticMat',`N',TYPE)(
+            this.getFactory(), this.size(), this);
     }
 }

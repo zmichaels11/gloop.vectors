@@ -18,50 +18,7 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
 
     protected abstract double[] data();
 
-    protected abstract int offset();
-
-    public static GLVec2D createGLVec2D(
-            final double[] data, final int offset, final int length) {
-
-        return Vectors.DEFAULT_FACTORY.nextVec2D().set(data, offset, length);
-    }
-
-    public static GLVec2D createGLVec2D(final double... values) {
-        return createGLVec2D(values, 0, values.length);
-    }
-
-    public static GLVec3D createGLVec3D(final double... values) {
-        return createGLVec3D(values, 0, values.length);
-    }
-    
-    public static GLVec3D createGLVec3D(
-            final double[] data, final int offset, final int length) {
-
-        return Vectors.DEFAULT_FACTORY.nextVec3D().set(data, offset, length);
-    }
-
-    public static GLVec4D createGLVec4D(
-            final double... values) {
-        return createGLVec4D(values, 0, values.length);
-    }
-
-    public static GLVec4D createGLVec4D(
-            final double[] data, final int offset, final int length) {
-
-        return Vectors.DEFAULT_FACTORY.nextVec4D().set(data, offset, length);
-    }
-
-    public static GLVecND createGLVecND(
-            final int size, final double... values) {
-        return createGLVecND(size, values, 0, values.length);
-    }
-
-    public static GLVecND createGLVecND(
-            final int size,
-            final double[] data, final int offset, final int length) {
-
-        return Vectors.DEFAULT_FACTORY.nextVecND(size).set(data, offset, length);
-    }
+    protected abstract int offset();    
 
     @Override
     public final GLVecT normalize() {
@@ -76,6 +33,18 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
     public final GLVecD asGLVecD() {
         return this;
     }
+    
+    @Override
+    public abstract GLVecT plus(GLVec other);
+    
+    @Override
+    public abstract GLVecT minus(GLVec other);
+    
+    @Override
+    public abstract GLVecT cross(GLVec other);
+    
+    @Override
+    public abstract GLVecT asStaticVec();
 
     public abstract GLVec2D asGLVec2D();
 

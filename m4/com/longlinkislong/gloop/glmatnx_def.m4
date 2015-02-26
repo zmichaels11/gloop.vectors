@@ -1,7 +1,8 @@
 m4_define(`BaseT', _fdef(`GLMat',,TYPE))
 m4_define(`MatT', _fdef(`GLMat',`N',TYPE))
+m4_define(`VecT', _fdef(`GLVec',`N',TYPE))
 m4_define(`_next', `this.getFactory()._fdef(`nextGLMat',$1,$2)($3)')
-m4_define(`_cast',`$1.as$2()')
+m4_define(`_cast',`$1.as$2($3)')
 m4_define(`_call',`Matrices._fdef($1,`N',TYPE)')
 m4_define(`_asMat', `m4_dnl
 @Override

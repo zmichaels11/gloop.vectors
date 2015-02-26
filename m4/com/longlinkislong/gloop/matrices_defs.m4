@@ -22,6 +22,29 @@ out[outOffset + i] = in0[in0Offset + i] * value;
     }
 ')
 
+m4_define(`_scaleN', `m4_dnl
+/**
+     * Scales each element inside a NxN $1 matrix by a constant value.
+     * @param out the output matrix array
+     * @param outOffset the offset to the output matrix
+     * @param in0 the input matrix array
+     * @param in0Offset the offset to the input matrix
+     * @param value the constant scalar.
+     * @param size the size of the matrix.
+     * @since 15.02.26
+     */
+    public static void _fdef(`scale', `N', $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final $1 value,
+        final int size) {
+        
+        for(int i = 0; i < size * size; i++) {
+            out[outOffset + i] = in0[in0Offset + i] * value;
+        }
+    }
+')
+
 m4_define(`_index', `m4_eval($2 * $3 + $1)')
 
 m4_define(`_matmult', `m4_dnl
@@ -50,6 +73,36 @@ in0[in0Offset + _index(k,j, $1)] * in1[in1Offset + _index(i, k, $1)] + ')0;
     }
 ')
 
+m4_define(`_matmultN', `m4_dnl
+/**
+     * Multiplies two NxN $1 matrices together and stores the results inside
+     * another NxN $1 matrix.
+     * @param out the output matrix array
+     * @param outOffset hte offset to the output matrix
+     * @param in0 the first input matrix array
+     * @param in0Offset the offset to the first matrix
+     * @param in1 the second input matrix array
+     * @param in1Offset the offset to the second matrix
+     * @param size the size of the matrix
+     * @since 15.02.26
+     */
+public static void _fdef(`multiplyMat', `N', $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final $1[] in1, final int in1Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+                out[outOffset + (j*size+i)] = 0;
+                for(int k = 0; k < size; k++) {
+                    out[outOffset + (j*size+i)] += in0[in0Offset + (j*size+k)] * in1[in1Offset + (k*size+i)];
+                }
+            }
+        }
+    }
+')
+
 m4_define(`_vecmult', `m4_dnl 
 /**
      * Multiplies a $1x$1 $2 matrix by a $1x1 $2 vector and stores the results in 
@@ -72,6 +125,34 @@ out[outOffset + i] = m4_dnl
 forloop(`j', 0, m4_eval($1-1), `m4_dnl 
 in0[in0Offset + _index(i, j, $1)] * in1[in1Offset + j] + ')0;
         ')
+    }
+')
+
+m4_define(`_vecmultN', `m4_dnl
+/**
+     * Multiplies a NxN $1 matrix by a Nx1 vector and stores the results in
+     * another Nx1 $1 vector.
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the input matrix array
+     * @param in0Offset the offset to the input matrix
+     * @param in1 the input vector array
+     * @param in1Offset the offset to the input vector
+     * @param size the size of the matrix
+     * @since 15.02.26
+     */
+    public static void _fdef(`multiplyVec', `N', $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final $1[] in1, final int in1Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            out[outOffset + i] = 0;
+            for(int j = 0; j < size; j++) {
+                out[outOffset + j] += in0[in0Offset + (j*size+i)] * in1[in1Offset + j];
+            }
+        }
     }
 ')
 
@@ -152,6 +233,29 @@ m4_define(`_transpose', `m4_dnl
 forloop(`j', 0, m4_eval($1-1), `m4_dnl 
 out[outOffset + _index(i, j, $1)] = in0[in0Offset + _index(j, i, $1)];
         ')')
+    }
+')
+
+m4_define(`_transposeN', `m4_dnl
+/**
+     * Calculates the transpose of a NxN $1 matrix.
+     * @param out the output matrix array
+     * @param outOffset the offset to the output matrix
+     * @param in0 the input matrix array
+     * @param in0Offset the offset to the input matrix
+     * @param int size the size of the matrix
+     * @since 15.02.26
+     */
+    public static void _fdef(`transpose', `N', $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+                out[outOffset + (j*size+i)] = in0[in0Offset + (i*size+j)];
+            }
+        }
     }
 ')
 

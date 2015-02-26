@@ -12,42 +12,42 @@ package com.longlinkislong.gloop;
 public final class StaticVectorFactory implements VectorFactory {
 
     @Override
-    public GLVec2D nextVec2D() {
+    public GLVec2D nextGLVec2D() {
         return new StaticVec2D(this);
     }
 
     @Override
-    public GLVec3D nextVec3D() {
+    public GLVec3D nextGLVec3D() {
         return new StaticVec3D(this);
     }
 
     @Override
-    public GLVec4D nextVec4D() {
+    public GLVec4D nextGLVec4D() {
         return new StaticVec4D(this);
     }
 
     @Override
-    public GLVecND nextVecND(int size) {
+    public GLVecND nextGLVecND(int size) {
         return new StaticVecND(this, size);
     }
 
     @Override
-    public GLVec2F nextVec2F() {
+    public GLVec2F nextGLVec2F() {
         return new StaticVec2F(this);
     }
 
     @Override
-    public GLVec3F nextVec3F() {
+    public GLVec3F nextGLVec3F() {
         return new StaticVec3F(this);
     }
 
     @Override
-    public GLVec4F nextVec4F() {
+    public GLVec4F nextGLVec4F() {
         return new StaticVec4F(this);
     }
 
     @Override
-    public GLVecNF nextVecNF(int size) {
+    public GLVecNF nextGLVecNF(int size) {
         return new StaticVecNF(this, size);
     }
     

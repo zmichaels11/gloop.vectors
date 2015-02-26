@@ -11,10 +11,42 @@ import java.util.Arrays;
  *
  * @author zmichaels
  * @param <GLMatT>
+ * @param <GLVecT>
  */
-public abstract class GLMatD<GLMatT extends GLMatD> implements GLMat<GLMatT> {
+public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> implements GLMat<GLMatT, GLVecT> {
 
     public static final double EPSILON = 1.19e-7;
+    
+    public static GLMat2D createGLMat2D() {
+        return Matrices.DEFAULT_FACTORY.nextGLMat2D().identity();
+    }
+    
+    public static GLMat3D createGLMat3D() {
+        return Matrices.DEFAULT_FACTORY.nextGLMat3D().identity();
+    }
+    
+    public static GLMat4D createGLMat4D() {
+        return Matrices.DEFAULT_FACTORY.nextGLMat4D().identity();
+    }
+    
+    public static GLMatND createGLMatND(final int size) {
+        return Matrices.DEFAULT_FACTORY.nextGLMatND(size).identity();
+    }
+    
+    @Override
+    public abstract GLMatT inverse();
+    
+    @Override
+    public abstract GLMatT transpose();
+    
+    @Override
+    public abstract GLMatT multiply(GLMat other);
+    
+    @Override
+    public abstract GLVecT multiply(GLVec vec);
+    
+    @Override
+    public abstract GLMatT asStaticMat();
 
     protected abstract double[] data();
 
@@ -37,14 +69,14 @@ public abstract class GLMatD<GLMatT extends GLMatD> implements GLMat<GLMatT> {
     public final GLMatT set(double... values) {
         return this.set(0, 0, values, 0, values.length, this.size());
     }
-    
+
     @Override
     public final GLMatT set(final GLMat other) {
         final int length = Math.min(other.size(), this.size());
         final GLMatD mat = other.asGLMatD();
-        
+
         this.zero();
-        
+
         return this.set(0, 0, mat.data(), mat.offset(), length * length, length);
     }
 
@@ -54,7 +86,7 @@ public abstract class GLMatD<GLMatT extends GLMatD> implements GLMat<GLMatT> {
     public final GLMatD asGLMatD() {
         return this;
     }
-    
+
     public abstract double determinant();
 
     @Override
@@ -88,5 +120,22 @@ public abstract class GLMatD<GLMatT extends GLMatD> implements GLMat<GLMatT> {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public final String toString() {
+        final StringBuilder out = new StringBuilder();
+
+        out.append("GLMat/D:[");
+        for (int i = 0; i < this.size(); i++) {
+            out.append("[");
+            for (int j = 0; j < this.size(); j++) {
+                out.append(this.get(i, j));
+                out.append((j < this.size() - 1) ? ", " : "]");
+            }
+            out.append((i < this.size() - 1) ? ", " : "]");
+        }
+
+        return out.toString();
     }
 }

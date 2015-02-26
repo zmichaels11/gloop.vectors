@@ -1,6 +1,6 @@
 m4_define(`BaseT', _fdef(`GLVec',,TYPE))
 m4_define(`VecT', _fdef(`GLVec',VEC_SIZE,TYPE))
-m4_define(`_next', `this.getFactory()._fdef(`nextVec',$1,$2)($3)')
+m4_define(`_next', `this.getFactory()._fdef(`nextGLVec',$1,$2)($3)')
 m4_define(`_cast', `$1.as$2()')
 m4_define(`_call', `Vectors._fdef($1,VEC_SIZE,TYPE)')
 m4_define(`_asVec', `m4_dnl

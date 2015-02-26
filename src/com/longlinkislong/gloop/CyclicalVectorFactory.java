@@ -174,7 +174,7 @@ public class CyclicalVectorFactory implements VectorFactory {
     }
 
     @Override
-    public GLVec2D nextVec2D() {
+    public GLVec2D nextGLVec2D() {
         final int id = this.nextVec2DID();
         final int offset = this.nextVec2DOffset();
         
@@ -182,7 +182,7 @@ public class CyclicalVectorFactory implements VectorFactory {
     }
     
     @Override
-    public GLVec2F nextVec2F() {
+    public GLVec2F nextGLVec2F() {
         final int id = this.nextVec2FID();
         final int offset = this.nextVec2FOffset();
         
@@ -190,7 +190,7 @@ public class CyclicalVectorFactory implements VectorFactory {
     }
 
     @Override
-    public GLVec3D nextVec3D() {
+    public GLVec3D nextGLVec3D() {
         final int id = this.nextVec3DID();
         final int offset = this.nextVec3DOffset();
         
@@ -198,7 +198,7 @@ public class CyclicalVectorFactory implements VectorFactory {
     }
     
     @Override
-    public GLVec3F nextVec3F() {
+    public GLVec3F nextGLVec3F() {
         final int id = this.nextVec3FID();
         final int offset = this.nextVec3FOffset();
         
@@ -206,7 +206,7 @@ public class CyclicalVectorFactory implements VectorFactory {
     }
 
     @Override
-    public GLVec4D nextVec4D() {
+    public GLVec4D nextGLVec4D() {
         final int id = this.nextVec4DID();
         final int offset = this.nextVec4DOffset();
         
@@ -214,7 +214,7 @@ public class CyclicalVectorFactory implements VectorFactory {
     }
     
     @Override
-    public GLVec4F nextVec4F() {
+    public GLVec4F nextGLVec4F() {
         final int id = this.nextVec4FID();
         final int offset = this.nextVec4FOffset();
         
@@ -222,16 +222,21 @@ public class CyclicalVectorFactory implements VectorFactory {
     }
     
     @Override
-    public GLVecND nextVecND(final int vecSize) {
+    public GLVecND nextGLVecND(final int vecSize) {
         final int offset = this.nextVecNDOffset(vecSize);
         
         return new MappedVecND(this, this.dataD, offset, vecSize, vecSize);        
     }
     
     @Override
-    public GLVecNF nextVecNF(final int vecSize) {
+    public GLVecNF nextGLVecNF(final int vecSize) {
         final int offset = this.nextVecNFOffset(vecSize);
         
         return new MappedVecNF(this, this.dataF, offset, vecSize, vecSize);
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("Vector Factory: [sfp: %d dfp: %d]", this.dataF.length, this.dataD.length);
     }
 }

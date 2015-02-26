@@ -81,12 +81,18 @@
             <m4 input="mappedmatx.m4" output="MappedMat3D.java" type="double" size="3"/>
             <m4 input="mappedmatx.m4" output="MappedMat4D.java" type="double" size="4"/>
             
+            <m4 input="mappedmatnx.m4" output="MappedMatNF.java" type="float" size="N"/>
+            <m4 input="mappedmatnx.m4" output="MappedMatND.java" type="double" size="N"/>
+            
             <m4 input="staticmatx.m4" output="StaticMat2F.java" type="float" size="2"/>
             <m4 input="staticmatx.m4" output="StaticMat3F.java" type="float" size="3"/>
             <m4 input="staticmatx.m4" output="StaticMat4F.java" type="float" size="4"/>
             <m4 input="staticmatx.m4" output="StaticMat2D.java" type="double" size="2"/>
             <m4 input="staticmatx.m4" output="StaticMat3D.java" type="double" size="3"/>
-            <m4 input="staticmatx.m4" output="StaticMat4D.java" type="double" size="4"/>            
+            <m4 input="staticmatx.m4" output="StaticMat4D.java" type="double" size="4"/>
+            
+            <m4 input="staticmatnx.m4" output="StaticMatNF.java" type="float" size="N"/>
+            <m4 input="staticmatnx.m4" output="StaticMatND.java" type="double" size="N"/>
         </parallel>             
     </target>        
     

@@ -10,19 +10,19 @@ package com.longlinkislong.gloop;
  * @author zmichaels
  */
 public interface VectorFactory {
-    public GLVec2D nextVec2D();
+    public GLVec2D nextGLVec2D();
     
-    public GLVec3D nextVec3D();
+    public GLVec3D nextGLVec3D();
     
-    public GLVec4D nextVec4D();
+    public GLVec4D nextGLVec4D();
     
-    public GLVecND nextVecND(int size);
+    public GLVecND nextGLVecND(int size);
     
-    public GLVec2F nextVec2F();
+    public GLVec2F nextGLVec2F();
     
-    public GLVec3F nextVec3F();
+    public GLVec3F nextGLVec3F();
     
-    public GLVec4F nextVec4F();
+    public GLVec4F nextGLVec4F();
     
-    public GLVecNF nextVecNF(int size);
+    public GLVecNF nextGLVecNF(int size);
 }

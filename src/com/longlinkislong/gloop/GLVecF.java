@@ -14,47 +14,11 @@ import java.util.Arrays;
  */
 public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
 
-    public static final float EPSILON = 1.19e-07f;
+    public static final float EPSILON = 1.19e-07f;   
 
     protected abstract float[] data();
 
-    protected abstract int offset();
-
-    public static GLVec2F createGLVec2F(
-            final float[] data, final int offset, final int length) {
-
-        return Vectors.DEFAULT_FACTORY.nextVec2F().set(data, offset, length);
-    }
-
-    public static GLVec3F createGLVec3F(
-            final float[] data, final int offset, final int length) {
-
-        return Vectors.DEFAULT_FACTORY.nextVec3F().set(data, offset, length);
-    }
-
-    public static GLVec4F createGLVec4F(
-            final float[] data, final int offset, final int length) {
-
-        return Vectors.DEFAULT_FACTORY.nextVec4F().set(data, offset, length);
-    }
-
-    public static GLVecNF createGLVecNF(
-            final int size,
-            final float[] data, final int offset, final int length) {
-        return Vectors.DEFAULT_FACTORY.nextVecNF(size).set(data, offset, length);
-    }
-    
-    public static GLVec2F createGLVec2F(final float... values) {
-        return createGLVec2F(values, 0, values.length);
-    }
-    
-    public static GLVec3F createGLVec3F(final float... values) {
-        return createGLVec3F(values, 0, values.length);
-    }
-    
-    public static GLVec4F createGLVec4F(final float... values) {
-        return createGLVec4F(values, 0, values.length);
-    }
+    protected abstract int offset();               
 
     @Override
     public final GLVecT normalize() {
@@ -69,7 +33,19 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
     public final GLVecF asGLVecF() {
         return this;
     }
+    
+    @Override
+    public abstract GLVecT plus(GLVec other);
+    
+    @Override
+    public abstract GLVecT minus(GLVec other);
+    
+    @Override
+    public abstract GLVecT cross(GLVec other);
 
+    @Override
+    public abstract GLVecT asStaticVec();
+    
     public abstract GLVec2F asGLVec2F();
 
     public abstract GLVec3F asGLVec3F();

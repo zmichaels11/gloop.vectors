@@ -8,6 +8,15 @@ public abstract class VecT extends BaseT <VecT> {
     public static final int VECTOR_SIZE = VEC_SIZE;
     public static final int VECTOR_WIDTH = VECTOR_SIZE * m4_ifelse(TYPE, `float', 4, 8);
 
+    public static VecT create(final TYPE[] data, final int offset, final int length) {
+        return Vectors.DEFAULT_FACTORY._fdef(`nextGLVec', VEC_SIZE, TYPE)()
+            .zero().set(data, offset, length);
+    }
+
+    public static VecT create(final TYPE... values) {
+        return create(values, 0, values.length);
+    }
+
     public final TYPE x() {
         return this.get(Vectors.X);
     }
@@ -77,7 +86,7 @@ m4_ifelse(m4_eval(VEC_SIZE > 3), 1,m4_dnl
 
     @Override
     public final VecT set(final TYPE[] values, final int offset, final int length) {
-        if(offset < 0 || length < 0 || length < VEC_SIZE || values.length - offset < length) {
+        if(offset < 0 || length < 0 || length > VEC_SIZE || values.length - offset < length) {
             throw new IndexOutOfBoundsException();
         }
 
