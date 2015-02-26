@@ -20,6 +20,42 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
 
     protected abstract int offset();
 
+    public static GLVec2F createGLVec2F(
+            final float[] data, final int offset, final int length) {
+
+        return Vectors.DEFAULT_FACTORY.nextVec2F().set(data, offset, length);
+    }
+
+    public static GLVec3F createGLVec3F(
+            final float[] data, final int offset, final int length) {
+
+        return Vectors.DEFAULT_FACTORY.nextVec3F().set(data, offset, length);
+    }
+
+    public static GLVec4F createGLVec4F(
+            final float[] data, final int offset, final int length) {
+
+        return Vectors.DEFAULT_FACTORY.nextVec4F().set(data, offset, length);
+    }
+
+    public static GLVecNF createGLVecNF(
+            final int size,
+            final float[] data, final int offset, final int length) {
+        return Vectors.DEFAULT_FACTORY.nextVecNF(size).set(data, offset, length);
+    }
+    
+    public static GLVec2F createGLVec2F(final float... values) {
+        return createGLVec2F(values, 0, values.length);
+    }
+    
+    public static GLVec3F createGLVec3F(final float... values) {
+        return createGLVec3F(values, 0, values.length);
+    }
+    
+    public static GLVec4F createGLVec4F(final float... values) {
+        return createGLVec4F(values, 0, values.length);
+    }
+
     @Override
     public final GLVecT normalize() {
         final double scale = 1.0 / this.length();
@@ -69,47 +105,47 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
         return Arrays.hashCode(
                 Arrays.copyOfRange(this.data(), this.offset(), this.size()));
     }
-    
+
     @Override
     public final boolean equals(final Object other) {
-        if(other == this) {
+        if (other == this) {
             return true;
-        } else if(other instanceof GLVecF) {
+        } else if (other instanceof GLVecF) {
             final GLVecF v = (GLVecF) other;
-            
-            if(v.size() != this.size()) {
+
+            if (v.size() != this.size()) {
                 return false;
             } else {
-                for(int i = 0; i < this.size(); i++) {
+                for (int i = 0; i < this.size(); i++) {
                     final float v0 = this.data()[this.offset() + i];
                     final float v1 = v.data()[v.offset() + i];
-                    
-                    if(Math.abs(v0 - v1) > EPSILON) {
+
+                    if (Math.abs(v0 - v1) > EPSILON) {
                         return false;
                     }
                 }
-                
+
                 return true;
-            }            
+            }
         } else {
             return false;
         }
     }
-    
+
     @Override
     public final String toString() {
         final StringBuilder out = new StringBuilder();
-        
+
         out.append("GLVecF: <");
-        
-        for(int i = 0;  i < this.size() - 1; i++) {
+
+        for (int i = 0; i < this.size() - 1; i++) {
             out.append(this.get(i));
             out.append(", ");
         }
-        
+
         out.append(this.get(this.size() - 1));
         out.append(">");
-        
+
         return out.toString();
     }
 }

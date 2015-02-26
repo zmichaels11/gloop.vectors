@@ -8,13 +8,15 @@ package com.longlinkislong.gloop;
 public final class Vectors {
     private Vectors() {}
 
+    protected static final VectorFactory DEFAULT_FACTORY = new CyclicalVectorFactory();
+
     protected static final double[] NULL_VECTORD = {0.0, 0.0, 0.0, 0.0};
     protected static final float[] NULL_VECTORF = {0f, 0f, 0f, 0f};
 
     public static final int X = 0;
     public static final int Y = 1;
     public static final int Z = 2;
-    public static final int W = 3;
+    public static final int W = 3;    
 
 foreach(`type', `m4_dnl 
     _cross2(type)
@@ -30,6 +32,10 @@ foreach(`type', `m4_dnl
     _inverseN(type)
     _multN(type)
     _maddN(type)
+    _divN(type)
+    _sqrtN(type)
+    _minN(type)
+    _maxN(type)
 forloop(`i', 2, 4, `m4_dnl
     _plus(i, type)
     _minus(i, type)
@@ -40,5 +46,9 @@ forloop(`i', 2, 4, `m4_dnl
     _inverse(i, type)
     _mult(i, type)
     _madd(i, type)
-')', `float', `double')    
+    _div(i, type)
+    _sqrt(i, type)
+    _min(i, type)
+    _max(i, type)
+')', `float', `double')       
 }

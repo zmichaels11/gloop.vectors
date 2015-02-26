@@ -7,196 +7,88 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="gloop-vectors" default="default" basedir=".">
+<project name="gloop-vectors" default="default" basedir=".">    
     <description>Builds, tests, and runs the project gloop-vectors.</description>
-    <import file="nbproject/build-impl.xml"/>
+    <import file="nbproject/build-impl.xml"/>    
+        
+    <macrodef name="m4">
+        <attribute name="path" default="com/longlinkislong/gloop"/>
+        <attribute name="input"/>
+        <attribute name="output"/>
+        <attribute name="type" default="float"/>
+        <attribute name="size" default="4"/>
+        <sequential>
+            <exec
+                executable="m4"
+                input="m4/@{path}/@{input}"
+                output="src/@{path}/@{output}">
+                <arg value="-P"/>
+                <arg value="--define=TYPE=@{type}"/>
+                <arg value="--define=VEC_SIZE=@{size}"/>
+                <arg value="--define=MAT_SIZE=@{size}"/>
+            </exec>
+        </sequential>
+    </macrodef>            
     
-    <target name="-m4-compile">        
-        <exec 
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/matrices.m4"
-            output="src/com/longlinkislong/gloop/Matrices.java">
-            <arg value="-P"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/vectors.m4"
-            output="src/com/longlinkislong/gloop/Vectors.java">
-            <arg value="-P"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/glvecx.m4"
-            output="src/com/longlinkislong/gloop/GLVec2D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=2"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/glvecx.m4"
-            output="src/com/longlinkislong/gloop/GLVec3D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=3"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>  
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/glvecx.m4"
-            output="src/com/longlinkislong/gloop/GLVec4D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=4"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/glvecx.m4"
-            output="src/com/longlinkislong/gloop/GLVec2F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=2"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/glvecx.m4"
-            output="src/com/longlinkislong/gloop/GLVec3F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=3"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/glvecx.m4"
-            output="src/com/longlinkislong/gloop/GLVec4F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=4"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/glvecnx.m4"
-            output="src/com/longlinkislong/gloop/GLVecNF.java">
-            <arg value="-P"/>
-            <arg value="--define=TYPE=float"/>            
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/glvecnx.m4"
-            output="src/com/longlinkislong/gloop/GLVecND.java">
-            <arg value="-P"/>
-            <arg value="--define=TYPE=double"/>            
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/mappedvecx.m4"
-            output="src/com/longlinkislong/gloop/MappedVec2F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=2"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/mappedvecx.m4"
-            output="src/com/longlinkislong/gloop/MappedVec2D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=2"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/mappedvecx.m4"
-            output="src/com/longlinkislong/gloop/MappedVec3F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=3"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/mappedvecx.m4"
-            output="src/com/longlinkislong/gloop/MappedVec3D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=3"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/mappedvecx.m4"
-            output="src/com/longlinkislong/gloop/MappedVec4F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=4"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/mappedvecx.m4"
-            output="src/com/longlinkislong/gloop/MappedVec4D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=4"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/staticvecx.m4"
-            output="src/com/longlinkislong/gloop/StaticVec2F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=2"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/staticvecx.m4"
-            output="src/com/longlinkislong/gloop/StaticVec2D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=2"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/staticvecx.m4"
-            output="src/com/longlinkislong/gloop/StaticVec3F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=3"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/staticvecx.m4"
-            output="src/com/longlinkislong/gloop/StaticVec3D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=3"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/staticvecx.m4"
-            output="src/com/longlinkislong/gloop/StaticVec4F.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=4"/>
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/staticvecx.m4"
-            output="src/com/longlinkislong/gloop/StaticVec4D.java">
-            <arg value="-P"/>
-            <arg value="--define=VEC_SIZE=4"/>
-            <arg value="--define=TYPE=double"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/staticvecnx.m4"
-            output="src/com/longlinkislong/gloop/StaticVecNF.java">
-            <arg value="-P"/>            
-            <arg value="--define=TYPE=float"/>
-        </exec>
-        <exec
-            executable="m4"
-            input="m4/com/longlinkislong/gloop/staticvecnx.m4"
-            output="src/com/longlinkislong/gloop/StaticVecND.java">
-            <arg value="-P"/>            
-            <arg value="--define=TYPE=double"/>
-        </exec>
-    </target>
+    <target name="-m4-compile">
+        <parallel>     
+            <m4 input="matrices.m4" output="Matrices.java"/>
+            <m4 input="vectors.m4" output="Vectors.java"/>
+            <m4 input="glvecx.m4" output="GLVec2F.java" type="float" size="2"/>
+            <m4 input="glvecx.m4" output="GLVec3F.java" type="float" size="3"/>
+            <m4 input="glvecx.m4" output="GLVec4F.java" type="float" size="4"/>
+            <m4 input="glvecx.m4" output="GLVec2D.java" type="double" size="2"/>        
+            <m4 input="glvecx.m4" output="GLVec3D.java" type="double" size="3"/>
+            <m4 input="glvecx.m4" output="GLVec4D.java" type="double" size="4"/>            
+            
+            <m4 input="glvecnx.m4" output="GLVecNF.java" type="float" size="N"/>
+            <m4 input="glvecnx.m4" output="GLVecND.java" type="double" size="N"/>
+
+            <m4 input="mappedvecx.m4" output="MappedVec2F.java" type="float" size="2"/>
+            <m4 input="mappedvecx.m4" output="MappedVec3F.java" type="float" size="3"/>
+            <m4 input="mappedvecx.m4" output="MappedVec4F.java" type="float" size="4"/>
+            <m4 input="mappedvecx.m4" output="MappedVec2D.java" type="double" size="2"/>
+            <m4 input="mappedvecx.m4" output="MappedVec3D.java" type="double" size="3"/>
+            <m4 input="mappedvecx.m4" output="MappedVec4D.java" type="double" size="4"/>
+            
+            <m4 input="mappedvecnx.m4" output="MappedVecNF.java" type="float" size="N"/>
+            <m4 input="mappedvecnx.m4" output="MappedVecND.java" type="double" size="N"/>
+            
+            <m4 input="staticvecx.m4" output="StaticVec2F.java" type="float" size="2"/>
+            <m4 input="staticvecx.m4" output="StaticVec3F.java" type="float" size="3"/>
+            <m4 input="staticvecx.m4" output="StaticVec4F.java" type="float" size="4"/>
+            <m4 input="staticvecx.m4" output="StaticVec2D.java" type="double" size="2"/>
+            <m4 input="staticvecx.m4" output="StaticVec3D.java" type="double" size="3"/>
+            <m4 input="staticvecx.m4" output="StaticVec4D.java" type="double" size="4"/>
+            
+            <m4 input="staticvecnx.m4" output="StaticVecNF.java" type="float" size="N"/>
+            <m4 input="staticvecnx.m4" output="StaticVecND.java" type="double" size="N"/>
+            
+            <m4 input="glmatx.m4" output="GLMat2F.java" type="float" size="2"/>
+            <m4 input="glmatx.m4" output="GLMat3F.java" type="float" size="3"/>
+            <m4 input="glmatx.m4" output="GLMat4F.java" type="float" size="4"/>
+            <m4 input="glmatx.m4" output="GLMat2D.java" type="double" size="2"/>
+            <m4 input="glmatx.m4" output="GLMat3D.java" type="double" size="3"/>
+            <m4 input="glmatx.m4" output="GLMat4D.java" type="double" size="4"/>
+            
+            <m4 input="glmatnx.m4" output="GLMatNF.java" type="float" size="N"/>
+            <m4 input="glmatnx.m4" output="GLMatND.java" type="double" size="N"/>
+            
+            <m4 input="mappedmatx.m4" output="MappedMat2F.java" type="float" size="2"/>
+            <m4 input="mappedmatx.m4" output="MappedMat3F.java" type="float" size="3"/>
+            <m4 input="mappedmatx.m4" output="MappedMat4F.java" type="float" size="4"/>
+            <m4 input="mappedmatx.m4" output="MappedMat2D.java" type="double" size="2"/>
+            <m4 input="mappedmatx.m4" output="MappedMat3D.java" type="double" size="3"/>
+            <m4 input="mappedmatx.m4" output="MappedMat4D.java" type="double" size="4"/>
+            
+            <m4 input="staticmatx.m4" output="StaticMat2F.java" type="float" size="2"/>
+            <m4 input="staticmatx.m4" output="StaticMat3F.java" type="float" size="3"/>
+            <m4 input="staticmatx.m4" output="StaticMat4F.java" type="float" size="4"/>
+            <m4 input="staticmatx.m4" output="StaticMat2D.java" type="double" size="2"/>
+            <m4 input="staticmatx.m4" output="StaticMat3D.java" type="double" size="3"/>
+            <m4 input="staticmatx.m4" output="StaticMat4D.java" type="double" size="4"/>            
+        </parallel>             
+    </target>        
     
     <target name="-m4-clean">
         <delete>
@@ -204,10 +96,20 @@
                 <include name="*.java"/>
                 <exclude name="GLVec.java"/>
                 <exclude name="GLVecD.java"/>
-                <exclude name="GLVecF.java"/>
+                <exclude name="GLVecF.java"/>                
                 <exclude name="MappedVec.java"/>
                 <exclude name="StaticVec.java"/>
                 <exclude name="VectorFactory.java"/>
+                <exclude name="StaticVectorFactory.java"/>
+                <exclude name="CyclicalVectorFactory.java"/>
+                <exclude name="GLMat.java"/>
+                <exclude name="GLMatD.java"/>
+                <exclude name="GLMatF.java"/>
+                <exclude name="MappedMat.java"/>
+                <exclude name="StaticMat.java"/>
+                <exclude name="MatrixFactory.java"/>
+                <exclude name="StaticMatrixFactory.java"/>
+                <exclude name="CyclicalMatrixFactory.java"/>                
             </fileset>
         </delete>        
     </target>

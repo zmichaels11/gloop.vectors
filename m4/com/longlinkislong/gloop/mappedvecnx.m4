@@ -1,24 +1,27 @@
 m4_divert(-1)
 m4_include(`m4/m4utils/fdef.m4')
-m4_include(`m4/com/longlinkislong/gloop/mappedvecx_def.m4')
-m4_divert(0)m4_dnl 
+m4_include(`m4/com/longlinkislong/gloop/mappedvecnx_def.m4')
+m4_divert(0)m4_dnl
 package com.longlinkislong.gloop;
 
 public class VecT extends BaseT implements MappedVec<VecT> {
     private final TYPE[] data;
-    private final int length;
     private final VectorFactory vf;
-    private final int baseOffset;
     private int offset;
+    private final int length;
+    private final int baseOffset;
+    private final int vectorSize;
 
     public VecT (
         final VectorFactory vf,
-        final TYPE[] data, final int offset, final int length) {
-
+        final TYPE[] data, final int offset, final int length,
+        final int vectorSize) {
+        
+        this.vf = vf;
         this.data = data;
         this.baseOffset = this.offset = offset;
         this.length = length;
-        this.vf = vf;        
+        this.vectorSize = vectorSize;
     }
 
     @Override
@@ -37,28 +40,29 @@ public class VecT extends BaseT implements MappedVec<VecT> {
     }
 
     @Override
+    public final int size() {
+        return this.vectorSize;
+    }
+
+    @Override
     public final VecT shift(final int shiftOffset) {
         return this.remap(this.offset + shiftOffset);
     }
 
     @Override
     public final VecT push() {
-        return this.shift(VEC_SIZE);
+        return this.shift(this.vectorSize);
     }
 
     @Override
     public final VecT pop() {
-        return this.shift(-VEC_SIZE);
+        return this.shift(-this.vectorSize);
     }
 
     @Override
     public final VecT remap(final int offset) {
         if(offset < this.baseOffset || offset > (this.baseOffset + this.length)) {
-            throw new IndexOutOfBoundsException(
-                String.format("Tried %d on range [%d, %d]", 
-                    offset, 
-                    this.baseOffset, 
-                    (this.baseOffset + this.length)));
+            throw new IndexOutOfBoundsException();
         }
 
         this.offset = offset;

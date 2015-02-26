@@ -20,6 +20,49 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
 
     protected abstract int offset();
 
+    public static GLVec2D createGLVec2D(
+            final double[] data, final int offset, final int length) {
+
+        return Vectors.DEFAULT_FACTORY.nextVec2D().set(data, offset, length);
+    }
+
+    public static GLVec2D createGLVec2D(final double... values) {
+        return createGLVec2D(values, 0, values.length);
+    }
+
+    public static GLVec3D createGLVec3D(final double... values) {
+        return createGLVec3D(values, 0, values.length);
+    }
+    
+    public static GLVec3D createGLVec3D(
+            final double[] data, final int offset, final int length) {
+
+        return Vectors.DEFAULT_FACTORY.nextVec3D().set(data, offset, length);
+    }
+
+    public static GLVec4D createGLVec4D(
+            final double... values) {
+        return createGLVec4D(values, 0, values.length);
+    }
+
+    public static GLVec4D createGLVec4D(
+            final double[] data, final int offset, final int length) {
+
+        return Vectors.DEFAULT_FACTORY.nextVec4D().set(data, offset, length);
+    }
+
+    public static GLVecND createGLVecND(
+            final int size, final double... values) {
+        return createGLVecND(size, values, 0, values.length);
+    }
+
+    public static GLVecND createGLVecND(
+            final int size,
+            final double[] data, final int offset, final int length) {
+
+        return Vectors.DEFAULT_FACTORY.nextVecND(size).set(data, offset, length);
+    }
+
     @Override
     public final GLVecT normalize() {
         final double scale = 1.0 / this.length();

@@ -144,7 +144,7 @@ m4_define(`_transpose', `m4_dnl
      * @param in0Offset the offset to the first input matrix
      * @since 15.02.13
      */
-    public static void _fdef(`_transpose', $1, $2) (
+    public static void _fdef(`transpose', $1, $2) (
         final $2[] out, final int outOffset,
         final $2[] in0, final int in0Offset) {
 
@@ -152,5 +152,143 @@ m4_define(`_transpose', `m4_dnl
 forloop(`j', 0, m4_eval($1-1), `m4_dnl 
 out[outOffset + _index(i, j, $1)] = in0[in0Offset + _index(j, i, $1)];
         ')')
+    }
+')
+
+m4_define(`_inverse2', `m4_dnl 
+/**
+     * Calculates the inverse of a 2x2 $1 matrix.
+     * @param out the output matrix array
+     * @param outOffset the offset to the output matrix
+     * @param in0 the first input matrix
+     * @param in0Offset the offset for the first input matrix     
+     * @since 15.02.20
+     */
+    public static void _fdef(`inverse', 2, $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset) {
+
+        final $1 det = _fdef(`determinant', 2, $1) (in0, in0Offset);
+        
+        out[outOffset + 0] =  in0[in0Offset + 3] / det;
+        out[outOffset + 1] = -in0[in0Offset + 1] / det;
+        out[outOffset + 2] = -in0[in0Offset + 2] / det;
+        out[outOffset + 3] =  in0[in0Offset + 0] / det;
+    }
+')
+
+m4_define(`_inverse3', `m4_dnl
+/**
+     * Calculates the inverse of a 3x3 $1 matrix.
+     * @param out the output matrix array
+     * @param outOffset the offset to the output matrix
+     * @param in0 the first input matrix
+     * @param in0Offset the offset for the first matrix
+     * @since 15.02.20
+     */
+    public static void _fdef(`inverse', 3, $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset) {
+
+        final $1 det = _fdef(`determinant', 3, $1) (in0, in0Offset);
+
+        _fdef(`transpose', 3, $1) (out, outOffset, in0, in0Offset);
+forloop(`i', 0, 8, `m4_dnl
+        out[outOffset + i] /= det;
+')
+    }
+')
+
+m4_define(`_inverse4', `m4_dnl
+/**
+     * Calculates the inverse of a 4x4 $1 matrix using Cramers rule.
+     * @param out the output matrix array
+     * @param outOffset the offset to the output matrix
+     * @param in0 the input matrix array
+     * @param in0Offset the offset to the input matrix
+     * @since 15.02.20
+     */
+    public static void _fdef(`inverse', 4, $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset) {
+
+        final $1[] tmp = new $1[12];
+        final $1[] src = new $1[16];
+        
+        _fdef(`transpose', 4, $1) (src, 0, in0, in0Offset);
+
+        // calculates pairs for first 8 elements
+        tmp[ 0] = src[10] * src[15];
+        tmp[ 1] = src[11] * src[14];
+        tmp[ 2] = src[ 9] * src[15];
+        tmp[ 3] = src[11] * src[13];
+        tmp[ 4] = src[ 9] * src[14];
+        tmp[ 5] = src[10] * src[13];
+        tmp[ 6] = src[ 8] * src[15];
+        tmp[ 7] = src[11] * src[12];
+        tmp[ 8] = src[ 8] * src[14];
+        tmp[ 9] = src[10] * src[12];
+        tmp[10] = src[ 8] * src[13];
+        tmp[11] = src[ 9] * src[12];
+
+        // calculates first 8 elements
+        out[outOffset + 0]  = tmp[0]*src[5] + tmp[3]*src[6] + tmp[ 4]*src[7];
+        out[outOffset + 0] -= tmp[1]*src[5] + tmp[2]*src[6] + tmp[ 5]*src[7];
+        out[outOffset + 1]  = tmp[1]*src[4] + tmp[6]*src[6] + tmp[ 9]*src[7];
+        out[outOffset + 1] -= tmp[0]*src[4] + tmp[7]*src[6] + tmp[ 8]*src[7];
+        out[outOffset + 2]  = tmp[2]*src[4] + tmp[7]*src[5] + tmp[10]*src[7];
+        out[outOffset + 2] -= tmp[3]*src[4] + tmp[6]*src[5] + tmp[11]*src[7];
+        out[outOffset + 3]  = tmp[5]*src[4] + tmp[8]*src[5] + tmp[11]*src[6];
+        out[outOffset + 3] -= tmp[4]*src[4] + tmp[9]*src[5] + tmp[10]*src[6];
+        out[outOffset + 4]  = tmp[1]*src[1] + tmp[2]*src[2] + tmp[ 5]*src[3];
+        out[outOffset + 4] -= tmp[0]*src[1] + tmp[3]*src[2] + tmp[ 4]*src[3];
+        out[outOffset + 5]  = tmp[0]*src[0] + tmp[7]*src[2] + tmp[ 8]*src[3];
+        out[outOffset + 5] -= tmp[1]*src[0] + tmp[6]*src[2] + tmp[ 9]*src[3];
+        out[outOffset + 6]  = tmp[3]*src[0] + tmp[6]*src[1] + tmp[11]*src[3];
+        out[outOffset + 6] -= tmp[2]*src[0] + tmp[7]*src[1] + tmp[10]*src[3];
+        out[outOffset + 7]  = tmp[4]*src[0] + tmp[9]*src[1] + tmp[10]*src[2];
+        out[outOffset + 7] -= tmp[5]*src[0] + tmp[8]*src[1] + tmp[11]*src[2];
+
+        // calculate pairs for second 8 elements
+        tmp[ 0] = src[2]*src[7];
+        tmp[ 1] = src[3]*src[6];
+        tmp[ 2] = src[1]*src[7];
+        tmp[ 3] = src[3]*src[5];
+        tmp[ 4] = src[1]*src[6];
+        tmp[ 5] = src[2]*src[5];
+        tmp[ 6] = src[0]*src[7];
+        tmp[ 7] = src[3]*src[4];
+        tmp[ 8] = src[0]*src[6];
+        tmp[ 9] = src[2]*src[4];
+        tmp[10] = src[0]*src[5];
+        tmp[11] = src[1]*src[4];
+
+        out[outOffset +  8] =  tmp[ 0]*src[13] + tmp[ 3]*src[14] + tmp[ 4]*src[15];
+        out[outOffset +  8] -= tmp[ 1]*src[13] + tmp[ 2]*src[14] + tmp[ 5]*src[15];
+        out[outOffset +  9] =  tmp[ 1]*src[12] + tmp[ 6]*src[14] + tmp[ 9]*src[15];
+        out[outOffset +  9] -= tmp[ 0]*src[12] + tmp[ 7]*src[14] + tmp[ 8]*src[15];
+        out[outOffset + 10] =  tmp[ 2]*src[12] + tmp[ 7]*src[13] + tmp[10]*src[15];
+        out[outOffset + 10]-=  tmp[ 3]*src[12] + tmp[ 6]*src[13] + tmp[11]*src[15];
+        out[outOffset + 11] =  tmp[ 5]*src[12] + tmp[ 8]*src[13] + tmp[11]*src[14];
+        out[outOffset + 11]-=  tmp[ 4]*src[12] + tmp[ 9]*src[13] + tmp[10]*src[14];
+        out[outOffset + 12] =  tmp[ 2]*src[10] + tmp[ 5]*src[11] + tmp[ 1]*src[ 9];
+        out[outOffset + 12]-=  tmp[ 4]*src[11] + tmp[ 0]*src[ 9] + tmp[ 3]*src[10];
+        out[outOffset + 13] =  tmp[ 8]*src[11] + tmp[ 0]*src[ 8] + tmp[ 7]*src[10];
+        out[outOffset + 13]-=  tmp[ 6]*src[10] + tmp[ 9]*src[11] + tmp[ 1]*src[ 8];
+        out[outOffset + 14] =  tmp[ 6]*src[ 9] + tmp[11]*src[11] + tmp[ 3]*src[ 8];
+        out[outOffset + 14]-=  tmp[10]*src[11] + tmp[ 2]*src[ 8] + tmp[ 7]*src[ 9];
+        out[outOffset + 15] =  tmp[10]*src[10] + tmp[ 4]*src[ 8] + tmp[ 9]*src[ 9];
+        out[outOffset + 15]-=  tmp[ 8]*src[ 9] + tmp[11]*src[10] + tmp[ 5]*src[ 8];
+
+        $1 det = src[0]*out[outOffset + 0]
+                +src[1]*out[outOffset + 1]
+                +src[2]*out[outOffset + 2]
+                +src[3]*out[outOffset + 3];
+
+        det = 1 / det;
+
+        for(int j = 0; j < 16; j++) {
+            out[outOffset + j] *= det;
+        }
     }
 ')

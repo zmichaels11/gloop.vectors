@@ -5,7 +5,7 @@ m4_divert(0)m4_dnl
 package com.longlinkislong.gloop;
 
 public class VecT extends BaseT implements StaticVec {
-    private final TYPE[] data = new TYPE[2];
+    private final TYPE[] data = new TYPE[VEC_SIZE];
     private final VectorFactory vf;
 
     public VecT (final VectorFactory vf) {

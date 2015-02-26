@@ -154,8 +154,7 @@ m4_define(`_cross2', `m4_dnl
      * @param in0 the first input vector array.
      * @param in0Offset the offset to the input vector.
      * @param in1 the second input vector array.
-     * @param in1Offset the offset to the second input vector.
-     * @return the result of a 2D cross product.
+     * @param in1Offset the offset to the second input vector.     
      * @since 15.02.13
      */
     public static void _fdef(`cross', 2, $1) (
@@ -503,8 +502,8 @@ forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
 
 m4_define(`_maddN', `m4_dnl
 /**
-     * Multiplies each element of a Nx1 vector by another Nx1 vector and stores
-     * the results in another Nx1 vector
+     * Multiplies each element of a Nx1 $1 vector by another $1Nx1 vector and 
+     * stores the results in another Nx1 $1 vector
      * @param out the output vector array
      * @param outOffset the offset to the output vector
      * @param in0 the first input vector array
@@ -516,7 +515,7 @@ m4_define(`_maddN', `m4_dnl
      * @param size the length of the vector
      * @since 15.02.20
      */
-    public static void _fdef(`multiply', `N', $1) (
+    public static void _fdef(`multiplyAdd', `N', $1) (
         final $1[] out, final int outOffset,
         final $1[] in0, final int in0Offset,
         final $1[] in1, final int in1Offset,
@@ -525,6 +524,192 @@ m4_define(`_maddN', `m4_dnl
 
         for(int i = 0; i < size; i++) {
             out[outOffset + i] = in0[in0Offset + i] * in1[in1Offset + i] + in2[in2Offset + i];
+        }
+    }
+')
+
+m4_define(`_div', `m4_dnl
+/**
+     * Divides each element of a $1x1 $2 vector by another $1x1 $2 vector and 
+     * stores the results in another $1x1 $2 vector.
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector array
+     * @param in0Offset the offset to the first vector
+     * @param in1 the second input vector array
+     * @param in1Offset the offset ot the second vector
+     * @since 15.02.24
+     */
+    public static void _fdef(`divide', $1, $2) (
+        final $2[] out, final int outOffset,
+        final $2[] in0, final int in0Offset,
+        final $2[] in1, final int in1Offset) {
+
+forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
+        out[outOffset + i] = in0[in0Offset + i] / in1[in1Offset + i];
+')
+    }
+')
+
+m4_define(`_divN', `m4_dnl
+/**
+     * Divides each element of a Nx1 $1 vector by another Nx1 $1 vector and
+     * stores the results in another Nx1 $1 vector.
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector array
+     * @param in0Offset the offset to the first vector
+     * @param in1 the second input vector array
+     * @param in1Offset the offfset to the second vector
+     * @param size the number of elemenets
+     * @since 15.02.24
+     */
+    public static void _fdef(`divide', `N', $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final $1[] in1, final int in1Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            out[outOffset + i] = in0[in0Offset + i] / in1[in1Offset + i];
+        }
+    }
+')
+
+m4_define(`_sqrt', `m4_dnl
+/**
+     * Computes the square root on each element of the $1x1 $2 vector and stores
+     * the results in another $1x1 $2 vector.
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the input vector array
+     * @param in0Offset the offset to the input vector     
+     * @since 15.02.24
+     */
+    public static void _fdef(`sqrt', $1, $2) (
+        final $2[] out, final int outOffset,
+        final $2[] in0, final int in0Offset) {
+
+forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
+        out[outOffset + i] = ($2) Math.sqrt(in0[in0Offset + i]);
+')
+    }
+')
+
+m4_define(`_sqrtN', `m4_dnl
+/**
+     * Computes the square root on each element of the Nx1 $1 vector and stores
+     * the results in another Nx1 $1 vector.
+     * @param out the output vector array
+     * @param outOffset the offset to the output vector
+     * @param in0 the input vector array
+     * @param in0Offset the offset to the input vector
+     * @param size the number of elements in the vector.
+     * @since 15.02.24
+     */
+    public static void _fdef(`sqrt', `N', $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            out[outOffset + i] = ($1) Math.sqrt(in0[in0Offset + i]);
+        }
+    }
+')
+
+m4_define(`_min', `m4_dnl
+/**
+     * Computes the minimum of two $1x1 $2 vectors and stores the results in
+     * another $1x1 $2 vector.
+     * @param out the output vector
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector
+     * @param in0Offset the offset to the first input vector
+     * @param in1 the second input vector
+     * @param in1Offset the offset to the second input vector
+     * @since 15.02.24
+     */
+    public static void _fdef(`min', $1, $2) (
+        final $2[] out, final int outOffset,
+        final $2[] in0, final int in0Offset,
+        final $2[] in1, final int in1Offset) {
+
+forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
+        out[outOffset + i] = Math.min(in0[in0Offset + i], in1[in1Offset + i]);
+')
+    }
+')
+
+m4_define(`_max', `m4_dnl
+/**
+     * Computes the maximum of two $1x1 $2 vectors and stores the results in
+     * another $1x1 $2 vector.
+     * @param out the output vector
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector
+     * @param in0Offset the offset to the first input vector
+     * @param in1 the second input vector
+     * @param in1Offset the offset to the second input vector
+     * @since 15.02.24
+     */
+    public static void _fdef(`max', $1, $2) (
+        final $2[] out, final int outOffset,
+        final $2[] in0, final int in0Offset,
+        final $2[] in1, final int in1Offset) {
+
+forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
+        out[outOffset + i] = Math.max(in0[in0Offset + i], in1[in1Offset + i]);
+')
+    }
+')
+
+m4_define(`_minN', `m4_dnl
+/**
+     * Computes the minimum of two Nx1 $1 vectors and stores the results in
+     * another Nx1 $2 vector.
+     * @param out the output vector
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector
+     * @param in0Offset the offset to the first input vector
+     * @param in1 the second input vector
+     * @param in1Offset the offset to the second input vector
+     * @param size the number of elements in the vector
+     * @since 15.02.24
+     */
+    public static void _fdef(`min', N, $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final $1[] in1, final int in1Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            out[outOffset + i] = Math.min(in0[in0Offset + i], in1[in1Offset + i]);
+        }
+    }
+')
+
+m4_define(`_maxN', `m4_dnl
+/**
+     * Computes the maximum of two Nx1 $1 vectors and stores the results in
+     * another Nx1 $2 vector.
+     * @param out the output vector
+     * @param outOffset the offset to the output vector
+     * @param in0 the first input vector
+     * @param in0Offset the offset to the first input vector
+     * @param in1 the second input vector
+     * @param in1Offset the offset to the second input vector
+     * @param size the number of elements in the vector
+     * @since 15.02.24
+     */
+    public static void _fdef(`max', N, $1) (
+        final $1[] out, final int outOffset,
+        final $1[] in0, final int in0Offset,
+        final $1[] in1, final int in1Offset,
+        final int size) {
+
+        for(int i = 0; i < size; i++) {
+            out[outOffset + i] = Math.max(in0[in0Offset + i], in1[in1Offset + i]);
         }
     }
 ')

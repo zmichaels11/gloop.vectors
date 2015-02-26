@@ -1,24 +1,24 @@
 m4_divert(-1)
 m4_include(`m4/m4utils/fdef.m4')
-m4_include(`m4/com/longlinkislong/gloop/mappedvecx_def.m4')
+m4_include(`m4/com/longlinkislong/gloop/mappedmatx_def.m4')
 m4_divert(0)m4_dnl 
 package com.longlinkislong.gloop;
 
-public class VecT extends BaseT implements MappedVec<VecT> {
+public class MatT extends BaseT implements MappedMat<MatT> {
     private final TYPE[] data;
     private final int length;
-    private final VectorFactory vf;
+    private final MatrixFactory mf;
     private final int baseOffset;
     private int offset;
 
-    public VecT (
-        final VectorFactory vf,
+    public MatT (
+        final MatrixFactory mf,
         final TYPE[] data, final int offset, final int length) {
 
         this.data = data;
         this.baseOffset = this.offset = offset;
         this.length = length;
-        this.vf = vf;        
+        this.mf = mf;
     }
 
     @Override
@@ -32,33 +32,33 @@ public class VecT extends BaseT implements MappedVec<VecT> {
     }
 
     @Override
-    public final VectorFactory getFactory() {
-        return this.vf;
+    public final MatrixFactory getFactory() {
+        return this.mf;
     }
 
     @Override
-    public final VecT shift(final int shiftOffset) {
+    public final MatT shift(final int shiftOffset) {
         return this.remap(this.offset + shiftOffset);
     }
 
     @Override
-    public final VecT push() {
-        return this.shift(VEC_SIZE);
+    public final MatT push() {
+        return this.shift(m4_eval(MAT_SIZE * MAT_SIZE));
     }
 
     @Override
-    public final VecT pop() {
-        return this.shift(-VEC_SIZE);
+    public final MatT pop() {
+        return this.shift(-m4_eval(MAT_SIZE * MAT_SIZE));
     }
 
     @Override
-    public final VecT remap(final int offset) {
+    public final MatT remap(final int offset) {
         if(offset < this.baseOffset || offset > (this.baseOffset + this.length)) {
             throw new IndexOutOfBoundsException(
                 String.format("Tried %d on range [%d, %d]", 
                     offset, 
                     this.baseOffset, 
-                    (this.baseOffset + this.length)));
+                    (this.baseOffset + length)));
         }
 
         this.offset = offset;
