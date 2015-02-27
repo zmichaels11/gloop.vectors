@@ -4,23 +4,61 @@ m4_include(`m4/com/longlinkislong/gloop/glvecx_def.m4')
 m4_divert(0)m4_dnl
 package com.longlinkislong.gloop;
 
+/**
+ * The base class for all vectors with VEC_SIZE elements.
+ * @author zmichaels
+ * @since 15.02.27
+ */
 public abstract class VecT extends BaseT <VecT> {
+    /**
+     * The size of the vector      
+     * @since 15.02.27
+     */
     public static final int VECTOR_SIZE = VEC_SIZE;
-    public static final int VECTOR_WIDTH = VECTOR_SIZE * m4_ifelse(TYPE, `float', 4, 8);
+    /**
+     * The number of bytes the vector occupies.
+     */
+    public static final int VECTOR_WIDTH = m4_eval(VEC_SIZE * m4_ifelse(TYPE, `float', 4, 8));
 
+    /**
+     * Creates a new vector with the specified data.
+     *
+     * @param data the array to read the data from
+     * @param offset the offset to start reading the data
+     * @param length the number of elements to read from the array
+     * @return the vector
+     * @since 15.02.27
+     */
     public static VecT create(final TYPE[] data, final int offset, final int length) {
         return Vectors.DEFAULT_FACTORY._fdef(`nextGLVec', VEC_SIZE, TYPE)()
             .zero().set(data, offset, length);
     }
 
+    /**
+     * Creates a new vector with the specified data
+     *
+     * @param values the values to set the elements to
+     * @return the vector
+     * @since 15.02.27
+     */
     public static VecT create(final TYPE... values) {
         return create(values, 0, values.length);
     }
 
+    /**
+     * Retrieves the x component of the vector.
+     * @return the x component
+     * @since 15.02.27
+     */
     public final TYPE x() {
         return this.get(Vectors.X);
     }
 
+    /**
+     * Retrieves the y component of the vector.
+     * @return the y component
+     * @since 15.02.27
+     */
     public final TYPE y() {
         return this.get(Vectors.Y);
     }

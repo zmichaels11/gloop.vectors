@@ -4,7 +4,7 @@ m4_include(`m4/com/longlinkislong/gloop/staticmatnx_def.m4')
 m4_divert(0)m4_dnl 
 package com.longlinkislong.gloop;
 
-public class MatT extends BaseT implements StaticMat {
+public class MatT extends BaseT implements StaticMat<TYPE[]> {
     private final TYPE[] data;
     private final MatrixFactory mf;
     private final int matSize;

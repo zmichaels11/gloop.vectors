@@ -20,7 +20,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
      * The number of bytes that the matrix occupies
      * @since 15.02.27
      */
-    public static final int MATRIX_WIDTH = (MAT_SIZE * MAT_SIZE) * m4_ifelse(TYPE, `float', 4, 8);    
+    public static final int MATRIX_WIDTH = m4_eval((MAT_SIZE * MAT_SIZE) * m4_ifelse(TYPE, `float', 4, 8));
 
     /**
      * Creates a new identity matrix.
@@ -54,7 +54,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
         final TYPE[] data, final int offset, final int length) {
 
         final MatT out = create();
-        final int off = out.offset() + MAT_SIZE * MAT_SIZE - MAT_SIZE;
+        final int off = out.offset() + m4_eval(MAT_SIZE * MAT_SIZE - MAT_SIZE);
         
         System.arraycopy(data, offset, out.data(), off, length);        
 
@@ -91,6 +91,107 @@ public abstract class MatT extends BaseT<MatT, VecT> {
         return out;
     }
 
+m4_ifelse(MAT_SIZE, 4, `m4_dnl
+    /**
+     * Creates a new ortho matrix.
+     * @param left the left boundary of the matrix
+     * @param right the right boundary of the matrix
+     * @param bottom the bottom boundary of the matrix
+     * @param top the top boundary of the matrix
+     * @param near the near clip
+     * @param far the far clip
+     * @return the ortho matrix
+     * @since 15.02.27
+     */
+    public static MatT ortho(
+        final TYPE left, final TYPE right, final TYPE bottom, final TYPE top,
+        final TYPE near, final TYPE far) {
+
+        final MatT out = create();
+
+        _call(`ortho')(
+            out.data(), out.offset(),
+            left, right, bottom, top,
+            near, far);
+
+        return out.asStaticMat();
+    }
+
+    /**
+     * Creates a new perspective matrix with near and far clipping.
+     *
+     * @param fov the field of vision (in degrees)
+     * @param aspect the aspect ratio
+     * @param near the near clip
+     * @param far the far clip
+     * @return the perspective matrix
+     * @since 15.02.27
+     */
+    public static MatT perspective(
+        final TYPE fov, final TYPE aspect,
+        final TYPE near, final TYPE far) {
+
+        final MatT out = create();
+
+        _call(`perspective')(
+            out.data(), out.offset(),
+            fov, aspect,
+            near, far);
+
+        return out.asStaticMat();
+    }
+
+    /**
+     * Creates a new perspective matrix with near clipping. Far clipping is
+     * effectively infinity.
+     *
+     * @param fov the field of vision (in degrees)
+     * @param aspect the aspect ratio
+     * @param near the near clip
+     * @return the perspective matrix
+     * @since 15.02.27
+     */
+    public static MatT perspective(
+        final TYPE fov, final TYPE aspect,
+        final TYPE near) {
+
+        final MatT out = create();
+
+        _call(`perspective')(
+            out.data(), out.offset(),
+            fov, aspect,
+            near);
+
+        return out.asStaticMat();
+    }
+
+    /**
+     * Creates a new lookat matrix.
+     *
+     * @param eye the position of the camera
+     * @param center the point where the camera is looking
+     * @param up the relative "up" direction.
+     * @return the lookat matrix
+     * @since 15.02.27
+     */
+    public static MatT lookat(final GLVec eye, final GLVec center, final GLVec up) {
+        m4_define(`VEC_T', `m4_ifelse(TYPE, `float', `GLVecF', `GLVecD')')m4_dnl 
+        m4_define(`VEC3_T', `m4_ifelse(TYPE, `float', `GLVec3F', `GLVec3D')')m4_dnl 
+        final VEC_T e = eye.`as'VEC_T ().`as'VEC3_T ();
+        final VEC_T c = center.`as'VEC_T ().`as'VEC3_T ();
+        final VEC_T u = up.`as'VEC_T ().`as'VEC3_T ();
+        final MatT out = create();
+
+        _call(`lookat')(
+            out.data(), out.offset(),
+            e.data(), e.offset(),
+            c.data(), c.offset(),
+            u.data(), u.offset());
+
+        return out.asStaticMat();
+    }
+',`m4_dnl')
+
 m4_ifelse(MAT_SIZE, 2,, `m4_dnl 
     public static MatT rotateZ(final TYPE angle) {
         final TYPE sa = (TYPE) Math.sin(angle);
@@ -118,7 +219,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         return create()
             .set(0, 0, ca).set(2, 0, -sa)
             .set(0, 2, sa).set(2, 2, ca);
-    }')
+    }',`m4_dnl')
 
     @Override
     public final _fdef(`GLMat',,OTHER) _fdef(`asGLMat',,OTHER) (){

@@ -26,9 +26,16 @@
 package com.longlinkislong.gloop;
 
 /**
- *
+ * A common interface that all statically-backed matrices implement.
  * @author zmichaels
+ * @param <TYPE> the backing data type
+ * @since 15.02.27
  */
-public interface StaticMat {
-    
+public interface StaticMat <TYPE>{
+    /**
+     * Retrieves the backing data object
+     * @return the data object
+     * @since 15.02.27
+     */
+    public TYPE data();
 }

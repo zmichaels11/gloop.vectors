@@ -7,10 +7,28 @@ package com.longlinkislong.gloop;
 
 public abstract class VecT extends BaseT<VecT> {
 
+    /**
+     * Creates a new vector with the defined number of elements.
+     *
+     * @param size the number of elements.
+     * @param values the values for the vector.
+     * @return the vector.
+     * @since 15.02.27
+     */
     public static VecT create(final int size, final TYPE... values) {
         return create(size, values, 0, values.length);
     }
 
+    /**
+     * Creates a new vector with the defined number of elements
+     *
+     * @param size the number of elements
+     * @param data the values for the vector
+     * @param offset the offset to start reading the values
+     * @param length the number of elements to read.
+     * @return the vector
+     * @since 15.02.27
+     */
     public static VecT create(
         final int size,
         final TYPE[] data, final int offset, final int length) {

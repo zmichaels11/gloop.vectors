@@ -13,7 +13,8 @@ package com.longlinkislong.gloop;
 public abstract class MatT extends BaseT<MatT, VecT> {
 
     /**
-     * Creates a new identity matrix.
+     * Creates a new square identity matrix of the specified size.
+     * @param size the number of rows and columns
      * @return the identity matrix
      * @since 15.02.27
      */

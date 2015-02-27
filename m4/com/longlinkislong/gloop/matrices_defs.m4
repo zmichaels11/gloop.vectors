@@ -409,7 +409,7 @@ m4_define(`_perspective', `m4_dnl
      * @param near the near clipping value
      * @since 15.02.27
     */
-    public static void _fdef(`perspective',,$1) (
+    public static void _fdef(`perspective',4,$1) (
         final $1[] out, final int outOffset,
         $1 fov,
         final $1 aspect,
@@ -438,7 +438,7 @@ m4_define(`_perspective', `m4_dnl
      * @param far the far clipping distance
      * @since 15.02.27
      */
-    public static void _fdef(`perspective',,$1) (
+    public static void _fdef(`perspective',4,$1) (
         final $1[] out, final int outOffset,
         $1 fov,
         final $1 aspect,
@@ -469,7 +469,7 @@ m4_define(`_lookat', `m4_dnl
      * @param up the direction that is considered up.
      * @param upOffset the offset to start reading values from up.
      */
-    public static void _fdef(`lookat',,$1) (
+    public static void _fdef(`lookat',4,$1) (
         final $1[] out, final int outOffset,
         final $1[] eye, final int eyeOffset,
         final $1[] center, final int centerOffset,
@@ -520,7 +520,7 @@ m4_define(`_ortho', `m4_dnl
      * @param far far clipping
      * @since 15.02.27
      */
-    public static void _fdef(`ortho',,$1) (
+    public static void _fdef(`ortho',4,$1) (
         final $1[] out, final int outOffset,
         final $1 left, final $1 right, final $1 bottom, final $1 top,
         final $1 near, final $1 far) {

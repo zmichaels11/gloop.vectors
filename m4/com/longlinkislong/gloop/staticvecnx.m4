@@ -4,11 +4,26 @@ m4_include(`m4/com/longlinkislong/gloop/staticvecnx_def.m4')
 m4_divert(0)m4_dnl 
 package com.longlinkislong.gloop;
 
-public class VecT extends BaseT implements StaticVec {
+/**
+ * The base class for all statically-backed arbitrary-sized matrices.
+ * @author zmichaels
+ * @since 15.02.27
+ */
+public class VecT extends BaseT implements StaticVec<TYPE[]> {
     private final TYPE[] data;
     private final VectorFactory vf;
     private final int vecSize;
 
+    /**
+     * Constructs a new VecT of the specified size with the specified values.
+     *
+     * @param vf the VectorFactory used to allocate all child vectors.
+     * @param vecSize the number of elements wide
+     * @param data the array to read the values from
+     * @param offset the offset to start reading the data
+     * @param length the number of elements to read
+     * @since 15.02.27
+     */
     public VecT (
         final VectorFactory vf,
         final int vecSize,
@@ -20,6 +35,14 @@ public class VecT extends BaseT implements StaticVec {
         System.arraycopy(data, offset, this.data, 0, length);
     }
 
+    /**
+     * Constructs a new VecT of the specified size with the specified values.
+     *
+     * @param vf the VectorFactory used to allocate all child vectors.
+     * @param vecSize the number of elements wide
+     * @param values the data elements
+     * @since 15.02.27
+     */
     public VecT (
         final VectorFactory vf, 
         final int vecSize, 

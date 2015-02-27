@@ -4,6 +4,13 @@ m4_include(`m4/com/longlinkislong/gloop/mappedvecnx_def.m4')
 m4_divert(0)m4_dnl
 package com.longlinkislong.gloop;
 
+/**
+ * An arbitrary sized TYPE vector that references an outside array for its
+ * vector data.
+ *
+ * @author zmichaels
+ * @since 15.02.27
+ */
 public class VecT extends BaseT implements MappedVec<VecT> {
     private final TYPE[] data;
     private final VectorFactory vf;
@@ -12,6 +19,16 @@ public class VecT extends BaseT implements MappedVec<VecT> {
     private final int baseOffset;
     private final int vectorSize;
 
+    /**
+     * Wraps an outside array as a VecT.
+     *
+     * @param vf The VectorFactory used to allocate child vectors.
+     * @param data the array to reference for vector elements
+     * @param offset the offset to start the vector.
+     * @param length the number of elements the vector can access from the array.
+     * @param vectorSize the number of elements
+     * @since 15.02.27
+     */
     public VecT (
         final VectorFactory vf,
         final TYPE[] data, final int offset, final int length,

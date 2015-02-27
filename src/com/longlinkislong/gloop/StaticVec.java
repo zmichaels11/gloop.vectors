@@ -26,9 +26,17 @@
 package com.longlinkislong.gloop;
 
 /**
+ * A common interface that all statically-backed vectors implement. 
  *
  * @author zmichaels
+ * @param <TYPE> the type of data backing this vector.
+ * @since 15.02.27
  */
-public interface StaticVec {
-    
+public interface StaticVec<TYPE> {
+    /**
+     * Retrieves the backing data elements
+     * @return the data array.
+     * @since 15.02.27
+     */
+    public TYPE data();
 }
