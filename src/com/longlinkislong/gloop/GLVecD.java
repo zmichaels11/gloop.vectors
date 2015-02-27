@@ -1,24 +1,63 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (c) 2015, zmichaels
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package com.longlinkislong.gloop;
 
 import java.util.Arrays;
 
 /**
+ * The base class for all vectors that use double precision.
  *
  * @author zmichaels
- * @param <GLVecT>
+ * @param <GLVecT> the class that extends GLVecD
+ * @since 15.02.26
  */
 public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
 
+    /**
+     * Epsilon value used with GLVecD.
+     *
+     * @since 15.02.26
+     */
     public static final double EPSILON = 1.19e-07;
 
+    /**
+     * Retrieves the array that backs this vector.
+     *
+     * @return the backing array.
+     * @since 15.02.26
+     */
     protected abstract double[] data();
 
-    protected abstract int offset();    
+    /**
+     * Retrieves the offset for when this vector starts within the backed array.
+     *
+     * @return the backing array
+     * @since 15.02.26
+     */
+    protected abstract int offset();
 
     @Override
     public final GLVecT normalize() {
@@ -27,39 +66,102 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
         return this.scale(scale);
     }
 
+    /**
+     * Scales this vector by the specified constant.
+     *
+     * @param value the value to scale by
+     * @return the scaled vector
+     * @since 15.02.26
+     */
     public abstract GLVecT scale(double value);
 
     @Override
     public final GLVecD asGLVecD() {
         return this;
     }
-    
+
     @Override
     public abstract GLVecT plus(GLVec other);
-    
+
     @Override
     public abstract GLVecT minus(GLVec other);
-    
+
     @Override
     public abstract GLVecT cross(GLVec other);
-    
+
     @Override
     public abstract GLVecT asStaticVec();
 
+    /**
+     * Coerces this vector into a 2D vector. This is allowed to return itself if
+     * it is already a 2D vector.
+     *
+     * @return a 2D vector
+     * @since 15.02.26
+     */
     public abstract GLVec2D asGLVec2D();
 
+    /**
+     * Coerces this vector into a 3D vector. This is allowed to return itself if
+     * it is already a 3D vector.
+     *
+     * @return a 3D vector
+     * @since 15.02.26
+     */
     public abstract GLVec3D asGLVec3D();
 
+    /**
+     * Coerces this vector into a 4D vector. This is allowed to return itself if
+     * it is already a 4D vector.
+     *
+     * @return a 4D vector
+     * @since 15.02.26
+     */
     public abstract GLVec4D asGLVec4D();
 
+    /**
+     * Coerces this vector into a vector of the specified size. This is allowed
+     * to return itself if it is already the specified size.
+     *
+     * @param size the number of elements of the vector
+     * @return the vector
+     * @since 15.02.26
+     */
     public abstract GLVecND asGLVecND(int size);
 
+    /**
+     * Retrieves the value of the element at the specified index.
+     * @param index the index
+     * @return the value
+     * @since 15.02.26
+     */
     public abstract double get(int index);
 
+    /**
+     * Sets the value at the specified index
+     * @param index the index
+     * @param value the value
+     * @return self reference
+     * @since 15.02.26
+     */
     public abstract GLVecT set(int index, double value);
 
+    /**
+     * Sets multiple elements to the specified values
+     * @param values the values to set
+     * @param offset the offset to start reading from values
+     * @param length the number of values to set
+     * @return self reference
+     * @since 15.02.26
+     */
     public abstract GLVecT set(double[] values, int offset, int length);
 
+    /**
+     * Sets multiple elements to the specied values.
+     * @param values the values to set
+     * @return self reference
+     * @since 15.02.26
+     */
     public final GLVecT set(final double... values) {
         return this.set(values, 0, values.length);
     }
@@ -74,6 +176,12 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
         return this.set(vec.data(), vec.offset(), length);
     }
 
+    /**
+     * Calculates the dot product of this vector and the other vector.
+     * @param other the other vector
+     * @return the dot product
+     * @since 15.02.26
+     */
     public abstract double dot(final GLVec other);
 
     @Override

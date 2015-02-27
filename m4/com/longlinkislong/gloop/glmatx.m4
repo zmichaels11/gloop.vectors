@@ -21,9 +21,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
         final MatT out = create();
         final int off = out.offset() + MAT_SIZE * MAT_SIZE - MAT_SIZE;
         
-        for(int i = offset; i < data.length; i++) {
-            out.data()[off + i] = data[i];
-        }
+        System.arraycopy(data, offset, out.data(), off, length);        
 
         return out;
     }

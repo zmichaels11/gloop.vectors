@@ -243,7 +243,7 @@ m4_define(`_transposeN', `m4_dnl
      * @param outOffset the offset to the output matrix
      * @param in0 the input matrix array
      * @param in0Offset the offset to the input matrix
-     * @param int size the size of the matrix
+     * @param size the size of the matrix
      * @since 15.02.26
      */
     public static void _fdef(`transpose', `N', $1) (

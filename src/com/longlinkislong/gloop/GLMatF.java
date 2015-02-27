@@ -1,19 +1,47 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (c) 2015, zmichaels
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package com.longlinkislong.gloop;
 
 import java.util.Arrays;
 
 /**
+ * The base class for all matrices that have single precision.
  *
  * @author zmichaels
- * @param <GLMatT>
+ * @param <GLMatT> the class that extends GLMatF
+ * @param <GLVecT> the associated vector to the child of GLMatF
+ * @since 15.02.26
  */
 public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> implements GLMat<GLMatT, GLVecF> {
 
+    /**
+     * Epsilon value used with GLMatF
+     *
+     * @since 15.02.26
+     */
     public static final float EPSILON = 1.19e-7f;
 
     @Override
@@ -24,31 +52,108 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
 
     @Override
     public abstract GLMatT multiply(GLMat other);
-    
+
     @Override
     public abstract GLVecT multiply(GLVec vec);
-    
+
     @Override
     public abstract GLMatT asStaticMat();
 
+    /**
+     * Retrieves the array that backs this matrix.
+     *
+     * @return the backing array
+     * @since 15.02.26
+     */
     protected abstract float[] data();
 
+    /**
+     * Retrieves the offset for when this matrix starts within the backed array.
+     *
+     * @return the offset for this matrix.
+     * @since 15.02.26
+     */
     protected abstract int offset();
 
+    /**
+     * Coerces this matrix into a 2x2 matrix. This is allowed to return itself
+     * if it is already a 2x2 matrix.
+     *
+     * @return a 2x2 matrix.
+     * @since 15.02.26
+     */
     public abstract GLMat2F asGLMat2F();
 
+    /**
+     * Coerces this matrix into a 3x3 matrix. This is allowed to return itself
+     * if it is already a 3x3 matrix.
+     *
+     * @return a 3x3 matrix.
+     * @since 15.02.26
+     */
     public abstract GLMat3F asGLMat3F();
 
+    /**
+     * Coerces this matrix into a 4x4 matrix. This is allowed to return itself
+     * if it is already a 4x4 matrix.
+     *
+     * @return a 4x4 matrix.
+     * @since 15.02.26
+     */
     public abstract GLMat4F asGLMat4F();
 
+    /**
+     * Coerces this matrix into a square matrix of the specified size. This is
+     * allowed to return itself if it is already the specified size.
+     *
+     * @param size the number of columns and rows to create.
+     * @return a square matrix of the specified size.
+     * @since 15.02.26
+     */
     public abstract GLMatNF asGLMatNF(int size);
 
+    /**
+     * Retrieves the value of the element at the specified location.
+     *
+     * @param i the column
+     * @param j the row
+     * @return the value
+     * @since 15.02.26
+     */
     public abstract float get(int i, int j);
 
+    /**
+     * Sets the specified element to the specified value
+     *
+     * @param i the column
+     * @param j the row
+     * @param value the value
+     * @return self reference
+     * @since 15.02.26
+     */
     public abstract GLMatT set(int i, int j, float value);
 
+    /**
+     * Writes a chunk of the matrix
+     *
+     * @param i the column to start
+     * @param j the row to start
+     * @param data the data to write
+     * @param offset the offset to start reading from the data array
+     * @param length the maximum number of elements to read
+     * @param stride stride of the data array.
+     * @return self reference
+     * @since 15.02.26
+     */
     public abstract GLMatT set(int i, int j, float[] data, int offset, int length, int stride);
 
+    /**
+     * Sets each element of the matrix with the corresponding value.
+     *
+     * @param values the values to set
+     * @return self reference
+     * @since 15.02.26
+     */
     public final GLMatT set(float... values) {
         return this.set(0, 0, values, 0, values.length, this.size());
     }
@@ -63,8 +168,22 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
         return this.set(0, 0, mat.data(), mat.offset(), length * length, length);
     }
 
+    /**
+     * Scales this matrix with the specified constant. This is the same as
+     * multiplying each element of this matrix by the specified value.
+     *
+     * @param value the value to scale by
+     * @return self reference
+     * @since 15.02.26
+     */
     public abstract GLMatT scale(float value);
 
+    /**
+     * Calculates the determinant of this matrix
+     *
+     * @return the determinant
+     * @since 15.02.26
+     */
     public abstract float determinant();
 
     @Override
