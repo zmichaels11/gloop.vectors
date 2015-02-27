@@ -396,3 +396,142 @@ m4_define(`_inverse4', `m4_dnl
         }
     }
 ')
+
+m4_define(`_perspective', `m4_dnl
+/**
+     * Calculates a perspective 4x4 $1 matrix with the given fov, aspect, and 
+     * near clipping. Far clipping is effectively infinity.
+     *
+     * @param out the output matrix array
+     * @param outOffset the offset to start writing the array
+     * @param fov the field of vision (in degrees)
+     * @param aspect the aspect ratio
+     * @param near the near clipping value
+     * @since 15.02.27
+    */
+    public static void _fdef(`perspective',,$1) (
+        final $1[] out, final int outOffset,
+        $1 fov,
+        final $1 aspect,
+        final $1 near) {
+
+        fov = ($1) (1.0 / Math.tan(fov * Math.PI / 180.0 * 0.5));
+        final $1[] m = {
+            fov / aspect, 0, 0, 0,
+            0, fov, 0, 0,
+            0, 0, 0, -1,
+            0, 0, -near, 0
+        };
+
+        System.arraycopy(m, 0, out, outOffset, 16);
+    }
+
+    /**
+     * Calculates a perspective 4x4 $1 matrix with the given fov, aspect, near
+     * clipping and far clipping.
+     *
+     * @param out the output matrix array
+     * @param outOffset the offset to the output matrix
+     * @param fov the field of vision (in degrees)
+     * @param aspect the aspect ratio
+     * @param near the near clipping distance
+     * @param far the far clipping distance
+     * @since 15.02.27
+     */
+    public static void _fdef(`perspective',,$1) (
+        final $1[] out, final int outOffset,
+        $1 fov,
+        final $1 aspect,
+        final $1 near, final $1 far) {
+
+        fov = ($1) (1.0 / Math.tan(fov * Math.PI / 180 * 0.5));
+        final $1[] m = {
+            fov / aspect, 0, 0, 0,
+            0, fov, 0, 0,
+            0, 0, (far + near) / (near - far), -1,
+            0, 0, (2 * far * near) / (near - far), 0
+        };
+
+        System.arraycopy(m, 0, out, outOffset, 16);
+    }
+')
+
+m4_define(`_lookat', `m4_dnl 
+/**
+     * Calculates a 4x4 $1 lookat matrix
+     *
+     * @param out the output matrix array
+     * @param outOffset the offset to the output matrix
+     * @param eye the position of the camera
+     * @param eyeOffset the offset to start reading values from eye
+     * @param center the position the camera is looking at
+     * @param centerOffset the offset to start reading values from center
+     * @param up the direction that is considered up.
+     * @param upOffset the offset to start reading values from up.
+     */
+    public static void _fdef(`lookat',,$1) (
+        final $1[] out, final int outOffset,
+        final $1[] eye, final int eyeOffset,
+        final $1[] center, final int centerOffset,
+        final $1[] up, final int upOffset) {
+
+        final $1[] temp = new $1[16];
+        final int offZ = 0;
+        final int tmpZ = 4;
+        final int offY = 4;
+        final int tmpY = 8;
+        final int offX = 8;
+        final int offV = 12;
+
+        // z = normalize(eye * center)
+        Vectors._fdef(`cross', 3, $1) (temp, tmpZ, eye, eyeOffset, center, centerOffset);
+        Vectors._fdef(`scale', 3, $1) (temp, offZ, temp, tmpZ, ($1) Vectors._fdef(`length', 3, $1) (temp, tmpZ));
+        // x = normalize(up * z)
+        Vectors._fdef(`cross', 3, $1) (temp, tmpY, up, upOffset, temp, offZ);
+        Vectors._fdef(`scale', 3, $1) (temp, offY, temp, tmpY, ($1) Vectors._fdef(`length', 3, $1) (temp, tmpY));
+        // y = z * x
+        Vectors._fdef(`cross', 3, $1) (temp, offX, temp, offX, temp, 4);
+
+        Vectors._fdef(`negative', 3, $1) (temp, offV, eye, eyeOffset);
+
+        final $1[] m = {
+            temp[offX + Vectors.X], temp[offY + Vectors.X], temp[offZ + Vectors.X], 0,
+            temp[offX + Vectors.Y], temp[offY + Vectors.Y], temp[offZ + Vectors.Y], 0,
+            temp[offX + Vectors.Z], temp[offY + Vectors.Z], temp[offZ + Vectors.Z], 0,
+            temp[offV + Vectors.X] * temp[offX + Vectors.X] + temp[offV + Vectors.Y] * temp[offY + Vectors.X] + temp[offV + Vectors.Z] * temp[offZ + Vectors.X],
+            temp[offV + Vectors.X] * temp[offX + Vectors.Y] + temp[offV + Vectors.Y] * temp[offY + Vectors.Y] + temp[offV + Vectors.Z] * temp[offZ + Vectors.Y],
+            temp[offV + Vectors.X] * temp[offX + Vectors.Z] + temp[offV + Vectors.Y] * temp[offY + Vectors.Z] + temp[offV + Vectors.Z] * temp[offZ + Vectors.Z],
+            1};
+
+        System.arraycopy(m, 0, out, outOffset, 16);        
+    }
+')
+
+m4_define(`_ortho', `m4_dnl
+/**
+     * Calculates an ortho matrix.
+     * @param out the output matrix array
+     * @param outOffset the offset to the output matrix
+     * @param left the left
+     * @param right the right
+     * @param bottom bottom
+     * @param top top
+     * @param near near clipping
+     * @param far far clipping
+     * @since 15.02.27
+     */
+    public static void _fdef(`ortho',,$1) (
+        final $1[] out, final int outOffset,
+        final $1 left, final $1 right, final $1 bottom, final $1 top,
+        final $1 near, final $1 far) {
+
+        final $1[] m = {
+            2 / (right - left), 0, 0, 0,
+            0, 2 / (top - bottom), 0, 0,
+            0, 0, -2 / (far - near), 0,
+            -(right + left) / (right - left), -(top + bottom) / (top - bottom), -(far + near) / (far - near), 1
+        };
+
+        System.arraycopy(m, 0, out, outOffset, 16);
+    }
+')

@@ -181,7 +181,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @return self reference
      * @since 15.02.26
      */
-    public abstract GLMatT scale(double value);
+    public abstract GLMatT multiply(double value);
 
     @Override
     public final GLMatD asGLMatD() {

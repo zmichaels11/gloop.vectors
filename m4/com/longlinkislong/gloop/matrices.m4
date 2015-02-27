@@ -49,6 +49,9 @@ foreach(`type', `m4_dnl
     _scaleN(type)
     _transposeN(type)
     _vecmultN(type)
+    _perspective(type)
+    _ortho(type)
+    _lookat(type)
 ', `float', `double')  
 
 forloop(`i', 2, 4, `m4_dnl 
@@ -58,5 +61,5 @@ foreach(`type', `m4_dnl
     _vecmult(i, type)
     _transpose(i, type)
 ', `float', `double')')
-
+    
 }

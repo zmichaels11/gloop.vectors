@@ -5,23 +5,88 @@ m4_include(`m4/com/longlinkislong/gloop/glmatx_def.m4')
 m4_divert(0)m4_dnl
 package com.longlinkislong.gloop;
 
+/**
+ * The base class for all matrices with MAT_SIZE elements.
+ * @author zmichaels
+ * @since 15.02.27
+ */
 public abstract class MatT extends BaseT<MatT, VecT> {
+    /**
+     * The size of the matrix
+     * @since 15.02.27
+     */
     public static final int MATRIX_SIZE = MAT_SIZE;
+    /**
+     * The number of bytes that the matrix occupies
+     * @since 15.02.27
+     */
     public static final int MATRIX_WIDTH = (MAT_SIZE * MAT_SIZE) * m4_ifelse(TYPE, `float', 4, 8);    
 
+    /**
+     * Creates a new identity matrix.
+     * @return the identity matrix
+     * @since 15.02.27
+     */
     public static MatT create() {
         return Matrices.DEFAULT_FACTORY._fdef(`nextGLMat', MAT_SIZE, TYPE)().identity();
     }
 
+    /**
+     * Creates a new translation matrix with the specified values.
+     * @param values the values to set the translation elements to.
+     * @return the translation matrix
+     * @since 15.02.27
+     */
     public static MatT translate(final TYPE... values) {
         return translate(values, 0, values.length);
     }
 
-    public static MatT translate(final TYPE[] data, final int offset, final int length) {
+    /**
+     * Creates a new translation matrix with the specified data. This overwrites
+     * up to the last MAT_SIZE elements of the identity matrix.
+     * @param data the data to read
+     * @param offset the offset to start reading the data
+     * @param length the number of elements to read
+     * @return the translation matrix
+     * @since 15.02.27
+     */
+    public static MatT translate(
+        final TYPE[] data, final int offset, final int length) {
+
         final MatT out = create();
         final int off = out.offset() + MAT_SIZE * MAT_SIZE - MAT_SIZE;
         
         System.arraycopy(data, offset, out.data(), off, length);        
+
+        return out;
+    }
+
+    /**
+     * Creates a new scale matrix with the specified data. All unset values will
+     * be set to 1.0.
+     * @param values the values to set the diagonal of the matrix to.
+     * @return the scale matrix
+     * @since 15.02.27
+     */
+    public static MatT scale(final TYPE... values) {
+        return scale(values, 0, values.length);
+    }
+
+    /**
+     * Creates a new scale matrix with the specified data. The length must be
+     * less than or equal to MATRIX_SIZE. All unset values will be set to 1.0.
+     * @param data the data used for the scale matrix.
+     * @param offset the offset to start reading the data
+     * @param length the number of elements to write.
+     * @return the scale matrix.
+     * @since 15.02.27
+     */
+    public static MatT scale(final TYPE[] data, final int offset, final int length) {
+        final MatT out = create();
+
+        for(int i = 0; i < length; i++) {
+            out.set(i, i, data[offset + i]);
+        }
 
         return out;
     }
@@ -117,7 +182,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
     }
 
     @Override
-    public final MatT scale(final TYPE value) {
+    public final MatT multiply(final TYPE value) {
         final MatT out = _next(MAT_SIZE, TYPE);
 
         _call(`scale')(
@@ -171,7 +236,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
     @Override
     public final VecT multiply(final GLVec vec) {
         final VecT out = Vectors.DEFAULT_FACTORY._fdef(`nextGLVec', MAT_SIZE, TYPE)();
-        final VecT in1 = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')().`as'VecT ();
+        final VecT in1 = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')().`ex'VecT ();
 
         _call(`multiplyVec')(
             out.data(), out.offset(),

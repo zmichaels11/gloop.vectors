@@ -5,7 +5,88 @@ m4_include(`m4/com/longlinkislong/gloop/glmatnx_def.m4')
 m4_divert(0)m4_dnl 
 package com.longlinkislong.gloop;
 
+/**
+ * The base class for all arbitrary sized matrices.
+ * @author zmichaels
+ * @since 15.02.27
+ */
 public abstract class MatT extends BaseT<MatT, VecT> {
+
+    /**
+     * Creates a new identity matrix.
+     * @return the identity matrix
+     * @since 15.02.27
+     */
+    public static MatT create(final int size) {
+        return Matrices.DEFAULT_FACTORY._fdef(`nextGLMat', `N', TYPE)(size).identity();
+    }
+
+    /**
+     * Creates a new translation matrix with the specified values.
+     * @param size the number of rows and columns 
+     * @param data the values to set the translation elements to
+     * @param offset the offset to start reading the data   
+     * @param length the number of elements to read
+     * @return the translation matrix
+     * @since 15.02.27
+     */
+    public static MatT translate(
+        final int size,
+        final TYPE[] data, final int offset, final int length) {
+
+        final MatT out = create(size);
+        final int off = out.offset() + (size * size - size);
+
+        System.arraycopy(data, offset, out.data(), off, length);
+
+        return out;
+    }
+
+    /**
+     * Creates a new translation matrix with the specified values.
+     * @param size the number of rows and columns
+     * @param values the values to set the translation elements to.
+     * @return the translation matrix
+     * @since 15.02.27
+     */
+    public static MatT translate(final int size, final TYPE... values) {
+        return translate(size, values, 0, values.length);
+    }
+
+    /**
+     * Creates a new scale matrix with the specified data. All unset values will
+     * be set to 1.0.
+     * @param size the number of rows and columns
+     * @param data the data to use
+     * @param offset the offset to start reading the data
+     * @param length the number of elements to read
+     * @return the scale matrix
+     * @since 15.02.27
+     */
+    public static MatT scale(
+        final int size,
+        final TYPE[] data, final int offset, final int length) {
+
+        final MatT out = create(size);
+        for(int i = 0; i < length; i++) {
+            out.set(i, i, data[offset + i]);
+        }
+
+        return out;
+    }
+
+    /**
+     * Creates a new scale matrix with the specified data. All unset values will
+     * be set to 1.0.
+     * @param size the number of rows and columns
+     * @param values the values to set
+     * @return the scale matrix
+     * @since 15.02.27
+     */
+    public static MatT scale(final int size, final TYPE... values) {
+        return scale(size, values, 0, values.length);
+    }
+
     @Override
     public final _fdef(`GLMat',,OTHER) _fdef(`asGLMat',,OTHER)() {
         final _fdef(`GLMat',,OTHER) out = _next(`N', OTHER, this.size());
@@ -73,7 +154,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
     @Override
     public final _fdef(`GLVec', `N', TYPE) multiply(final GLVec vec) {
         final VecT out = Vectors.DEFAULT_FACTORY._fdef(`nextGLVec',`N',TYPE)(this.size());
-        final VecT in1 = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')().`as'VecT (this.size());
+        final VecT in1 = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')().`ex'VecT (this.size());
 
         _call(`multiplyVec')(
             out.data(), out.offset(),
@@ -122,7 +203,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
     }
 
     @Override
-    public final MatT scale(final TYPE value) {
+    public final MatT multiply(final TYPE value) {
         final MatT out = _next(`N', TYPE, this.size());
 
         _call(`scale')(

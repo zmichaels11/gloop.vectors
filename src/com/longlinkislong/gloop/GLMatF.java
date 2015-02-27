@@ -176,7 +176,7 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * @return self reference
      * @since 15.02.26
      */
-    public abstract GLMatT scale(float value);
+    public abstract GLMatT multiply(float value);
 
     /**
      * Calculates the determinant of this matrix

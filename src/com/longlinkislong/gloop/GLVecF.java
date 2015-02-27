@@ -102,6 +102,20 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
     public abstract GLVec2F asGLVec2F();
 
     /**
+     * Expands the vector to a 2D vector. This will set the last element to 1 if
+     * this vector has a size less than 2.
+     * @return a 2D vector
+     * @since 15.02.27
+     */
+    public final GLVec2F exGLVec2F() {
+        if(this.size() < 2) {
+            return this.asGLVec2F().set(Vectors.Y, 1.0f);
+        } else {
+            return this.asGLVec2F();
+        }
+    }
+
+    /**
      * Coerces this vector into a 3D vector. This is allowed to return itself if
      * it is already a 3D vector.
      *
@@ -109,6 +123,21 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
      * @since 15.02.26
      */
     public abstract GLVec3F asGLVec3F();
+
+    /**
+     * Expands the vector to a 3D vector. This will set the last element to 1 if
+     * this vector has a size less than 3.
+     *
+     * @return a 3D vector.
+     * @since 15.02.27
+     */
+    public final GLVec3F exGLVec3F() {
+        if(this.size() < 3) {
+            return this.asGLVec3F().set(Vectors.Z, 1.0f);
+        } else {
+            return this.asGLVec3F();
+        }
+    }
 
     /**
      * Coerces this vector into a 4D vector. This is allowed to return itself if
@@ -120,6 +149,21 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
     public abstract GLVec4F asGLVec4F();
 
     /**
+     * Expands this vector to a 4D vector. This will set the last element to 1
+     * if this vector has a size less than 4.
+     *
+     * @return a 4D vector.
+     * @since 15.02.27
+     */
+    public final GLVec4F exGLVec4F() {
+        if(this.size() < 4) {
+            return this.asGLVec4F().set(Vectors.W, 1.0f);
+        } else {
+            return this.asGLVec4F();
+        }
+    }
+
+    /**
      * Coerces this vector into a vector of the specified size. This is allowed
      * to return itself if it is already the specified size.
      *
@@ -129,6 +173,23 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
      */
     public abstract GLVecNF asGLVecNF(int size);
 
+    /**
+     * Expands the vector to a ND vector of the specified size. This will set
+     * the last element to 1 if this vector has a size less than the specified
+     * size.
+     *
+     * @param size the number of elements
+     * @return a the vector
+     * @since 15.02.27
+     */
+    public final GLVecNF exGLVecNF(final int size) {
+        if(this.size() < size) {
+            return this.asGLVecNF(size).set(size - 1, 1.0f);
+        } else {
+            return this.asGLVecNF(size);
+        }
+    }
+    
     /**
      * Retrieves the value of the element at the specified index.
      *
