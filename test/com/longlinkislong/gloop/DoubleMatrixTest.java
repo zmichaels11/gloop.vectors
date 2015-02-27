@@ -24,7 +24,7 @@ public class DoubleMatrixTest {
     public void testStaticMat2x2() {
         for(int i = 0; i < TEST_COUNT; i++) {
             final float x = random.nextFloat();
-            final GLMatD m0 = GLMat2D.translate(x);
+            final GLMatD m0 = GLMat2D.translation(x);
             final GLMatD m1 = m0.asStaticMat();
             
             Assert.assertNotSame(m0, m1);
@@ -39,7 +39,7 @@ public class DoubleMatrixTest {
             final float y = random.nextFloat();
             final float z = random.nextFloat();
             
-            final GLMatD m0 = GLMat3D.translate(x, y);
+            final GLMatD m0 = GLMat3D.translation(x, y);
             final GLMatD m1 = m0.asStaticMat();
             
             Assert.assertNotSame(m0, m1);
@@ -54,7 +54,7 @@ public class DoubleMatrixTest {
             final float y = random.nextFloat();
             final float z = random.nextFloat();
             
-            final GLMatD m0 = GLMat4D.translate(x, y, z);
+            final GLMatD m0 = GLMat4D.translation(x, y, z);
             final GLMatD m1 = m0.asStaticMat();
             
             Assert.assertNotSame(m0, m1);
@@ -68,7 +68,7 @@ public class DoubleMatrixTest {
             final float x0 = random.nextFloat();
             final float x1 = random.nextFloat();
 
-            final GLMatD m0 = GLMat2D.translate(x0);
+            final GLMatD m0 = GLMat2D.translation(x0);
             final GLVecD v0 = GLVec2D.create(x1, 1f);
             final GLVecD ac = m0.multiply(v0);
             final GLVecD ex = GLVec2D.create(x0 + x1, 1f);
@@ -86,7 +86,7 @@ public class DoubleMatrixTest {
             final float x1 = random.nextFloat();
             final float y1 = random.nextFloat();
 
-            final GLMatD m0 = GLMat3D.translate(x0, y0);
+            final GLMatD m0 = GLMat3D.translation(x0, y0);
             final GLVecD v0 = GLVec3D.create(x1, y1, 1f);
             final GLVecD ac = m0.multiply(v0);
             final GLVecD ex = GLVec3D.create(x0 + x1, y0 + y1, 1f);
@@ -106,7 +106,7 @@ public class DoubleMatrixTest {
             final float y1 = random.nextFloat();
             final float z1 = random.nextFloat();
 
-            final GLMatD m0 = GLMat4D.translate(x0, y0, z0);
+            final GLMatD m0 = GLMat4D.translation(x0, y0, z0);
             final GLVecD v0 = GLVec4D.create(x1, y1, z1, 1f);
             final GLVecD ac = m0.multiply(v0);
             final GLVecD ex = GLVec4D.create(x0 + x1, y0 + y1, z0 + z1, 1f);
@@ -119,7 +119,7 @@ public class DoubleMatrixTest {
     @Test
     public void testTranspose2x2() {
         for(int i = 0; i < TEST_COUNT; i++) {
-            final GLMatD m0 = GLMat2D.translate(random.nextDouble());
+            final GLMatD m0 = GLMat2D.translation(random.nextDouble());
             final GLMatD m1 = m0.transpose();
             final GLMatD ac = m1.transpose();
             final GLMatD ex = m0;
@@ -132,7 +132,7 @@ public class DoubleMatrixTest {
     @Test
     public void testTranspose3x3() {
         for(int i = 0; i < TEST_COUNT; i++) {
-            final GLMatD m0 = GLMat3D.translate(random.nextDouble(), random.nextDouble());
+            final GLMatD m0 = GLMat3D.translation(random.nextDouble(), random.nextDouble());
             final GLMatD m1 = m0.transpose();
             final GLMatD ac = m1.transpose();
             final GLMatD ex = m0;
@@ -145,7 +145,7 @@ public class DoubleMatrixTest {
     @Test
     public void testTranspose4x4() {
         for(int i = 0; i < TEST_COUNT; i++) {
-            final GLMatD m0 = GLMat4D.translate(random.nextDouble(), random.nextDouble(), random.nextDouble());
+            final GLMatD m0 = GLMat4D.translation(random.nextDouble(), random.nextDouble(), random.nextDouble());
             final GLMatD m1 = m0.transpose();
             final GLMatD ac = m1.transpose();
             final GLMatD ex = m0;
@@ -158,7 +158,7 @@ public class DoubleMatrixTest {
     @Test
     public void testInverseMat2x2() {
         for (int i = 0; i < TEST_COUNT; i++) {
-            final GLMatD m0 = GLMat2D.translate(random.nextDouble());
+            final GLMatD m0 = GLMat2D.translation(random.nextDouble());
             final GLMatD m1 = m0.inverse();
             final GLMatD ac = m0.multiply(m1);
             final GLMatD ex = GLMat2D.create();
@@ -171,7 +171,7 @@ public class DoubleMatrixTest {
     //@Test
     public void testInverseMat3x3() {
         for (int i = 0; i < TEST_COUNT; i++) {
-            final GLMatD m0 = GLMat3D.translate(random.nextDouble(), random.nextDouble());
+            final GLMatD m0 = GLMat3D.translation(random.nextDouble(), random.nextDouble());
             final GLMatD m1 = m0.inverse();
             final GLMatD ac = m0.multiply(m1);
             final GLMatD ex = GLMat3D.create();
@@ -184,7 +184,7 @@ public class DoubleMatrixTest {
     @Test
     public void testInverseMat4x4() {
         for (int i = 0; i < TEST_COUNT; i++) {
-            final GLMatD m0 = GLMat4D.translate(random.nextDouble(), random.nextDouble(), random.nextDouble());
+            final GLMatD m0 = GLMat4D.translation(random.nextDouble(), random.nextDouble(), random.nextDouble());
             final GLMatD m1 = m0.inverse();
             final GLMatD ac = m0.multiply(m1);
             final GLMatD ex = GLMat4D.create();
@@ -200,9 +200,9 @@ public class DoubleMatrixTest {
             final double x0 = random.nextDouble();
             final double x1 = random.nextDouble();
 
-            final GLMatD m0 = GLMat2D.translate(x0);
-            final GLMatD m1 = GLMat2D.translate(x1);
-            final GLMatD ex = GLMat2D.translate(x0 + x1);
+            final GLMatD m0 = GLMat2D.translation(x0);
+            final GLMatD m1 = GLMat2D.translation(x1);
+            final GLMatD ex = GLMat2D.translation(x0 + x1);
             final GLMatD ac0 = m0.multiply(m1);
             final GLMatD ac1 = m1.multiply(m0);
 
@@ -222,9 +222,9 @@ public class DoubleMatrixTest {
             final double y0 = random.nextDouble();
             final double y1 = random.nextDouble();
 
-            final GLMatD m0 = GLMat3D.translate(x0, y0);
-            final GLMatD m1 = GLMat3D.translate(x1, y1);
-            final GLMatD ex = GLMat3D.translate(x0 + x1, y0 + y1);
+            final GLMatD m0 = GLMat3D.translation(x0, y0);
+            final GLMatD m1 = GLMat3D.translation(x1, y1);
+            final GLMatD ex = GLMat3D.translation(x0 + x1, y0 + y1);
             final GLMatD ac0 = m0.multiply(m1);
             final GLMatD ac1 = m1.multiply(m0);
 
@@ -246,9 +246,9 @@ public class DoubleMatrixTest {
             final double z0 = random.nextDouble();
             final double z1 = random.nextDouble();
 
-            final GLMatD m0 = GLMat4D.translate(x0, y0, z0);
-            final GLMatD m1 = GLMat4D.translate(x1, y1, z1);
-            final GLMatD ex = GLMat4D.translate(x0 + x1, y0 + y1, z0 + z1);
+            final GLMatD m0 = GLMat4D.translation(x0, y0, z0);
+            final GLMatD m1 = GLMat4D.translation(x1, y1, z1);
+            final GLMatD ex = GLMat4D.translation(x0 + x1, y0 + y1, z0 + z1);
             final GLMatD ac0 = m0.multiply(m1);
             final GLMatD ac1 = m1.multiply(m0);
 
@@ -298,7 +298,7 @@ public class DoubleMatrixTest {
     public void testTranslationMat2x2() {
         for (int i = 0; i < TEST_COUNT; i++) {
             final double x = random.nextDouble();
-            final GLMatD m0 = GLMat2D.translate(x);
+            final GLMatD m0 = GLMat2D.translation(x);
             final double[] exp = {
                 1f, 0f,
                 x, 1f};
@@ -313,7 +313,7 @@ public class DoubleMatrixTest {
         for (int i = 0; i < TEST_COUNT; i++) {
             final double x = random.nextDouble();
             final double y = random.nextDouble();
-            final GLMatD m0 = GLMat3D.translate(x, y);
+            final GLMatD m0 = GLMat3D.translation(x, y);
             final double[] exp = {
                 1f, 0f, 0,
                 0f, 1f, 0,
@@ -331,7 +331,7 @@ public class DoubleMatrixTest {
             final double x = random.nextDouble();
             final double y = random.nextDouble();
             final double z = random.nextDouble();
-            final GLMatD m0 = GLMat4D.translate(x, y, z);
+            final GLMatD m0 = GLMat4D.translation(x, y, z);
             final double[] exp = {
                 1f, 0f, 0f, 0f,
                 0f, 1f, 0f, 0f,

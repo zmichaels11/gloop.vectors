@@ -31,7 +31,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
      * @return the translation matrix
      * @since 15.02.27
      */
-    public static MatT translate(
+    public static MatT translation(
         final int size,
         final TYPE[] data, final int offset, final int length) {
 
@@ -50,8 +50,8 @@ public abstract class MatT extends BaseT<MatT, VecT> {
      * @return the translation matrix
      * @since 15.02.27
      */
-    public static MatT translate(final int size, final TYPE... values) {
-        return translate(size, values, 0, values.length);
+    public static MatT translation(final int size, final TYPE... values) {
+        return translation(size, values, 0, values.length);
     }
 
     /**
