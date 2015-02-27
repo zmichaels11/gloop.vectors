@@ -6,7 +6,7 @@ package com.longlinkislong.gloop;
  * and open the template in the editor.
  */
 import java.util.Random;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
