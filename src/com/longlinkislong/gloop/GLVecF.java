@@ -252,8 +252,11 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
 
     @Override
     public final int hashCode() {
+        final int start = this.offset();
+        final int end = start + this.size();
+        
         return Arrays.hashCode(
-                Arrays.copyOfRange(this.data(), this.offset(), this.size()));
+                Arrays.copyOfRange(this.data(), start, end));
     }
 
     @Override

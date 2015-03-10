@@ -193,8 +193,10 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
 
     @Override
     public final int hashCode() {
+        final int start = this.offset();
+        final int end = start + (this.size() * this.size());
         return Arrays.hashCode(
-                Arrays.copyOfRange(this.data(), this.offset(), this.size() * this.size()));
+                Arrays.copyOfRange(this.data(), start, end));
     }
 
     @Override
