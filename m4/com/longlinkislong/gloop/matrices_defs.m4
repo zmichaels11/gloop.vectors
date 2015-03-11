@@ -457,6 +457,7 @@ m4_define(`_perspective', `m4_dnl
 ')
 
 m4_define(`_lookat', `m4_dnl 
+m4_define(`VecT', _fdef(`GLVec', 3, $1))m4_dnl 
 /**
      * Calculates a 4x4 $1 lookat matrix
      *
@@ -471,39 +472,25 @@ m4_define(`_lookat', `m4_dnl
      */
     public static void _fdef(`lookat',4,$1) (
         final $1[] out, final int outOffset,
-        final $1[] eye, final int eyeOffset,
-        final $1[] center, final int centerOffset,
-        final $1[] up, final int upOffset) {
+        final VecT eye, final VecT center, final VecT up) {
 
-        final $1[] temp = new $1[16];
-        final int offZ = 0;
-        final int tmpZ = 4;
-        final int offY = 4;
-        final int tmpY = 8;
-        final int offX = 8;
-        final int offV = 12;
-
-        // z = normalize(eye * center)
-        Vectors._fdef(`cross', 3, $1) (temp, tmpZ, eye, eyeOffset, center, centerOffset);
-        Vectors._fdef(`scale', 3, $1) (temp, offZ, temp, tmpZ, ($1) Vectors._fdef(`length', 3, $1) (temp, tmpZ));
-        // x = normalize(up * z)
-        Vectors._fdef(`cross', 3, $1) (temp, tmpY, up, upOffset, temp, offZ);
-        Vectors._fdef(`scale', 3, $1) (temp, offY, temp, tmpY, ($1) Vectors._fdef(`length', 3, $1) (temp, tmpY));
-        // y = z * x
-        Vectors._fdef(`cross', 3, $1) (temp, offX, temp, offX, temp, 4);
-
-        Vectors._fdef(`negative', 3, $1) (temp, offV, eye, eyeOffset);
+        final VecT z = eye.multiply(center).normalize();
+        final VecT x = up.multiply(z).normalize();
+        final VecT y = z.multiply(x);
 
         final $1[] m = {
-            temp[offX + Vectors.X], temp[offY + Vectors.X], temp[offZ + Vectors.X], 0,
-            temp[offX + Vectors.Y], temp[offY + Vectors.Y], temp[offZ + Vectors.Y], 0,
-            temp[offX + Vectors.Z], temp[offY + Vectors.Z], temp[offZ + Vectors.Z], 0,
-            temp[offV + Vectors.X] * temp[offX + Vectors.X] + temp[offV + Vectors.Y] * temp[offY + Vectors.X] + temp[offV + Vectors.Z] * temp[offZ + Vectors.X],
-            temp[offV + Vectors.X] * temp[offX + Vectors.Y] + temp[offV + Vectors.Y] * temp[offY + Vectors.Y] + temp[offV + Vectors.Z] * temp[offZ + Vectors.Y],
-            temp[offV + Vectors.X] * temp[offX + Vectors.Z] + temp[offV + Vectors.Y] * temp[offY + Vectors.Z] + temp[offV + Vectors.Z] * temp[offZ + Vectors.Z],
-            1};
+                x.x(), y.x(), z.x(), 0,
+                x.y(), y.y(), z.y(), 0,
+                x.z(), y.z(), z.z(), 0,
+                0, 0, 0, 1};
 
-        System.arraycopy(m, 0, out, outOffset, 16);        
+        System.arraycopy(m, 0, out, outOffset, 16);
+        
+        final VecT v = eye.negative();
+
+        out[outOffset + E41] += v.x() * out[outOffset + E11] + v.y() * out[outOffset + E21] + v.z() * out[outOffset + E31];
+        out[outOffset + E42] += v.x() * out[outOffset + E12] + v.y() * out[outOffset + E22] + v.z() * out[outOffset + E32];
+        out[outOffset + E43] += v.x() * out[outOffset + E13] + v.y() * out[outOffset + E23] + v.z() * out[outOffset + E33];
     }
 ')
 

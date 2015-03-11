@@ -9,6 +9,22 @@ public final class Matrices {
     private Matrices() {}   
     public static final MatrixFactory DEFAULT_FACTORY = new CyclicalMatrixFactory();
  
+    protected static final int E11 = 0;
+    protected static final int E12 = 1;
+    protected static final int E13 = 2;
+    protected static final int E14 = 3;
+    protected static final int E21 = 4;
+    protected static final int E22 = 5;
+    protected static final int E23 = 6;
+    protected static final int E24 = 7;
+    protected static final int E31 = 8;
+    protected static final int E32 = 9;
+    protected static final int E33 = 10;
+    protected static final int E34 = 11;
+    protected static final int E41 = 12;
+    protected static final int E42 = 13;
+    protected static final int E43 = 14;
+    protected static final int E44 = 15;
 
     protected static final float[] NULL_MATRIXF = {
         0f, 0f, 0f, 0f,

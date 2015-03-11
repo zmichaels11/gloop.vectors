@@ -18,8 +18,8 @@ public class DoubleMatrixTest {
 
     private static final double EPSILON = 1e-7f;
     private static final int TEST_COUNT = 1000000;
-    private final Random random = new Random();
-
+    private final Random random = new Random();  
+    
     @Test
     public void testStaticMat2x2() {
         for(int i = 0; i < TEST_COUNT; i++) {

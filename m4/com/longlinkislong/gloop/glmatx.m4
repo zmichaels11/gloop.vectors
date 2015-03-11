@@ -177,16 +177,14 @@ m4_ifelse(MAT_SIZE, 4, `m4_dnl
     public static MatT lookat(final GLVec eye, final GLVec center, final GLVec up) {
         m4_define(`VEC_T', `m4_ifelse(TYPE, `float', `GLVecF', `GLVecD')')m4_dnl 
         m4_define(`VEC3_T', `m4_ifelse(TYPE, `float', `GLVec3F', `GLVec3D')')m4_dnl 
-        final VEC_T e = eye.`as'VEC_T ().`as'VEC3_T ();
-        final VEC_T c = center.`as'VEC_T ().`as'VEC3_T ();
-        final VEC_T u = up.`as'VEC_T ().`as'VEC3_T ();
+        final VEC3_T e = eye.`as'VEC_T ().`as'VEC3_T ();
+        final VEC3_T c = center.`as'VEC_T ().`as'VEC3_T ();
+        final VEC3_T u = up.`as'VEC_T ().`as'VEC3_T ();
         final MatT out = create();
 
         _call(`lookat')(
             out.data(), out.offset(),
-            e.data(), e.offset(),
-            c.data(), c.offset(),
-            u.data(), u.offset());
+            e, c, u);
 
         return out.asStaticMat();
     }
@@ -209,7 +207,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
 
         return create()
             .set(1, 1, ca).set(2, 1, sa)
-            .set(0, 1, -sa).set(2, 2, ca);
+            .set(1, 2, -sa).set(2, 2, ca);
     }
     
     public static MatT rotateY(final TYPE angle) {
@@ -250,14 +248,14 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
 
     @Override
     public final TYPE get(final int i, final int j) {
-        final int index = this.offset() + i * this.size() + j;
+        final int index = this.offset() + j * this.size() + i;
 
         return this.data()[index];
     }
 
     @Override
     public final MatT set(final int i, final int j, final TYPE value) {
-        final int index = this.offset() + i * this.size() + j;
+        final int index = this.offset() + j * this.size() + i;
 
         this.data()[index] = value;
         return this;
