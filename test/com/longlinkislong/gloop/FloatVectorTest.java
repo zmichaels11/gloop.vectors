@@ -16,7 +16,52 @@ import org.junit.Test;
 public class FloatVectorTest {
 
     private static final int TEST_COUNT = 100000;
-    private final Random random = new Random();
+    private final Random random = new Random();        
+    
+    @Test
+    public void testLengthVec2() {
+        for (int i = 0; i < TEST_COUNT; i++) {
+            final float x = random.nextFloat();
+            final float y = random.nextFloat();
+
+            final GLVecF vec = GLVec2F.create(x, y);
+            final double ex = Math.sqrt(x * x + y * y);
+            final double ac = vec.length();
+
+            Assert.assertEquals(ex, ac, GLVecF.EPSILON);
+        }
+    }
+
+    @Test
+    public void testLengthVec3() {
+        for (int i = 0; i < TEST_COUNT; i++) {
+            final float x = random.nextFloat();
+            final float y = random.nextFloat();
+            final float z = random.nextFloat();
+
+            final GLVecF vec = GLVec3F.create(x, y, z);
+            final double ex = Math.sqrt(x * x + y * y + z * z);
+            final double ac = vec.length();
+
+            Assert.assertEquals(ex, ac, GLVecF.EPSILON);
+        }
+    }
+
+    @Test
+    public void testLengthVec4() {
+        for (int i = 0; i < TEST_COUNT; i++) {
+            final float x = random.nextFloat();
+            final float y = random.nextFloat();
+            final float z = random.nextFloat();
+            final float w = random.nextFloat();
+
+            final GLVecF vec = GLVec4F.create(x, y, z, w);
+            final double ex = Math.sqrt(x * x + y * y + z * z + w * w);
+            final double ac = vec.length();
+
+            Assert.assertEquals(ex, ac, GLVecF.EPSILON);
+        }
+    }
 
     @Test
     public void testStaticVec2() {
@@ -39,22 +84,22 @@ public class FloatVectorTest {
             final float z = random.nextFloat();
             final GLVecF v0 = GLVec3F.create(x, y, z);
             final GLVecF v1 = v0.asStaticVec();
-            
+
             Assert.assertEquals(v0, v1);
             Assert.assertNotSame(v0, v1);
         }
     }
-    
+
     @Test
     public void testStaticVec4() {
-        for(int i = 0; i < TEST_COUNT; i++) {
-            final float x=  random.nextFloat();
+        for (int i = 0; i < TEST_COUNT; i++) {
+            final float x = random.nextFloat();
             final float y = random.nextFloat();
             final float z = random.nextFloat();
             final float w = random.nextFloat();
             final GLVecF v0 = GLVec4F.create(x, y, z, w);
             final GLVecF v1 = v0.asStaticVec();
-            
+
             Assert.assertEquals(v0, v1);
             Assert.assertNotSame(v0, v1);
         }

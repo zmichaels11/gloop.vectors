@@ -98,11 +98,9 @@ m4_define(`_length', `m4_dnl
      * @since 15.02.13
      */
     public static double _fdef(`length', $1, $2) (
-        final $2[] in0, final int in0Offset) {
+        final $2[] in0, final int in0Offset) {        
 
-        final $2 d = _fdef(`dot', $1, $2)(in0, in0Offset, in0, in0Offset);
-
-        return Math.sqrt(d * d);
+        return Math.sqrt(_fdef(`dot', $1, $2)(in0, in0Offset, in0, in0Offset));
     }
 ')
 
