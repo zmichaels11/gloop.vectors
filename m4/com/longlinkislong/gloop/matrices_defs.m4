@@ -463,12 +463,10 @@ m4_define(`VecT', _fdef(`GLVec', 3, $1))m4_dnl
      *
      * @param out the output matrix array
      * @param outOffset the offset to the output matrix
-     * @param eye the position of the camera
-     * @param eyeOffset the offset to start reading values from eye
-     * @param center the position the camera is looking at
-     * @param centerOffset the offset to start reading values from center
+     * @param eye the position of the camera     
+     * @param center the position the camera is looking at     
      * @param up the direction that is considered up.
-     * @param upOffset the offset to start reading values from up.
+     * @since 15.02.27
      */
     public static void _fdef(`lookat',4,$1) (
         final $1[] out, final int outOffset,
