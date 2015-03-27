@@ -147,4 +147,10 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
      * @since 15.02.26
      */
     public GLMatT asStaticMat();
+    
+    public GLVecT get(int rowID);
+    
+    public GLVecT map(int rowID);
+    
+    public GLMatT set(int rowID, GLVec vec);
 }

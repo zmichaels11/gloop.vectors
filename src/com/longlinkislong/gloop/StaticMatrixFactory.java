@@ -80,7 +80,7 @@ public class StaticMatrixFactory implements MatrixFactory {
 
     @Override
     public GLMatND nextGLMatND(int size) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new StaticMatND(this, size).identity();
     }
 
 }

@@ -281,6 +281,15 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
     }
 
     @Override
+    public final MatT set(final int rowID, final GLVec vec) {
+        final _fdef(`GLVec',,TYPE) v = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')();
+        final int length = Math.min(this.size(), v.size());
+
+        System.arraycopy(v.data(), v.offset(), this.data(), this.offset() + rowID * MAT_SIZE, length);
+        return this;
+    }
+
+    @Override
     public final MatT multiply(final TYPE value) {
         final MatT out = _next(MAT_SIZE, TYPE);
 
@@ -344,6 +353,23 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
 
         return out;
     }
+
+    @Override
+    public final VecT get(final int rowId) {
+        final VecT out = Vectors.DEFAULT_FACTORY._fdef(`nextGLVec', MAT_SIZE, TYPE)();
+        
+        out.set(this.data(), this.offset() + rowId * MAT_SIZE, MAT_SIZE);
+        return out;
+    }
+
+    @Override
+    public final VecT map(final int rowId) {
+        return new _fdef(`MappedVec', MAT_SIZE, TYPE) (
+            Vectors.DEFAULT_FACTORY,
+            this.data(),
+            this.offset() + rowId * MAT_SIZE,
+            MAT_SIZE);
+    }    
 
     @Override
     public final MatT zero() {

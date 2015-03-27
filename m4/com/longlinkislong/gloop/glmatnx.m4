@@ -128,6 +128,15 @@ public abstract class MatT extends BaseT<MatT, VecT> {
     }
 
     @Override
+    public final MatT set(final int rowID, final GLVec vec) {
+        final _fdef(`GLVec',,TYPE) v = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')();
+        final int length = Math.min(this.size(), v.size());
+
+        System.arraycopy(v.data(), v.offset(), this.data(), this.offset() + rowID * this.size(), length);
+        return this;
+    }
+
+    @Override
     public final TYPE get(final int i, final int j) {
         if(i < 0 || j < 0 || i >= this.size() || j >= this.size()) {
             throw new IndexOutOfBoundsException();
@@ -164,6 +173,24 @@ public abstract class MatT extends BaseT<MatT, VecT> {
             this.size());
 
         return out;
+    }
+
+    @Override
+    public final _fdef(`GLVec', `N', TYPE) get(final int rowID) {
+        final VecT out = Vectors.DEFAULT_FACTORY._fdef(`nextGLVec', `N', TYPE)(this.size());
+
+        out.set(this.data(), this.offset() + rowID * this.size(), this.size());
+        return out;
+    }
+
+    @Override
+    public final _fdef(`GLVec', `N', TYPE) map(final int rowID) {
+        return new _fdef(`MappedVec', `N', TYPE) (
+            Vectors.DEFAULT_FACTORY,
+            this.data(),
+            this.offset() + rowID * this.size(),
+            this.size(),
+            this.size());
     }
     
     @Override

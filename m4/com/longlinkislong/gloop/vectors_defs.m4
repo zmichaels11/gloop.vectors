@@ -1,6 +1,7 @@
 m4_include(`m4/m4utils/forloop.m4')
 m4_include(`m4/m4utils/fdef.m4')
 m4_include(`m4/m4utils/types.m4')
+m4_define(`_BufferT', `m4_ifelse($1, `float', `java.nio.FloatBuffer', `java.nio.DoubleBuffer')')
 
 m4_define(`_plus', `m4_dnl 
 /**
@@ -20,6 +21,16 @@ m4_define(`_plus', `m4_dnl
 
         forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
 out[outOffset + i] = in0[in0Offset + i] + in1[in1Offset + i];
+        ')
+    }
+
+    public static void _fdef(`plus', $1, $2) (
+        _BufferT($2) out, final int outOffset,
+        _BufferT($2) in0, final int in0Offset,
+        _BufferT($2) in1, final int in1Offset) {
+    
+        forloop(`i', 0, m4_eval($1 - 1), `m4_dnl
+out.put(outOffset + i, in0.get(in0Offset + i) + in1.get(in1Offset + i));
         ')
     }
 ')

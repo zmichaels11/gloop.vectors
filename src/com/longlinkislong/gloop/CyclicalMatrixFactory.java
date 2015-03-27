@@ -198,19 +198,19 @@ public class CyclicalMatrixFactory implements MatrixFactory {
     }
 
     private int nextMatNFOffset(final int matSize) {
-        final int testOffset = this.dataFOffset + (matSize * matSize);
+        final int msize = matSize * matSize;
+        final int testOffset = this.dataFOffset + msize;
+        final int dataEnd = this.dataF.length - msize;                
 
-        return this.dataFOffset = testOffset < this.dataF.length
-                ? testOffset
-                : 0;
+        return this.dataFOffset = testOffset % dataEnd;
     }
 
     private int nextMatNDOffset(final int matSize) {
-        final int testOffset = this.dataDOffset + (matSize * matSize);
+        final int msize = matSize * matSize;
+        final int testOffset = this.dataDOffset + msize;
+        final int dataEnd = this.dataD.length - msize;
 
-        return this.dataFOffset = testOffset < this.dataF.length
-                ? testOffset
-                : 0;
+        return this.dataDOffset = testOffset % dataEnd;
     }
     
     @Override
@@ -239,9 +239,9 @@ public class CyclicalMatrixFactory implements MatrixFactory {
 
     @Override
     public GLMatNF nextGLMatNF(int size) {
-        final int offset = this.nextMatNFOffset(size);
+        final int offset = this.nextMatNFOffset(size);        
 
-        return new MappedMatNF(this, this.dataF, offset, size, size * size);
+        return new MappedMatNF(this, this.dataF, offset, size * size, size);
     }
 
     @Override
@@ -272,7 +272,7 @@ public class CyclicalMatrixFactory implements MatrixFactory {
     public GLMatND nextGLMatND(int size) {
         final int offset = this.nextMatNDOffset(size);
 
-        return new MappedMatND(this, this.dataD, offset, size, size * size);
+        return new MappedMatND(this, this.dataD, offset, size * size, size);
     }
 
     @Override

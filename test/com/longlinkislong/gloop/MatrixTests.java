@@ -13,6 +13,6 @@ import org.junit.runners.Suite;
  * @author zmichaels
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({FloatMatrixTest.class, DoubleMatrixTest.class})
+@Suite.SuiteClasses({FloatMatrixTest.class, DoubleMatrixTest.class, SubVectorTest.class})
 public class MatrixTests {        
 }

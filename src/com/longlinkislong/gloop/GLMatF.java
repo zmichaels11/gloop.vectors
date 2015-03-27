@@ -166,7 +166,7 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
         this.zero();
 
         return this.set(0, 0, mat.data(), mat.offset(), length * length, length);
-    }
+    }    
 
     /**
      * Scales this matrix with the specified constant. This is the same as

@@ -190,18 +190,16 @@ public class CyclicalVectorFactory implements VectorFactory {
 
     private int nextVecNDOffset(final int vecSize) {
         final int testOffset = this.dataDOffset + vecSize;
+        final int dataEnd = this.dataF.length - vecSize;
 
-        return this.dataDOffset = testOffset < this.dataD.length
-                ? testOffset
-                : 0;
+        return this.dataFOffset = testOffset % dataEnd;
     }
 
     private int nextVecNFOffset(final int vecSize) {
         final int testOffset = this.dataFOffset + vecSize;
-
-        return this.dataFOffset = testOffset < this.dataF.length
-                ? testOffset
-                : 0;
+        final int dataEnd = this.dataD.length - vecSize;
+        
+        return this.dataDOffset = testOffset % dataEnd;
     }
 
     @Override
