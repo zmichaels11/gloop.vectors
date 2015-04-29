@@ -9,8 +9,12 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="gloop-vectors" default="default" basedir=".">    
     <description>Builds, tests, and runs the project gloop-vectors.</description>
-    <import file="nbproject/build-impl.xml"/>    
-        
+    <import file="nbproject/build-impl.xml"/>                
+    
+    <condition property="junit.exist">
+        <available file="junit/412.version"/>
+    </condition>        
+    
     <macrodef name="m4">
         <attribute name="path" default="com/longlinkislong/gloop"/>
         <attribute name="input"/>
@@ -28,7 +32,21 @@
                 <arg value="--define=MAT_SIZE=@{size}"/>
             </exec>
         </sequential>
-    </macrodef>            
+    </macrodef>
+    
+    <target name="check-test-deps" unless="junit.exist">
+        <mkdir dir="junit"/>
+        
+        <get
+            src="http://storage.googleapis.com/jartifacts/junit-4.12/junit-4.12.jar"
+            dest="junit/"/>
+        
+        <get
+            src="http://storage.googleapis.com/jartifacts/junit-4.12/hamcrest-core-1.3.jar"
+            dest="junit/"/>
+        
+        <touch file="junit/412.version"/>
+    </target>
     
     <target name="-m4-compile">
         <parallel>     
@@ -122,6 +140,7 @@
     
     <target depends="-m4-compile" name="-pre-compile"/>
     <target depends="-m4-clean" name="-post-clean"/>
+    <target depends="check-test-deps" name="-pre-compile-test"/>
     <!--
 
     There exist several targets which are by default empty and which can be 
