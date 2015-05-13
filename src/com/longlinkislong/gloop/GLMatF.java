@@ -243,4 +243,21 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
 
         return out.toString();
     }
+    
+    /**
+     * Copies the matrix to the array
+     * @param array the array to copy the matrix to.
+     * @param offset the position to start the copy
+     * @param length the number of elements to copy. Must be less than size squared.
+     * @since 15.05.13
+     */
+    public void copyToArray(
+            final float[] array, final int offset, final int length) {
+        
+        if(length > (this.size() * this.size())) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        System.arraycopy(this.data(), this.offset(), array, offset, length);
+    }
 }

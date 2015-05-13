@@ -47,7 +47,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      *
      * @since 15.02.26
      */
-    public static final double EPSILON = 1.19e-7;    
+    public static final double EPSILON = 1.19e-7;
 
     @Override
     public abstract GLMatT inverse();
@@ -190,6 +190,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
 
     /**
      * Calculates the determinant of this matrix
+     *
      * @return the determinant
      * @since 15.02.26
      */
@@ -199,7 +200,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
     public final int hashCode() {
         final int start = this.offset();
         final int end = start + (this.size() * this.size());
-        
+
         return Arrays.hashCode(
                 Arrays.copyOfRange(this.data(), start, end));
     }
@@ -246,5 +247,24 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
         }
 
         return out.toString();
+    }
+
+    /**
+     * Copies the matrix to the array
+     *
+     * @param array the array to copy the matrix to.
+     * @param offset the position to start the copy
+     * @param length the number of elements to copy. Must be less than size
+     * squared.
+     * @since 15.05.13
+     */
+    public void copyToArray(
+            final float[] array, final int offset, final int length) {
+
+        if (length > (this.size() * this.size())) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        System.arraycopy(this.data(), this.offset(), array, offset, length);
     }
 }

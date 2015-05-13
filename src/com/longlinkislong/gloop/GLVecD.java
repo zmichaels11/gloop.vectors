@@ -302,4 +302,21 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
 
         return out.toString();
     }
+    
+    /**
+     * Copies the vector to the array
+     * @param array the array to copy the vector to.
+     * @param offset the position to start the copy
+     * @param length the number of elements to copy. Must be less than size.
+     * @since 15.05.13
+     */
+    public void copyToArray(
+            final double[] array, final int offset, final int length) {
+        
+        if(length > this.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        System.arraycopy(this.data(), this.offset(), array, offset, length);
+    }
 }
