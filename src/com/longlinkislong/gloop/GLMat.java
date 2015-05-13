@@ -153,4 +153,12 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
     public GLVecT map(int rowID);
     
     public GLMatT set(int rowID, GLVec vec);
+    
+    /**
+     * Copies this matrix to a matrix created by the supplied MatrixFactory.
+     * @param factory the factory to create the output matrix
+     * @return the output matrix
+     * @since 15.05.13
+     */
+    public GLMatT copyTo(final MatrixFactory factory);
 }

@@ -239,7 +239,7 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
         this.zero();
 
         return this.set(vec.data(), vec.offset(), length);
-    }
+    }        
 
     /**
      * Calculates the dot product of this vector and the other vector.
@@ -301,4 +301,6 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
 
         return out.toString();
     }
+    
+    
 }

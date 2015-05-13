@@ -398,4 +398,12 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         return new _fdef(`StaticMat', MAT_SIZE, TYPE)(
             this.getFactory(), this);
     }
+
+    @Override
+    public MatT copyTo(final MatrixFactory factory) {
+        final MatT out = _fdef(`factory.nextGLMat', MAT_SIZE, TYPE) ();
+
+        out.set(this);
+        return out;
+    }
 }

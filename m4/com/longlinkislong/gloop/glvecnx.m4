@@ -204,4 +204,13 @@ public abstract class VecT extends BaseT<VecT> {
 
         return out;
     }
+
+    @Override
+    public final VecT copyTo(final VectorFactory factory) {
+        final VecT out = _fdef(`factory.nextGLVec', VEC_SIZE, TYPE) (this.size());
+
+        out.set(this);
+
+        return out;
+    }
 }

@@ -210,4 +210,12 @@ public interface GLVec<GLVecT extends GLVec> {
      * @since 15.02.26
      */
     public GLVecT normalize();
+    
+    /**
+     * Copies the current vector to a vector created by the supplied VectorFactory.
+     * @param factory the factory to create the new vector from.
+     * @return the new vector
+     * @since 15.05.13
+     */
+    public GLVecT copyTo(final VectorFactory factory);
 }

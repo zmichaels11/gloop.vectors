@@ -11,6 +11,11 @@
     <description>Builds, tests, and runs the project gloop-vectors.</description>
     <import file="nbproject/build-impl.xml"/>                
     
+    <path id="project.class.path">
+        <pathelement location="gwt/gwt-dev.jar"/>
+        <pathelement location="gwt/gwt-user.jar"/>
+    </path>
+    
     <condition property="junit.exist">
         <available file="junit/412.version"/>
     </condition>        
@@ -136,7 +141,7 @@
                 <exclude name="CyclicalMatrixFactory.java"/>                
             </fileset>
         </delete>        
-    </target>
+    </target>        
     
     <target depends="-m4-compile" name="-pre-compile"/>
     <target depends="-m4-clean" name="-post-clean"/>

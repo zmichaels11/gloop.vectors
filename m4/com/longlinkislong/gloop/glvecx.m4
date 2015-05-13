@@ -238,4 +238,12 @@ m4_ifelse(m4_eval(VEC_SIZE > 3), 1,m4_dnl
 
         return out;
     }
+
+    @Override
+    public final VecT copyTo(final VectorFactory factory) {
+        final VecT out = _fdef(`factory.nextGLVec', VEC_SIZE, TYPE) ();
+
+        out.set(this);
+        return out;
+    }
 }

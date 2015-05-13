@@ -26,11 +26,25 @@
 package com.longlinkislong.gloop;
 
 /**
- *
+ * The StaticVectorFactory 
  * @author zmichaels
  */
 public final class StaticVectorFactory implements VectorFactory {
-
+    private static final class Holder {
+        private static final StaticVectorFactory INSTANCE = new StaticVectorFactory();
+    }
+    
+    private StaticVectorFactory() {}
+    
+    /**
+     * Retrieves the instance of the StaticVectorFactory
+     * @return the default instance
+     * @since 15.05.13
+     */
+    public static StaticVectorFactory getInstance() {
+        return Holder.INSTANCE;
+    }
+        
     @Override
     public GLVec2D nextGLVec2D() {
         return new StaticVec2D(this);

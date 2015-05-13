@@ -271,4 +271,12 @@ public abstract class MatT extends BaseT<MatT, VecT> {
         return new _fdef(`StaticMat',`N',TYPE)(
             this.getFactory(), this.size(), this);
     }
+
+    @Override
+    public MatT copyTo(final MatrixFactory factory) {
+        final MatT out = _fdef(`factory.nextGLMat', MAT_SIZE, TYPE) (this.size());
+
+        out.set(this);
+        return out;
+    }
 }
