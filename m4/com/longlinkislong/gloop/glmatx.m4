@@ -10,7 +10,7 @@ package com.longlinkislong.gloop;
  * @author zmichaels
  * @since 15.02.27
  */
-public abstract class MatT extends BaseT<MatT, VecT> {
+public abstract class MatT extends BaseT<MatT, VecT> implements GenT {
     /**
      * The size of the matrix
      * @since 15.02.27

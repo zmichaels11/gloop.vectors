@@ -138,7 +138,13 @@
                 <exclude name="StaticMat.java"/>
                 <exclude name="MatrixFactory.java"/>
                 <exclude name="StaticMatrixFactory.java"/>
-                <exclude name="CyclicalMatrixFactory.java"/>                
+                <exclude name="CyclicalMatrixFactory.java"/>
+                <exclude name="GLVec2.java"/>
+                <exclude name="GLVec3.java"/>
+                <exclude name="GLVec4.java"/>
+                <exclude name="GLMat2.java"/>
+                <exclude name="GLMat3.java"/>
+                <exclude name="GLMat4.java"/>                
             </fileset>
         </delete>        
     </target>        

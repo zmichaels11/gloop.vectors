@@ -9,7 +9,7 @@ package com.longlinkislong.gloop;
  * @author zmichaels
  * @since 15.02.27
  */
-public abstract class VecT extends BaseT <VecT> {
+public abstract class VecT extends BaseT <VecT> implements GenT {
     /**
      * The size of the vector      
      * @since 15.02.27

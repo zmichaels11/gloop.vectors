@@ -1,4 +1,5 @@
 m4_define(`BaseT', _fdef(`GLVec',,TYPE))
+m4_define(`GenT', `GLVec'VEC_SIZE)
 m4_define(`VecT', _fdef(`GLVec',VEC_SIZE,TYPE))
 m4_define(`_next', `this.getFactory()._fdef(`nextGLVec',$1,$2)($3)')
 m4_define(`_cast', `$1.as$2()')

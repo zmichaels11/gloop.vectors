@@ -1,4 +1,5 @@
 m4_define(`BaseT', _fdef(`GLMat',,TYPE))
+m4_define(`GenT', `GLMat'MAT_SIZE)
 m4_define(`MatT', _fdef(`GLMat',MAT_SIZE,TYPE))
 m4_define(`VecT', _fdef(`GLVec',MAT_SIZE,TYPE))
 m4_define(`_next', `this.getFactory()._fdef(`nextGLMat',$1,$2)($3)')
