@@ -147,59 +147,115 @@ public class CyclicalVectorFactory implements VectorFactory {
     }
 
     private int nextVec2DOffset() {
-        final int testOffset = this.dataDOffset + GLVec2D.VECTOR_SIZE;
-        final int dataEnd = this.dataD.length - GLVec2D.VECTOR_SIZE;
+        final int vsize = GLVec2D.VECTOR_SIZE;        
 
-        return this.dataDOffset = testOffset % dataEnd;
+        if(this.dataDOffset + vsize < this.dataD.length) {
+            final int off = this.dataDOffset;
+            
+            this.dataDOffset += vsize;
+            return off;
+        } else {
+            this.dataDOffset = vsize;
+            return 0;
+        }
     }
 
     private int nextVec2FOffset() {
-        final int testOffset = this.dataFOffset + GLVec2F.VECTOR_SIZE;
-        final int dataEnd = this.dataF.length - GLVec2F.VECTOR_SIZE;
-
-        return this.dataFOffset = testOffset % dataEnd;
+        final int vsize = GLVec2F.VECTOR_SIZE;
+        
+        if(this.dataFOffset + vsize < this.dataF.length) {
+            final int off = this.dataFOffset;
+            
+            this.dataFOffset += vsize;
+            return off;
+        } else {
+            this.dataFOffset = vsize;
+            return 0;
+        }
     }
 
     private int nextVec3DOffset() {
-        final int testOffset = this.dataDOffset + GLVec3D.VECTOR_SIZE;
-        final int dataEnd = this.dataD.length - GLVec3D.VECTOR_SIZE;
-
-        return this.dataDOffset = testOffset % dataEnd;
+        final int vsize = GLVec3D.VECTOR_SIZE;
+        
+        if(this.dataDOffset + vsize < this.dataD.length) {
+            final int off = this.dataDOffset;
+            
+            this.dataDOffset += vsize;
+            return off;
+        } else {
+            this.dataDOffset = vsize;
+            return 0;
+        }
     }
 
     private int nextVec3FOffset() {
-        final int testOffset = this.dataFOffset + GLVec3F.VECTOR_SIZE;
-        final int dataEnd = this.dataD.length - GLVec3F.VECTOR_SIZE;
-
-        return this.dataFOffset = testOffset % dataEnd;
+        final int vsize = GLVec3F.VECTOR_SIZE;
+        
+        if(this.dataFOffset + vsize < this.dataF.length) {
+            final int off = this.dataFOffset;
+            
+            this.dataFOffset += vsize;
+            return off;
+        } else {
+            this.dataFOffset = vsize;
+            return 0;
+        }
     }
 
     private int nextVec4DOffset() {
-        final int testOffset = this.dataDOffset + GLVec4D.VECTOR_SIZE;
-        final int dataEnd = this.dataD.length - GLVec4D.VECTOR_SIZE;
-
-        return this.dataDOffset = testOffset % dataEnd;
+        final int vsize = GLVec4D.VECTOR_SIZE;
+        
+        if(this.dataDOffset + vsize < this.dataD.length) {
+            final int off = this.dataDOffset;
+            
+            this.dataDOffset += vsize;
+            return off;
+        } else {
+            this.dataDOffset = vsize;
+            return 0;
+        }
     }
 
     private int nextVec4FOffset() {
-        final int testOffset = this.dataFOffset + GLVec4F.VECTOR_SIZE;
-        final int dataEnd = this.dataF.length - GLVec4F.VECTOR_SIZE;
-
-        return this.dataFOffset = testOffset % dataEnd;
+        final int vsize = GLVec4F.VECTOR_SIZE;
+        
+        if(this.dataFOffset + vsize < this.dataF.length) {
+            final int off = this.dataFOffset;
+            
+            this.dataFOffset += vsize;
+            return off;
+        } else {
+            this.dataFOffset = vsize;
+            return 0;
+        }
     }
 
     private int nextVecNDOffset(final int vecSize) {
-        final int testOffset = this.dataDOffset + vecSize;
-        final int dataEnd = this.dataF.length - vecSize;
-
-        return this.dataFOffset = testOffset % dataEnd;
+        final int vsize = vecSize;
+        
+        if(this.dataDOffset + vsize < this.dataD.length) {
+            final int off = this.dataDOffset;
+            
+            this.dataDOffset += vsize;
+            return off;
+        } else {
+            this.dataDOffset = vsize;
+            return 0;
+        }
     }
 
     private int nextVecNFOffset(final int vecSize) {
-        final int testOffset = this.dataFOffset + vecSize;
-        final int dataEnd = this.dataD.length - vecSize;
+        final int vsize = vecSize;
         
-        return this.dataDOffset = testOffset % dataEnd;
+        if(this.dataFOffset + vsize < this.dataF.length) {
+            final int off = this.dataFOffset;
+            
+            this.dataFOffset += vsize;
+            return off;
+        } else {
+            this.dataFOffset = vsize;
+            return 0;
+        }
     }
 
     @Override

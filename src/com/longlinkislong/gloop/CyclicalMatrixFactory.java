@@ -58,6 +58,7 @@ public class CyclicalMatrixFactory implements MatrixFactory {
 
     /**
      * Constructs a new CyclicalMatrixFactory with the default cache size.
+     *
      * @since 15.02.26
      */
     public CyclicalMatrixFactory() {
@@ -66,6 +67,7 @@ public class CyclicalMatrixFactory implements MatrixFactory {
 
     /**
      * Constructs a new CyclicalMatrix factory with the specified cache size.
+     *
      * @param cacheSize the cache size in kilobytes.
      * @since 15.02.26
      */
@@ -151,68 +153,111 @@ public class CyclicalMatrixFactory implements MatrixFactory {
 
     private int nextMat2DOffset() {
         final int msize = GLMat2D.MATRIX_SIZE * GLMat2D.MATRIX_SIZE;
-        final int testOffset = this.dataDOffset + msize;
-        final int dataEnd = this.dataD.length - msize;
 
-        return this.dataDOffset = testOffset % dataEnd;
+        if (this.dataDOffset + msize < this.dataD.length) {
+            final int off = this.dataDOffset;
+
+            this.dataDOffset += msize;
+            return off;
+        } else {
+            this.dataDOffset = msize;
+            return 0;
+        }
     }
 
     private int nextMat2FOffset() {
         final int msize = GLMat2F.MATRIX_SIZE * GLMat2F.MATRIX_SIZE;
-        final int testOffset = this.dataFOffset + msize;
-        final int dataEnd = this.dataF.length - msize;
 
-        return this.dataFOffset = testOffset % dataEnd;
+        if (this.dataFOffset + msize < this.dataF.length) {
+            final int off = this.dataFOffset;
+
+            this.dataFOffset += msize;
+            return off;
+        } else {
+            this.dataFOffset = msize;
+            return 0;
+        }
     }
 
     private int nextMat3DOffset() {
         final int msize = GLMat3D.MATRIX_SIZE * GLMat3D.MATRIX_SIZE;
-        final int testOffset = this.dataDOffset + msize;
-        final int dataEnd = this.dataD.length - msize;
+        if (this.dataDOffset + msize < this.dataD.length) {
+            final int off = this.dataDOffset;
 
-        return this.dataDOffset = testOffset % dataEnd;
+            this.dataDOffset += msize;
+            return off;
+        } else {
+            this.dataDOffset = msize;
+            return 0;
+        }
     }
 
     private int nextMat3FOffset() {
         final int msize = GLMat3F.MATRIX_SIZE * GLMat3F.MATRIX_SIZE;
-        final int testOffset = this.dataFOffset + msize;
-        final int dataEnd = this.dataF.length - msize;
+        if (this.dataFOffset + msize < this.dataF.length) {
+            final int off = this.dataFOffset;
 
-        return this.dataFOffset = testOffset % dataEnd;
+            this.dataFOffset += msize;
+            return off;
+        } else {
+            this.dataFOffset = msize;
+            return 0;
+        }
     }
 
     private int nextMat4DOffset() {
         final int msize = GLMat4D.MATRIX_SIZE * GLMat4D.MATRIX_SIZE;
-        final int testOffset = this.dataDOffset + msize;
-        final int dataEnd = this.dataD.length - msize;
+        if (this.dataDOffset + msize < this.dataD.length) {
+            final int off = this.dataDOffset;
 
-        return this.dataDOffset = testOffset % dataEnd;
+            this.dataDOffset += msize;
+            return off;
+        } else {
+            this.dataDOffset = msize;
+            return 0;
+        }
     }
 
     private int nextMat4FOffset() {
         final int msize = GLMat4F.MATRIX_SIZE * GLMat4F.MATRIX_SIZE;
-        final int testOffset = this.dataFOffset + msize;
-        final int dataEnd = this.dataF.length - msize;
-
-        return this.dataFOffset = testOffset % dataEnd;
+        if(this.dataFOffset + msize < this.dataF.length) {
+            final int off = this.dataFOffset;
+            
+            this.dataFOffset += msize;
+            return off;
+        } else {
+            this.dataFOffset = msize;
+            return 0;
+        }
     }
 
     private int nextMatNFOffset(final int matSize) {
         final int msize = matSize * matSize;
-        final int testOffset = this.dataFOffset + msize;
-        final int dataEnd = this.dataF.length - msize;                
-
-        return this.dataFOffset = testOffset % dataEnd;
+        if(this.dataFOffset + msize < this.dataF.length) {
+            final int off = this.dataFOffset;
+            
+            this.dataFOffset += msize;
+            return off;
+        } else {
+            this.dataFOffset = msize;
+            return 0;
+        }
     }
 
     private int nextMatNDOffset(final int matSize) {
         final int msize = matSize * matSize;
-        final int testOffset = this.dataDOffset + msize;
-        final int dataEnd = this.dataD.length - msize;
 
-        return this.dataDOffset = testOffset % dataEnd;
+        if (this.dataDOffset + msize < this.dataD.length) {
+            final int off = this.dataDOffset;
+
+            this.dataDOffset += msize;
+            return off;
+        } else {
+            this.dataDOffset = msize;
+            return 0;
+        }
     }
-    
+
     @Override
     public GLMat2F nextGLMat2F() {
         final int id = this.nextMat2FID();
@@ -239,7 +284,7 @@ public class CyclicalMatrixFactory implements MatrixFactory {
 
     @Override
     public GLMatNF nextGLMatNF(int size) {
-        final int offset = this.nextMatNFOffset(size);        
+        final int offset = this.nextMatNFOffset(size);
 
         return new MappedMatNF(this, this.dataF, offset, size * size, size);
     }

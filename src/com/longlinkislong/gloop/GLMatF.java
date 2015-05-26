@@ -135,12 +135,12 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
             return (GLMat4F) this;
         }
         
-        final GLMat4F out = this.getFactory().nextGLMat4F();
-        final int len = Math.min(this.size(), 4);
+        final GLMat4F out = this.getFactory().nextGLMat4F().identity();
+        final int len = Math.min(this.size(), 4);        
 
         for (int i = 0; i < len; i++) {
             for (int j = 0; j < len; j++) {
-                out.set(i, j, this.get(i, j));
+                out.set(i, j, this.get(i, j));                
             }
         }                
         
@@ -165,7 +165,7 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
 
         for (int i = 0; i < len; i++) {
             for (int j = 0; j < len; j++) {
-                out.set(i, j, this.get(i, j));
+                out.set(i, j, this.get(i, j));                
             }
         }
         

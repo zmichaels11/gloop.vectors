@@ -128,7 +128,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
             throw new IndexOutOfBoundsException();
         }
 
-        final int index = this.index(i, j);
+        final int index = this.offset() + this.index(i, j);
 
         return this.data()[index];
     }

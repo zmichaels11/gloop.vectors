@@ -234,14 +234,14 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
 
     @Override
     public final TYPE get(final int i, final int j) {
-        final int index = this.index(i, j);
+        final int index = this.offset() + this.index(i, j);
 
         return this.data()[index];
     }
 
     @Override
     public final MatT set(final int i, final int j, final TYPE value) {
-        final int index = this.index(i, j);
+        final int index = this.offset() + this.index(i, j);
 
         this.data()[index] = value;
         return this;
@@ -254,7 +254,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         final int stride) {
 
         final int scanlineSize = this.size();
-        int yOff = this.offset() + i * this.size() + j;
+        int yOff = this.offset() + this.index(i, j);
         int off = offset;
 
         for(int yStart = 0; yStart < this.size(); yStart++) {
