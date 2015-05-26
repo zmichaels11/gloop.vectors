@@ -136,7 +136,7 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
      * @return the size of the matrix.
      * @since 15.02.26
      */
-    public int size();
+    public int size();        
 
     /**
      * Coerces the matrix to a static instance of itself. The static form is

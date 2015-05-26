@@ -11,7 +11,13 @@ m4_define(`_asMat', `m4_dnl
         final _fdef(`GLMat', $1, TYPE) out = _next($1, TYPE);
 
         out.zero();
-        out.set(0, 0, this.data(), this.offset(), length * length, length);
+        
+        for(int i = 0; i < $1; i++) {
+            for(int j = 0; j < $1; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }
+        
         return out;
     }
 ')

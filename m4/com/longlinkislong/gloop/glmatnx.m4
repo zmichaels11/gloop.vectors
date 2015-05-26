@@ -99,21 +99,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
         }
 
         return out;
-    }
-
-    _asMat(2)
-    _asMat(3)
-    _asMat(4)
-
-    @Override
-    public final _fdef(`GLMat', `N', TYPE) _fdef(`asGLMat', `N', TYPE)(final int size) {
-        final MatT out = _next(`N', TYPE, size);
-        final int length = Math.min(this.size(), size);
-
-        out.zero();
-        out.set(0, 0, this.data(), this.offset(), length * length, length);
-        return out;
-    }
+    }    
 
     @Override
     public final MatT set(final int i, final int j, final TYPE value) {
@@ -121,7 +107,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
             throw new IndexOutOfBoundsException();
         }
     
-        final int index = this.offset() + i + this.size() * j;
+        final int index = this.offset() + this.index(i, j);
 
         this.data()[index] = value;
         return this;
@@ -142,7 +128,7 @@ public abstract class MatT extends BaseT<MatT, VecT> {
             throw new IndexOutOfBoundsException();
         }
 
-        final int index = this.offset() + i + this.size() * j;
+        final int index = this.index(i, j);
 
         return this.data()[index];
     }

@@ -87,7 +87,23 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @return a 2x2 matrix.
      * @since 15.02.26
      */
-    public abstract GLMat2D asGLMat2D();
+    public GLMat2D asGLMat2D(){
+        if(this instanceof GLMat2D) {
+            return (GLMat2D) this;
+        }
+        
+        final GLMat2D out = this.getFactory().nextGLMat2D();
+        
+        final int len = Math.min(this.size(), 2);
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }
+        
+        return out;
+    }
 
     /**
      * Coerces this matrix into a 3x3 matrix. This is allowed to return itself
@@ -96,7 +112,22 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @return a 3x3 matrix.
      * @since 15.02.26
      */
-    public abstract GLMat3D asGLMat3D();
+    public GLMat3D asGLMat3D() {
+        if(this instanceof GLMat3D) {
+            return (GLMat3D) this;
+        }
+        
+        final GLMat3D out = this.getFactory().nextGLMat3D();
+        final int len = Math.min(this.size(), 3);
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }
+        
+        return out;
+    }
 
     /**
      * Coerces this matrix into a 4x4 matrix. This is allowed to return itself
@@ -105,7 +136,23 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @return a 4x4 matrix.
      * @since 15.02.26
      */
-    public abstract GLMat4D asGLMat4D();
+    public GLMat4D asGLMat4D() {
+        if(this instanceof GLMat4D) {
+            return (GLMat4D) this;
+        }
+        
+        final GLMat4D out = this.getFactory().nextGLMat4D();
+        
+        final int len = Math.min(this.size(), 4);
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }
+        
+        return out;
+    }
 
     /**
      * Coerces this matrix into a square matrix of the specified size. This is
@@ -115,8 +162,28 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @return a square matrix of the specified size.
      * @since 15.02.26
      */
-    public abstract GLMatND asGLMatND(int size);
+    public GLMatND asGLMatND(int size) {
+        if(this.size() == size && this instanceof GLMatND) {
+            return (GLMatND) this;
+        }
+        
+        final GLMatND out = this.getFactory().nextGLMatND(size);
+        
+        final int len = Math.min(this.size(), size);
 
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }
+        
+        return out;
+    }
+
+    protected int index(final int i, final int j) {
+        return i + j * this.size();
+    }
+    
     /**
      * Retrieves the value of the element at the specified location.
      *

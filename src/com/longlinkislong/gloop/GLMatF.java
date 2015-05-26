@@ -82,7 +82,22 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * @return a 2x2 matrix.
      * @since 15.02.26
      */
-    public abstract GLMat2F asGLMat2F();
+    public GLMat2F asGLMat2F() {
+        if(this instanceof GLMat2F) {
+            return (GLMat2F) this;
+        }
+        
+        final GLMat2F out = this.getFactory().nextGLMat2F();
+        final int len = Math.min(this.size(), 2);
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }
+        
+        return out;
+    }
 
     /**
      * Coerces this matrix into a 3x3 matrix. This is allowed to return itself
@@ -91,7 +106,22 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * @return a 3x3 matrix.
      * @since 15.02.26
      */
-    public abstract GLMat3F asGLMat3F();
+    public final GLMat3F asGLMat3F() {
+        if(this instanceof GLMat3F) {
+            return (GLMat3F) this;
+        }
+        
+        final GLMat3F out = this.getFactory().nextGLMat3F();
+        final int len = Math.min(this.size(), 3);
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }
+        
+        return out;
+    }
 
     /**
      * Coerces this matrix into a 4x4 matrix. This is allowed to return itself
@@ -100,7 +130,22 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * @return a 4x4 matrix.
      * @since 15.02.26
      */
-    public abstract GLMat4F asGLMat4F();
+    public GLMat4F asGLMat4F() {
+        if(this instanceof GLMat4F) {
+            return (GLMat4F) this;
+        }
+        
+        final GLMat4F out = this.getFactory().nextGLMat4F();
+        final int len = Math.min(this.size(), 4);
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }                
+        
+        return out;
+    }
 
     /**
      * Coerces this matrix into a square matrix of the specified size. This is
@@ -110,8 +155,27 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * @return a square matrix of the specified size.
      * @since 15.02.26
      */
-    public abstract GLMatNF asGLMatNF(int size);
+    public final GLMatNF asGLMatNF(int size) {
+        if(this.size() == size && this instanceof GLMatNF) {
+            return (GLMatNF) this;
+        }
+        
+        final GLMatNF out = this.getFactory().nextGLMatNF(size);
+        final int len = Math.min(this.size(), size);
 
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                out.set(i, j, this.get(i, j));
+            }
+        }
+        
+        return out;
+    }
+
+    protected int index(final int i, final int j) {
+        return i + j * this.size();
+    }
+    
     /**
      * Retrieves the value of the element at the specified location.
      *
@@ -166,7 +230,7 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
         this.zero();
 
         return this.set(0, 0, mat.data(), mat.offset(), length * length, length);
-    }    
+    }
 
     /**
      * Scales this matrix with the specified constant. This is the same as
@@ -243,21 +307,23 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
 
         return out.toString();
     }
-    
+
     /**
      * Copies the matrix to the array
+     *
      * @param array the array to copy the matrix to.
      * @param offset the position to start the copy
-     * @param length the number of elements to copy. Must be less than size squared.
+     * @param length the number of elements to copy. Must be less than size
+     * squared.
      * @since 15.05.13
      */
     public void copyToArray(
             final float[] array, final int offset, final int length) {
-        
-        if(length > (this.size() * this.size())) {
+
+        if (length > (this.size() * this.size())) {
             throw new IndexOutOfBoundsException();
         }
-        
+
         System.arraycopy(this.data(), this.offset(), array, offset, length);
     }
 }
