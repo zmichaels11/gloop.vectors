@@ -80,7 +80,7 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
      * @return A matrix with aspects of both matrices.
      * @since 15.02.26
      */
-    public GLMatT multiply(GLMat other);
+    public GLMatT multiply(GLMat other);        
 
     /**
      * Multiplies this matrix by a vector of similar length and returns the

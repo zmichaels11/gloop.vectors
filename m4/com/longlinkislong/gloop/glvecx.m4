@@ -240,6 +240,19 @@ m4_ifelse(m4_eval(VEC_SIZE > 3), 1,m4_dnl
     }
 
     @Override
+    public final VecT hadamard(final GLVec other) {
+        final VecT out = _next(VEC_SIZE, TYPE);
+        final VecT in1 = _cast(_cast(other, BaseT), VecT);
+
+        _call(`multiply')(
+            out.data(), out.offset(),
+            this.data(), this.offset(),
+            in1.data(), in1.offset());
+
+        return out;
+    }
+
+    @Override
     public final VecT copyTo(final VectorFactory factory) {
         final VecT out = _fdef(`factory.nextGLVec', VEC_SIZE, TYPE) ();
 

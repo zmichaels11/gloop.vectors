@@ -206,6 +206,20 @@ public abstract class VecT extends BaseT<VecT> {
     }
 
     @Override
+    public final VecT hadamard(final GLVec other) {
+        final VecT out = _next(`N', TYPE, this.size());
+        final VecT in1 = _cast(_cast(other, BaseT), VecT, this.size());
+
+        _call(`multiply')(
+            out.data(), out.offset(),
+            this.data(), this.offset(),
+            in1.data(), in1.offset(),
+            this.size());
+
+        return out;
+    }
+
+    @Override
     public final VecT copyTo(final VectorFactory factory) {
         final VecT out = _fdef(`factory.nextGLVec', VEC_SIZE, TYPE) (this.size());
 

@@ -120,10 +120,25 @@ public interface GLVec<GLVecT extends GLVec> {
      * @param other the other vector
      * @return the result of the cross product
      * @since 15.02.26
+     * @deprecated ambiguous implementation - does not intuitively describe if
+     * it uses cross product or hadamard product.
      */
+    @Deprecated
     default public GLVecT multiply(final GLVec other) {
         return this.cross(other);
     }
+
+    /**
+     * Calculates the hadamard product between this vector and another vector
+     * and returns the result. A hadamard product is a product on two vectors or
+     * matrices of the same size that produces a vector or matrix of the same
+     * size with each element being the product of the two inputs.
+     *
+     * @param other the other vector
+     * @return a vector with all elements being the product of the inputs.
+     * @since 15.06.17
+     */
+    public GLVecT hadamard(GLVec other);
 
     /**
      * Alias for set(plus(other)).
@@ -210,9 +225,11 @@ public interface GLVec<GLVecT extends GLVec> {
      * @since 15.02.26
      */
     public GLVecT normalize();
-    
+
     /**
-     * Copies the current vector to a vector created by the supplied VectorFactory.
+     * Copies the current vector to a vector created by the supplied
+     * VectorFactory.
+     *
      * @param factory the factory to create the new vector from.
      * @return the new vector
      * @since 15.05.13
