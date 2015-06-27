@@ -722,3 +722,16 @@ m4_define(`_maxN', `m4_dnl
         }
     }
 ')
+
+m4_define(`_shuffle', `m4_dnl
+/**
+     * Composes a vector from parts of two vectors.
+     */
+     public static void _fdef(`shuffle', $1, $2) (
+        final $2[] out, final int outOffset,
+        final $2[] in0, final int in0Offset,
+        final $2[] in1, final int in1Offset,
+        final $2[] shuffle){
+
+        
+     }

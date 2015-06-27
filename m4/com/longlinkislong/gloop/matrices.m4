@@ -7,7 +7,7 @@ package com.longlinkislong.gloop;
 
 public final class Matrices {    
     private Matrices() {}   
-    public static final MatrixFactory DEFAULT_FACTORY = new CyclicalMatrixFactory();
+    public static MatrixFactory DEFAULT_FACTORY = new CyclicalMatrixFactory();
  
     protected static final int E11 = 0;
     protected static final int E12 = 1;

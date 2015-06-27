@@ -8,7 +8,7 @@ package com.longlinkislong.gloop;
 public final class Vectors {
     private Vectors() {}
 
-    public static final VectorFactory DEFAULT_FACTORY = new CyclicalVectorFactory();
+    public static VectorFactory DEFAULT_FACTORY = new CyclicalVectorFactory();
 
     protected static final double[] NULL_VECTORD = {0.0, 0.0, 0.0, 0.0};
     protected static final float[] NULL_VECTORF = {0f, 0f, 0f, 0f};
