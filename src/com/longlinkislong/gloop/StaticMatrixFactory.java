@@ -60,7 +60,7 @@ public class StaticMatrixFactory implements MatrixFactory {
 
     @Override
     public GLMatNF nextGLMatNF(int size) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new StaticMatNF(this, size);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class StaticMatrixFactory implements MatrixFactory {
 
     @Override
     public GLMatND nextGLMatND(int size) {
-        return new StaticMatND(this, size).identity();
+        return new StaticMatND(this, size);
     }
 
 }
