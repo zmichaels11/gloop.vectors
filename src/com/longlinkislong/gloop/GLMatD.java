@@ -238,7 +238,14 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
 
         this.zero();
 
-        return this.set(0, 0, mat.data(), mat.offset(), length * length, length);
+        GLMatT out = null;
+        for(int i = 0; i < length; i++) {
+            for(int j = 0; j < length; j++) {
+                out = this.set(i, j, mat.get(i, j));
+            }
+        }
+        
+        return out;
     }
 
     /**
