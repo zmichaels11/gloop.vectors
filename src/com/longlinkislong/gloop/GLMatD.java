@@ -234,14 +234,12 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
     @Override
     public final GLMatT set(final GLMat other) {
         final int length = Math.min(other.size(), this.size());
-        final GLMatD mat = other.asGLMatD();
+        final GLMatD mat = other.asGLMatD();        
 
-        this.zero();
-
-        GLMatT out = null;
+        final GLMatT out = this.identity();        
         for(int i = 0; i < length; i++) {
             for(int j = 0; j < length; j++) {
-                out = this.set(i, j, mat.get(i, j));
+                out.set(i, j, mat.get(i, j));
             }
         }
         

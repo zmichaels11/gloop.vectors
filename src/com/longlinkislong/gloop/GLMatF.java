@@ -228,13 +228,12 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
     public final GLMatT set(final GLMat other) {
         final int length = Math.min(other.size(), this.size());
         final GLMatF mat = other.asGLMatF();
-
-        this.zero();
-
-        GLMatT out = null;
+        
+        final GLMatT out = this.identity();
+        
         for(int i = 0; i < length; i++) {
             for(int j = 0; j < length; j++) {
-                out = this.set(i, j, mat.get(i, j));
+                out.set(i, j, mat.get(i, j));
             }
         }
         
