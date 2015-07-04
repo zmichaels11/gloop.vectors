@@ -25,6 +25,8 @@
  */
 package com.longlinkislong.gloop;
 
+import java.nio.ByteBuffer;
+
 /**
  * The base interface for all matrices.
  *
@@ -160,5 +162,5 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
      * @return the output matrix
      * @since 15.05.13
      */
-    public GLMatT copyTo(final MatrixFactory factory);
+    public GLMatT copyTo(final MatrixFactory factory);       
 }

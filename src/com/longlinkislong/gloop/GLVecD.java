@@ -25,6 +25,7 @@
  */
 package com.longlinkislong.gloop;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -255,7 +256,7 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
     public final int hashCode() {
         final int start = this.offset();
         final int end = start + this.size();
-        
+
         return Arrays.hashCode(
                 Arrays.copyOfRange(this.data(), start, end));
     }
@@ -302,9 +303,10 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
 
         return out.toString();
     }
-    
+
     /**
      * Copies the vector to the array
+     *
      * @param array the array to copy the vector to.
      * @param offset the position to start the copy
      * @param length the number of elements to copy. Must be less than size.
@@ -312,11 +314,27 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT> {
      */
     public void copyToArray(
             final double[] array, final int offset, final int length) {
-        
-        if(length > this.size()) {
+
+        if (length > this.size()) {
             throw new IndexOutOfBoundsException();
         }
-        
+
         System.arraycopy(this.data(), this.offset(), array, offset, length);
+    }
+
+    /**
+     * Writes a GLVecD to a ByteBuffer.
+     *
+     * @param out the ByteBuffer to write.
+     * @param outOffset the offset to write the data to
+     * @param in0 the vector to read element data from
+     * @param in0Offset the offset to begin reading element data.
+     * @param writeCount the number of elements to read.
+     * @since 15.07.04
+     */
+    public static void writeTo(final ByteBuffer out, final int outOffset, final GLVecD in0, final int in0Offset, final int writeCount) {
+        for (int i = 0; i < writeCount; i++) {
+            out.putDouble(outOffset * Double.BYTES, in0.data()[in0.offset() + in0Offset]);
+        }
     }
 }

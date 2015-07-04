@@ -25,6 +25,7 @@
  */
 package com.longlinkislong.gloop;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -104,11 +105,12 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
     /**
      * Expands the vector to a 2D vector. This will set the last element to 1 if
      * this vector has a size less than 2.
+     *
      * @return a 2D vector
      * @since 15.02.27
      */
     public final GLVec2F exGLVec2F() {
-        if(this.size() < 2) {
+        if (this.size() < 2) {
             return this.asGLVec2F().set(Vectors.Y, 1.0f);
         } else {
             return this.asGLVec2F();
@@ -132,7 +134,7 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
      * @since 15.02.27
      */
     public final GLVec3F exGLVec3F() {
-        if(this.size() < 3) {
+        if (this.size() < 3) {
             return this.asGLVec3F().set(Vectors.Z, 1.0f);
         } else {
             return this.asGLVec3F();
@@ -156,7 +158,7 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
      * @since 15.02.27
      */
     public final GLVec4F exGLVec4F() {
-        if(this.size() < 4) {
+        if (this.size() < 4) {
             return this.asGLVec4F().set(Vectors.W, 1.0f);
         } else {
             return this.asGLVec4F();
@@ -183,13 +185,13 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
      * @since 15.02.27
      */
     public final GLVecNF exGLVecNF(final int size) {
-        if(this.size() < size) {
+        if (this.size() < size) {
             return this.asGLVecNF(size).set(size - 1, 1.0f);
         } else {
             return this.asGLVecNF(size);
         }
     }
-    
+
     /**
      * Retrieves the value of the element at the specified index.
      *
@@ -239,7 +241,7 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
         this.zero();
 
         return this.set(vec.data(), vec.offset(), length);
-    }        
+    }
 
     /**
      * Calculates the dot product of this vector and the other vector.
@@ -254,7 +256,7 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
     public final int hashCode() {
         final int start = this.offset();
         final int end = start + this.size();
-        
+
         return Arrays.hashCode(
                 Arrays.copyOfRange(this.data(), start, end));
     }
@@ -301,9 +303,10 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
 
         return out.toString();
     }
-    
+
     /**
      * Copies the vector to the array
+     *
      * @param array the array to copy the vector to.
      * @param offset the position to start the copy
      * @param length the number of elements to copy. Must be less than size.
@@ -311,11 +314,28 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
      */
     public void copyToArray(
             final float[] array, final int offset, final int length) {
-        
-        if(length > this.size()) {
+
+        if (length > this.size()) {
             throw new IndexOutOfBoundsException();
         }
-        
+
         System.arraycopy(this.data(), this.offset(), array, offset, length);
+    }
+
+    /**
+     * Writes a GLVecF to a ByteBuffer
+     *
+     * @param out the ByteBuffer to write the vector to.
+     * @param outOffset the offset to begin writing the vector.
+     * @param in0 the vector to write.
+     * @param in0Offset the offset to begin reading element data from the
+     * vector.
+     * @param writeCount the number of element data to write.
+     * @since 15.07.04
+     */
+    public static void writeTo(final ByteBuffer out, final int outOffset, final GLVecF in0, final int in0Offset, final int writeCount) {
+        for (int i = 0; i < writeCount; i++) {
+            out.putFloat(outOffset * Float.BYTES, in0.data()[in0.offset() + in0Offset]);
+        }
     }
 }

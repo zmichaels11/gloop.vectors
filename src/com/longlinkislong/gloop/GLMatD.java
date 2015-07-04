@@ -25,6 +25,7 @@
  */
 package com.longlinkislong.gloop;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /*
@@ -87,13 +88,13 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @return a 2x2 matrix.
      * @since 15.02.26
      */
-    public GLMat2D asGLMat2D(){
-        if(this instanceof GLMat2D) {
+    public GLMat2D asGLMat2D() {
+        if (this instanceof GLMat2D) {
             return (GLMat2D) this;
         }
-        
+
         final GLMat2D out = this.getFactory().nextGLMat2D();
-        
+
         final int len = Math.min(this.size(), 2);
 
         for (int i = 0; i < len; i++) {
@@ -101,7 +102,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
                 out.set(i, j, this.get(i, j));
             }
         }
-        
+
         return out;
     }
 
@@ -113,10 +114,10 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @since 15.02.26
      */
     public GLMat3D asGLMat3D() {
-        if(this instanceof GLMat3D) {
+        if (this instanceof GLMat3D) {
             return (GLMat3D) this;
         }
-        
+
         final GLMat3D out = this.getFactory().nextGLMat3D();
         final int len = Math.min(this.size(), 3);
 
@@ -125,7 +126,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
                 out.set(i, j, this.get(i, j));
             }
         }
-        
+
         return out;
     }
 
@@ -137,12 +138,12 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @since 15.02.26
      */
     public GLMat4D asGLMat4D() {
-        if(this instanceof GLMat4D) {
+        if (this instanceof GLMat4D) {
             return (GLMat4D) this;
         }
-        
+
         final GLMat4D out = this.getFactory().nextGLMat4D();
-        
+
         final int len = Math.min(this.size(), 4);
 
         for (int i = 0; i < len; i++) {
@@ -150,7 +151,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
                 out.set(i, j, this.get(i, j));
             }
         }
-        
+
         return out;
     }
 
@@ -163,12 +164,12 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @since 15.02.26
      */
     public GLMatND asGLMatND(int size) {
-        if(this.size() == size && this instanceof GLMatND) {
+        if (this.size() == size && this instanceof GLMatND) {
             return (GLMatND) this;
         }
-        
-        final GLMatND out = this.getFactory().nextGLMatND(size);
-        
+
+        final GLMatND out = this.getFactory().nextGLMatND(size).identity();
+
         final int len = Math.min(this.size(), size);
 
         for (int i = 0; i < len; i++) {
@@ -176,14 +177,14 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
                 out.set(i, j, this.get(i, j));
             }
         }
-        
+
         return out;
     }
 
     protected int index(final int i, final int j) {
         return i + j * this.size();
     }
-    
+
     /**
      * Retrieves the value of the element at the specified location.
      *
@@ -333,5 +334,21 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
         }
 
         System.arraycopy(this.data(), this.offset(), array, offset, length);
+    }
+
+    /**
+     * Writes a GLMatD to a ByteBuffer.
+     *
+     * @param out the ByteBuffer to write the matrix to.
+     * @param outOffset the offset of the ByteBuffer to begin writing.
+     * @param in0 the matrix to write.
+     * @param in0Offset the element offset to start reading from the matrix.
+     * @param writeCount the number of elements to read.
+     * @since 15.07.04
+     */
+    public static void writeTo(final ByteBuffer out, final int outOffset, final GLMatD in0, final int in0Offset, final int writeCount) {
+        for (int i = 0; i < writeCount; i++) {
+            out.putDouble(outOffset * Double.BYTES, in0.data()[in0.offset() + in0Offset]);
+        }
     }
 }
