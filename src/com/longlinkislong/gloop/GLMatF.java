@@ -341,7 +341,7 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      */
     public static void writeTo(final ByteBuffer out, final int outOffset, final GLMatF in0, final int in0Offset, final int writeCount) {
         for (int i = 0; i < writeCount; i++) {
-            out.putFloat(outOffset * Float.BYTES, in0.data()[in0.offset() + in0Offset]);
+            out.putFloat(outOffset + i * Float.BYTES, in0.data()[in0.offset() + in0Offset]);
         }
     }
 }
