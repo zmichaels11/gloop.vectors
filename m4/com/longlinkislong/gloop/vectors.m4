@@ -8,7 +8,27 @@ package com.longlinkislong.gloop;
 public final class Vectors {
     private Vectors() {}
 
-    public static VectorFactory DEFAULT_FACTORY = new CyclicalVectorFactory();
+    public static final VectorFactory DEFAULT_FACTORY;
+
+    static {
+        final String def = System.getProperty("gloop.vectors.factory", "cyclical");
+
+        switch(def.toLowerCase()) {
+            case "static":
+                System.out.println("Using vector factory: StaticVectorFactory");
+                DEFAULT_FACTORY = StaticVectorFactory.getInstance();
+                break;
+            case "atomic":
+                System.out.println("Using vector factory: AtomicVectorFactory");
+                DEFAULT_FACTORY = new AtomicVectorFactory();
+                break;
+            default:
+            case "cyclical":
+                System.out.println("Using vector factory: CyclicalVectorFactory");
+                DEFAULT_FACTORY = new CyclicalVectorFactory();
+                break;
+        }
+    }
 
     protected static final double[] NULL_VECTORD = {0.0, 0.0, 0.0, 0.0};
     protected static final float[] NULL_VECTORF = {0f, 0f, 0f, 0f};

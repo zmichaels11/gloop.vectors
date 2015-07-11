@@ -144,7 +144,9 @@
                 <exclude name="GLVec4.java"/>
                 <exclude name="GLMat2.java"/>
                 <exclude name="GLMat3.java"/>
-                <exclude name="GLMat4.java"/>                
+                <exclude name="GLMat4.java"/>    
+                <exclude name="AtomicVectorFactory.java"/>
+                <exclude name="AtomicMatrixFactory.java"/>            
             </fileset>
         </delete>        
     </target>        

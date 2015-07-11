@@ -7,7 +7,27 @@ package com.longlinkislong.gloop;
 
 public final class Matrices {    
     private Matrices() {}   
-    public static MatrixFactory DEFAULT_FACTORY = new CyclicalMatrixFactory();
+    public static final MatrixFactory DEFAULT_FACTORY;
+
+    static {
+        final String def = System.getProperty("gloop.matrices.factory", "cyclical");
+
+        switch(def.toLowerCase()) {
+            case "static":
+                System.out.println("Using matrix factory: StaticMatrixFactory");
+                DEFAULT_FACTORY = StaticMatrixFactory.getInstance();
+                break;
+            case "atomic":
+                System.out.println("Using matrix factory: AtomicMatrixFactory");
+                DEFAULT_FACTORY = new AtomicMatrixFactory();
+                break;
+            default:
+            case "cyclical":
+                System.out.println("Using matrix factory: Cyclical");
+                DEFAULT_FACTORY = new CyclicalMatrixFactory();
+                break;
+        }
+    }
  
     protected static final int E11 = 0;
     protected static final int E12 = 1;
