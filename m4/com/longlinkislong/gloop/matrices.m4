@@ -7,7 +7,7 @@ package com.longlinkislong.gloop;
 
 public final class Matrices {    
     private Matrices() {}   
-    public static final MatrixFactory DEFAULT_FACTORY;
+    public static MatrixFactory DEFAULT_FACTORY;
 
     static {
         final String def = System.getProperty("gloop.matrices.factory", "cyclical");

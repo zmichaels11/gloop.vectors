@@ -8,7 +8,7 @@ package com.longlinkislong.gloop;
 public final class Vectors {
     private Vectors() {}
 
-    public static final VectorFactory DEFAULT_FACTORY;
+    public static VectorFactory DEFAULT_FACTORY;
 
     static {
         final String def = System.getProperty("gloop.vectors.factory", "cyclical");
