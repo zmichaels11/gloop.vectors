@@ -9,23 +9,38 @@ public final class Vectors {
     private Vectors() {}
 
     public static VectorFactory DEFAULT_FACTORY;
+    private static final boolean DEBUG;
 
     static {
+        DEBUG = Boolean.getBoolean("debug");
         final String def = System.getProperty("gloop.vectors.factory", "cyclical");
+        final int cacheSize = Integer.getInteger("gloop.vectors.cache", 16);
 
         switch(def.toLowerCase()) {
             case "static":
-                System.out.println("Using vector factory: StaticVectorFactory");
+                if(DEBUG) {
+                    System.out.println("Using vector factory: StaticVectorFactory");
+                }
                 DEFAULT_FACTORY = StaticVectorFactory.getInstance();
                 break;
             case "atomic":
-                System.out.println("Using vector factory: AtomicVectorFactory");
-                DEFAULT_FACTORY = new AtomicVectorFactory();
+                if(DEBUG) {
+                    System.out.println("Using vector factory: AtomicVectorFactory");
+                }
+                DEFAULT_FACTORY = new AtomicVectorFactory(cacheSize);
+                break;
+            case "threadsafe":
+                if(DEBUG) {
+                    System.out.println("Using vector factory: ThreadSafeVectorFactory");
+                }
+                DEFAULT_FACTORY = new ThreadSafeVectorFactory(cacheSize);
                 break;
             default:
             case "cyclical":
-                System.out.println("Using vector factory: CyclicalVectorFactory");
-                DEFAULT_FACTORY = new CyclicalVectorFactory();
+                if(DEBUG) {
+                    System.out.println("Using vector factory: CyclicalVectorFactory");
+                }
+                DEFAULT_FACTORY = new CyclicalVectorFactory(cacheSize);
                 break;
         }
     }

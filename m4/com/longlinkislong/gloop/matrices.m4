@@ -8,9 +8,12 @@ package com.longlinkislong.gloop;
 public final class Matrices {    
     private Matrices() {}   
     public static MatrixFactory DEFAULT_FACTORY;
+    public static final boolean DEBUG;
 
     static {
-        final String def = System.getProperty("gloop.matrices.factory", "cyclical");
+        DEBUG = Boolean.getBoolean("debug");
+        final String def = System.getProperty("gloop.matrices.factory", "cyclical");        
+        final int cacheSize = Integer.getInteger("gloop.matrices.cache", 16);
 
         switch(def.toLowerCase()) {
             case "static":
@@ -19,12 +22,18 @@ public final class Matrices {
                 break;
             case "atomic":
                 System.out.println("Using matrix factory: AtomicMatrixFactory");
-                DEFAULT_FACTORY = new AtomicMatrixFactory();
+                DEFAULT_FACTORY = new AtomicMatrixFactory(cacheSize);
+                break;
+            case "threadsafe":
+                if(DEBUG) {
+                    System.out.println("Using matrix factory: ThreadSafeMatrixFactory");
+                }
+                DEFAULT_FACTORY = new ThreadSafeMatrixFactory(cacheSize);
                 break;
             default:
             case "cyclical":
                 System.out.println("Using matrix factory: Cyclical");
-                DEFAULT_FACTORY = new CyclicalMatrixFactory();
+                DEFAULT_FACTORY = new CyclicalMatrixFactory(cacheSize);
                 break;
         }
     }

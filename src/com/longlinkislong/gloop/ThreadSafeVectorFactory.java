@@ -13,13 +13,13 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * An implementation of MatrixFactory that utilizes a separate matrix pool per
+ * An implementation of VectorFactory that allocates a cyclical pool for each
  * thread.
  *
- * @author Robert
- * @since 15.07.12
+ * @author zmichaels
+ * @since 15.07.13
  */
-public final class ThreadSafeMatrixFactory implements MatrixFactory {
+public final class ThreadSafeVectorFactory implements VectorFactory {
 
     private static final boolean DEBUG;
 
@@ -33,29 +33,30 @@ public final class ThreadSafeMatrixFactory implements MatrixFactory {
     private final int cacheSize;
 
     /**
-     * Constructs a new ThreadSafeMatrixFactory using the default cache size.
+     * Constructs a new ThreadSafeVectorFactory using the default cache size.
      *
-     * @throws IllegalArgumentException if default cache size is set to less than 1KB.
-     * @since 15.07.12
+     * @throws IllegalArgumentException if default cache size is set to less
+     * than 1KB.
+     * @since 15.07.13
      */
-    public ThreadSafeMatrixFactory() {
-        this(Integer.getInteger("gloop.matrices.cache", 16));
+    public ThreadSafeVectorFactory() {
+        this(Integer.getInteger("gloop.vectors.cache", 16));
     }
 
     /**
-     * Constructs a new ThreadSafeMatrixFactory with the specified cache size.
+     * Constructs a new ThreadSafeVectorFactory using the specified cache size.
      *
-     * @param cacheSize the inner cache size in kilobytes.
-     * @throws IllegalArgumentException if cache size is less than 1KB.
-     * @since 15.07.12
+     * @param cacheSize the cache size in kilobytes.
+     * @throws IllegalArgumentException if cache size specified is less than 1KB.
+     * @since 15.07.13
      */
-    public ThreadSafeMatrixFactory(final int cacheSize) {
+    public ThreadSafeVectorFactory(final int cacheSize) {
         if ((this.cacheSize = cacheSize) < 1) {
             throw new IllegalArgumentException("Invalid cache size! At least 1KB of cache must be allocated for a matrix pool!");
         }
     }
 
-    private MatrixFactory getFactory() {
+    private VectorFactory getFactory() {
         while (lock.isLocked()) {
             Thread.yield();
         }
@@ -108,48 +109,48 @@ public final class ThreadSafeMatrixFactory implements MatrixFactory {
     }
 
     @Override
-    public GLMat2F nextGLMat2F() {
-        return getFactory().nextGLMat2F();
+    public GLVec2D nextGLVec2D() {
+        return this.getFactory().nextGLVec2D();
     }
 
     @Override
-    public GLMat3F nextGLMat3F() {
-        return getFactory().nextGLMat3F();
+    public GLVec3D nextGLVec3D() {
+        return this.getFactory().nextGLVec3D();
     }
 
     @Override
-    public GLMat4F nextGLMat4F() {
-        return getFactory().nextGLMat4F();
+    public GLVec4D nextGLVec4D() {
+        return this.getFactory().nextGLVec4D();
     }
 
     @Override
-    public GLMatNF nextGLMatNF(int size) {
-        return getFactory().nextGLMatNF(size);
+    public GLVecND nextGLVecND(int size) {
+        return this.getFactory().nextGLVecND(size);
     }
 
     @Override
-    public GLMat2D nextGLMat2D() {
-        return getFactory().nextGLMat2D();
+    public GLVec2F nextGLVec2F() {
+        return this.getFactory().nextGLVec2F();
     }
 
     @Override
-    public GLMat3D nextGLMat3D() {
-        return getFactory().nextGLMat3D();
+    public GLVec3F nextGLVec3F() {
+        return this.getFactory().nextGLVec3F();
     }
 
     @Override
-    public GLMat4D nextGLMat4D() {
-        return getFactory().nextGLMat4D();
+    public GLVec4F nextGLVec4F() {
+        return this.getFactory().nextGLVec4F();
     }
 
     @Override
-    public GLMatND nextGLMatND(int size) {
-        return getFactory().nextGLMatND(size);
+    public GLVecNF nextGLVecNF(int size) {
+        return this.getFactory().nextGLVecNF(size);
     }
 
     private final class PooledFactory {
 
-        private final MatrixFactory factory;
+        private final VectorFactory factory;
         private Thread thread;
 
         PooledFactory(Thread thread) {
@@ -157,7 +158,7 @@ public final class ThreadSafeMatrixFactory implements MatrixFactory {
                 System.out.println("Create pool on thread " + thread.getId());
             }
 
-            this.factory = new CyclicalMatrixFactory(ThreadSafeMatrixFactory.this.cacheSize);
+            this.factory = new CyclicalVectorFactory(ThreadSafeVectorFactory.this.cacheSize);
             this.thread = thread;
         }
 
@@ -173,7 +174,7 @@ public final class ThreadSafeMatrixFactory implements MatrixFactory {
             this.thread = thread;
         }
 
-        MatrixFactory getFactory() {
+        VectorFactory getFactory() {
             return factory;
         }
     }

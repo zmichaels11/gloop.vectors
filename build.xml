@@ -146,7 +146,9 @@
                 <exclude name="GLMat3.java"/>
                 <exclude name="GLMat4.java"/>    
                 <exclude name="AtomicVectorFactory.java"/>
-                <exclude name="AtomicMatrixFactory.java"/>            
+                <exclude name="AtomicMatrixFactory.java"/>
+                <exclude name="ThreadSafeMatrixFactory.java"/>
+                <exclude name="ThreadSafeVectorFactory.java"/>
             </fileset>
         </delete>        
     </target>        
