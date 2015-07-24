@@ -12,8 +12,7 @@ package com.longlinkislong.gloop;
  * @author zmichaels
  * @since 15.05.26
  */
-public interface GLMat2 {
-
+public interface GLMat2 {    
     /**
      * Converts the matrix to a single precision matrix. If the matrix is
      * already an instance of GLMatF, this function may return itself.

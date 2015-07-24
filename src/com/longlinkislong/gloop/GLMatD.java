@@ -235,15 +235,18 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
     public final GLMatT set(final GLMat other) {
         final GLMatD mat = other.asGLMatD();
         final GLMatT out = this.identity();
-        
-        if(other.size() == this.size()){
+
+        if (other.size() == this.size()) {
             final int length = this.size();
-            return this.set(0, 0, mat.data(), mat.offset(), length * length, length);
-        }else{
+
+            // gotta go fast
+            System.arraycopy(mat.data(), mat.offset(), out.data(), out.offset(), length * length);
+            return out;
+        } else {
             final int length = Math.min(other.size(), this.size());
-            
-            for(int i = 0; i < length; i++) {
-                for(int j = 0; j < length; j++) {
+
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
                     out.set(i, j, mat.get(i, j));
                 }
             }

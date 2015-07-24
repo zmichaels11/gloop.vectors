@@ -43,11 +43,11 @@
         <mkdir dir="junit"/>
         
         <get
-            src="http://storage.googleapis.com/jartifacts/junit-4.12/junit-4.12.jar"
+            src="https://storage.googleapis.com/lldev-storage/obj/junit/hamcrest-core-1.3.jar"
             dest="junit/"/>
         
         <get
-            src="http://storage.googleapis.com/jartifacts/junit-4.12/hamcrest-core-1.3.jar"
+            src="https://storage.googleapis.com/lldev-storage/obj/junit/junit-4.12.jar"
             dest="junit/"/>
         
         <touch file="junit/412.version"/>

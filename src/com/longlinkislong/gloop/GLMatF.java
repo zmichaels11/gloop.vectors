@@ -26,7 +26,6 @@
 package com.longlinkislong.gloop;
 
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 /**
@@ -231,7 +230,10 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
         
         if(other.size() == this.size()){
             final int length = this.size();
-            return this.set(0, 0, mat.data(), mat.offset(), length * length, length);
+            // gotta go fast
+            System.arraycopy(mat.data(), mat.offset(), out.data(), out.offset(), length * length);
+            
+            return out;
         }else{
             final int length = Math.min(other.size(), this.size());
             

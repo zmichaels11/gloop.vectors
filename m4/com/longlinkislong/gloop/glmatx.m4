@@ -11,6 +11,8 @@ package com.longlinkislong.gloop;
  * @since 15.02.27
  */
 public abstract class MatT extends BaseT<MatT, VecT> implements GenT {
+    private boolean isIdentity = false;
+
     /**
      * The size of the matrix
      * @since 15.02.27
@@ -56,7 +58,9 @@ public abstract class MatT extends BaseT<MatT, VecT> implements GenT {
         final MatT out = create();
         final int off = out.offset() + m4_eval(MAT_SIZE * MAT_SIZE - MAT_SIZE);
         
-        System.arraycopy(data, offset, out.data(), off, length);        
+        System.arraycopy(data, offset, out.data(), off, length);
+
+        out.isIdentity = false;
 
         return out;
     }
@@ -114,6 +118,8 @@ m4_ifelse(MAT_SIZE, 4, `m4_dnl
             left, right, bottom, top,
             near, far);
 
+        out.isIdentity = false;
+
         return out.asStaticMat();
     }
 
@@ -137,6 +143,8 @@ m4_ifelse(MAT_SIZE, 4, `m4_dnl
             out.data(), out.offset(),
             fov, aspect,
             near, far);
+
+        out.isIdentity = false;
 
         return out.asStaticMat();
     }
@@ -162,6 +170,8 @@ m4_ifelse(MAT_SIZE, 4, `m4_dnl
             fov, aspect,
             near);
 
+        out.isIdentity = false;
+
         return out.asStaticMat();
     }
 
@@ -185,6 +195,8 @@ m4_ifelse(MAT_SIZE, 4, `m4_dnl
         _call(`lookat')(
             out.data(), out.offset(),
             e, c, u);
+
+        out.isIdentity = false;
 
         return out.asStaticMat();
     }
@@ -244,6 +256,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         final int index = this.offset() + this.index(i, j);
 
         this.data()[index] = value;
+        this.isIdentity = false;
         return this;
     }
 
@@ -263,6 +276,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
             yOff += scanlineSize;
         }
 
+        this.isIdentity = false;
         return this;
     }
 
@@ -272,6 +286,8 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         final int length = Math.min(this.size(), v.size());
 
         System.arraycopy(v.data(), v.offset(), this.data(), this.offset() + rowID * MAT_SIZE, length);
+
+        this.isIdentity = false;
         return this;
     }
 
@@ -284,6 +300,8 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
             this.data(), this.offset(),
             value);
 
+        this.isIdentity = false;
+
         return out;
     }
 
@@ -294,6 +312,8 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         _call(`transpose')(
             out.data(), out.offset(),
             this.data(), this.offset());
+
+        out.isIdentity = false;
 
         return out;
     }
@@ -306,6 +326,8 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
             out.data(), out.offset(),
             this.data(), this.offset());
 
+        out.isIdentity = false;
+
         return out;
     }
 
@@ -316,15 +338,20 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
 
     @Override
     public final MatT multiply(GLMat other) {
-        final MatT out = _next(MAT_SIZE, TYPE);
         final MatT in1 = _cast(_cast(other, BaseT), MatT);
 
-        _call(`multiplyMat')(
-            out.data(), out.offset(),
-            this.data(), this.offset(),
-            in1.data(), in1.offset());
+        if(in1.isIdentity) {
+            return this.copyTo(this.getFactory());
+        } else {
+            final MatT out = _next(MAT_SIZE, TYPE);        
+        
+            _call(`multiplyMat')(
+                out.data(), out.offset(),
+                this.data(), this.offset(),
+                in1.data(), in1.offset());
 
-        return out;
+            return out;
+        }
     }
 
     @Override
@@ -350,6 +377,8 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
 
     @Override
     public final VecT map(final int rowId) {
+        this.isIdentity = false;
+
         return new _fdef(`MappedVec', MAT_SIZE, TYPE) (
             Vectors.DEFAULT_FACTORY,
             this.data(),
@@ -359,6 +388,8 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
 
     @Override
     public final MatT zero() {
+        this.isIdentity = false;
+
         System.arraycopy(
             _fdef(`Matrices.', `NULL_MATRIX', TYPE), 0,
             this.data(), this.offset(), MAT_SIZE * MAT_SIZE);
@@ -371,6 +402,8 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         this.set(0, 0,
             _fdef(`Matrices.', `IDENTITY_MATRIX', TYPE), 0,
             MAT_SIZE * MAT_SIZE, 4);
+        
+        this.isIdentity = true;
         return this;
     }
     
