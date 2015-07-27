@@ -12,7 +12,7 @@ public final class Vectors {
     private static final boolean DEBUG;
 
     static {
-        DEBUG = Boolean.getBoolean("debug");
+        DEBUG = Boolean.getBoolean("debug") && !System.getProperty("debug.exclude", "").contains("vectors");
         final String def = System.getProperty("gloop.vectors.factory", "cyclical");
         final int cacheSize = Integer.getInteger("gloop.vectors.cache", 16);
 

@@ -11,7 +11,7 @@ public final class Matrices {
     public static final boolean DEBUG;
 
     static {
-        DEBUG = Boolean.getBoolean("debug");
+        DEBUG = Boolean.getBoolean("debug") && !System.getProperty("debug.exclude", "").contains("matrices");
         final String def = System.getProperty("gloop.matrices.factory", "cyclical");        
         final int cacheSize = Integer.getInteger("gloop.matrices.cache", 16);
 
