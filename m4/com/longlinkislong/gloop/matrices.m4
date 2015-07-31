@@ -30,6 +30,16 @@ public final class Matrices {
                 }
                 DEFAULT_FACTORY = new ThreadSafeMatrixFactory(cacheSize);
                 break;
+            case "realtime":
+                if(DEBUG) {
+                    System.out.println("Using matrix factory: RealTimeMatrixFactory");
+                }
+                try {
+                    DEFAULT_FACTORY = new RealTimeMatrixFactory(cacheSize);
+                } catch(Exception ex) {
+                    throw new RuntimeException("Unable to initialize RealTimeMatrixFactory!", ex);
+                }
+                break;
             default:
             case "cyclical":
                 System.out.println("Using matrix factory: Cyclical");

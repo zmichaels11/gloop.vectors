@@ -35,6 +35,17 @@ public final class Vectors {
                 }
                 DEFAULT_FACTORY = new ThreadSafeVectorFactory(cacheSize);
                 break;
+            case "realtime":
+                if(DEBUG) {
+                    System.out.println("Using vector factory: RealTimeVectorFactory");
+                }
+
+                try {
+                    DEFAULT_FACTORY = new RealTimeVectorFactory(cacheSize);
+                } catch(Exception ex) {
+                    throw new RuntimeException("Unable to initialize RealTimeVectorFactory!", ex);
+                }
+                break;
             default:
             case "cyclical":
                 if(DEBUG) {

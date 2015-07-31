@@ -114,6 +114,20 @@
             <m4 input="staticmatx.m4" output="StaticMat3D.java" type="double" size="3"/>
             <m4 input="staticmatx.m4" output="StaticMat4D.java" type="double" size="4"/>
             
+            <m4 input="realtimevecx.m4" output="RealTimeVec2F.java" type="float" size="2"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec3F.java" type="float" size="3"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec4F.java" type="float" size="4"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec2D.java" type="double" size="2"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec3D.java" type="double" size="3"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec4D.java" type="double" size="4"/>                        
+            
+            <m4 input="realtimematx.m4" output="RealTimeMat2F.java" type="float" size="2"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat3F.java" type="float" size="3"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat4F.java" type="float" size="4"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat2D.java" type="double" size="2"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat3D.java" type="double" size="3"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat4D.java" type="double" size="4"/>            
+            
             <m4 input="staticmatnx.m4" output="StaticMatNF.java" type="float" size="N"/>
             <m4 input="staticmatnx.m4" output="StaticMatND.java" type="double" size="N"/>
         </parallel>             
@@ -149,6 +163,9 @@
                 <exclude name="AtomicMatrixFactory.java"/>
                 <exclude name="ThreadSafeMatrixFactory.java"/>
                 <exclude name="ThreadSafeVectorFactory.java"/>
+                <exclude name="RealTimeVectorFactory.java"/>
+                <exclude name="RealTimeMatrixFactory.java"/>
+                <exclude name="UnsafeTools.java"/>
             </fileset>
         </delete>        
     </target>        
