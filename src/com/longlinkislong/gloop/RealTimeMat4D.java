@@ -6,7 +6,7 @@ public class RealTimeMat4D extends GLMat4D implements StaticMat<double[]> {
 
     public RealTimeMat4D ( final MatrixFactory factory ) {
         this.mf = java.util.Objects.requireNonNull(factory);
-        this.data = com.longlinkislong.gloop.UnsafeTools.getInstance().dAlloc (4);
+        this.data = com.longlinkislong.gloop.UnsafeTools.getInstance().dAlloc (16);
     }
 
     @Override

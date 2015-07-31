@@ -10,7 +10,7 @@ public class MatT extends BaseT implements StaticMat<TYPE[]> {
 
     public MatT ( final MatrixFactory factory ) {
         this.mf = java.util.Objects.requireNonNull(factory);
-        this.data = com.longlinkislong.gloop.UnsafeTools.getInstance().m4_ifelse(TYPE, `float', `fAlloc', `dAlloc') (VEC_SIZE);
+        this.data = com.longlinkislong.gloop.UnsafeTools.getInstance().m4_ifelse(TYPE, `float', `fAlloc', `dAlloc') (m4_eval(MAT_SIZE * MAT_SIZE));
     }
 
     @Override

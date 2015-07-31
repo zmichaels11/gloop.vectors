@@ -6,7 +6,7 @@ public class RealTimeMat3F extends GLMat3F implements StaticMat<float[]> {
 
     public RealTimeMat3F ( final MatrixFactory factory ) {
         this.mf = java.util.Objects.requireNonNull(factory);
-        this.data = com.longlinkislong.gloop.UnsafeTools.getInstance().fAlloc (3);
+        this.data = com.longlinkislong.gloop.UnsafeTools.getInstance().fAlloc (9);
     }
 
     @Override
