@@ -44,6 +44,8 @@ public class CyclicalMatrixFactory implements MatrixFactory {
     private final MappedMat2F[] mat2FCache;
     private final MappedMat3F[] mat3FCache;
     private final MappedMat4F[] mat4FCache;
+    private final MappedMatNF[] matNFCache;
+    private final MappedMatND[] matNDCache;
 
     private int dataDOffset;
     private int dataFOffset;
@@ -55,6 +57,9 @@ public class CyclicalMatrixFactory implements MatrixFactory {
     private int mat2FID = 0;
     private int mat3FID = 0;
     private int mat4FID = 0;
+    
+    private int matNDID = 0;
+    private int matNFID = 0;
 
     /**
      * Constructs a new CyclicalMatrixFactory with the default cache size.
@@ -83,6 +88,8 @@ public class CyclicalMatrixFactory implements MatrixFactory {
         this.mat3FCache = new MappedMat3F[cacheBytes / GLMat3F.MATRIX_WIDTH];
         this.mat4DCache = new MappedMat4D[cacheBytes / GLMat4D.MATRIX_WIDTH];
         this.mat4FCache = new MappedMat4F[cacheBytes / GLMat4F.MATRIX_WIDTH];
+        this.matNDCache = new MappedMatND[this.mat4DCache.length / 2];
+        this.matNFCache = new MappedMatNF[this.mat4FCache.length / 2];
 
         int msize = GLMat2D.MATRIX_SIZE * GLMat2D.MATRIX_SIZE;
         for (int i = 0; i < this.mat2DCache.length; i++) {
@@ -112,6 +119,14 @@ public class CyclicalMatrixFactory implements MatrixFactory {
         msize = GLMat4F.MATRIX_SIZE * GLMat4F.MATRIX_SIZE;
         for (int i = 0; i < this.mat4FCache.length; i++) {
             this.mat4FCache[i] = new MappedMat4F(this, this.dataF, 0, this.dataF.length - msize);
+        }
+        
+        for (int i = 0; i < this.matNFCache.length; i++) {
+            this.matNFCache[i] = new MappedMatNF(this, this.dataF, 0, this.dataF.length - 1, 1);
+        }
+        
+        for(int i = 0; i < this.matNDCache.length; i++) {
+            this.matNDCache[i] = new MappedMatND(this, this.dataD, 0, this.dataD.length - 1, 1);
         }
     }
 
@@ -149,6 +164,18 @@ public class CyclicalMatrixFactory implements MatrixFactory {
         final int testID = this.mat4FID + 1;
 
         return this.mat4FID = testID % this.mat4FCache.length;
+    }
+    
+    private int nextMatNDID() {
+        final int testID = this.matNDID + 1;
+        
+        return this.matNDID = testID % this.matNDCache.length;
+    }
+    
+    private int nextMatNFID() {
+        final int testID = this.matNFID + 1;
+        
+        return this.matNFID = testID % this.matNFCache.length;
     }
 
     private int nextMat2DOffset() {
@@ -284,9 +311,13 @@ public class CyclicalMatrixFactory implements MatrixFactory {
 
     @Override
     public GLMatNF nextGLMatNF(int size) {
-        final int offset = this.nextMatNFOffset(size);
+        final int id = this.nextMatNFID();
+        final int offset = this.nextMatNFOffset(size);        
+        final MappedMatNF out = this.matNFCache[id];
+        
+        out.remap(offset).resize(size);
 
-        return new MappedMatNF(this, this.dataF, offset, size * size, size);
+        return out;
     }
 
     @Override
@@ -315,9 +346,13 @@ public class CyclicalMatrixFactory implements MatrixFactory {
 
     @Override
     public GLMatND nextGLMatND(int size) {
+        final int id = this.nextMatNDID();
         final int offset = this.nextMatNDOffset(size);
-
-        return new MappedMatND(this, this.dataD, offset, size * size, size);
+        final MappedMatND out = this.matNDCache[id];
+        
+        out.remap(offset).resize(size);
+        
+        return out;
     }
 
     @Override

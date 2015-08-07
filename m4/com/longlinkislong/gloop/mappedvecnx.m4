@@ -17,7 +17,7 @@ public class VecT extends BaseT implements MappedVec<VecT> {
     private int offset;
     private final int length;
     private final int baseOffset;
-    private final int vectorSize;
+    private int vectorSize;
 
     /**
      * Wraps an outside array as a VecT.
@@ -84,5 +84,13 @@ public class VecT extends BaseT implements MappedVec<VecT> {
 
         this.offset = offset;
         return this;
+    }
+
+    /**
+     * Changes the size of the vector.
+     * @since 15.08.07
+     */
+    void resize(final int newSize) {
+        this.vectorSize = newSize;
     }
 }

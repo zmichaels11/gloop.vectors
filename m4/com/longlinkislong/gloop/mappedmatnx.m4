@@ -17,7 +17,7 @@ public class MatT extends BaseT implements MappedMat<MatT> {
     private int offset;
     private final int length;
     private final int baseOffset;
-    private final int matrixSize;
+    private int matrixSize;
 
     /**
      * Wraps an array as a matrix.
@@ -84,5 +84,9 @@ public class MatT extends BaseT implements MappedMat<MatT> {
 
         this.offset = offset;
         return this;
+    }
+
+    void resize(final int newSize) {
+        this.matrixSize = newSize;
     }
 }

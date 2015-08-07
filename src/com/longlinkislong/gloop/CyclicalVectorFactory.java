@@ -44,6 +44,8 @@ public class CyclicalVectorFactory implements VectorFactory {
     private final MappedVec3F[] vec3FCache;
     private final MappedVec4D[] vec4DCache;
     private final MappedVec4F[] vec4FCache;
+    private final MappedVecNF[] vecNFCache;
+    private final MappedVecND[] vecNDCache;
 
     private int dataDOffset;
     private int dataFOffset;
@@ -55,6 +57,9 @@ public class CyclicalVectorFactory implements VectorFactory {
     private int vec2FID = 0;
     private int vec3FID = 0;
     private int vec4FID = 0;
+    
+    private int vecNFID = 0;
+    private int vecNDID = 0;
 
     /**
      * Constructs a new CyclicalVectorFactory with a cache of 16KB.
@@ -84,6 +89,8 @@ public class CyclicalVectorFactory implements VectorFactory {
         this.vec3FCache = new MappedVec3F[cacheBytes / GLVec3F.VECTOR_WIDTH];
         this.vec4DCache = new MappedVec4D[cacheBytes / GLVec4D.VECTOR_WIDTH];
         this.vec4FCache = new MappedVec4F[cacheBytes / GLVec4F.VECTOR_WIDTH];
+        this.vecNFCache = new MappedVecNF[this.vec4FCache.length / 2];
+        this.vecNDCache = new MappedVecND[this.vec4DCache.length / 2];
 
         for (int i = 0; i < vec2DCache.length; i++) {
             this.vec2DCache[i] = new MappedVec2D(this, this.dataD, 0, this.dataD.length - GLVec2D.VECTOR_SIZE);
@@ -102,11 +109,19 @@ public class CyclicalVectorFactory implements VectorFactory {
         }
 
         for (int i = 0; i < vec4DCache.length; i++) {
-            this.vec4DCache[i] = new MappedVec4D(this, this.dataD, 0, this.dataD.length - GLVec4D.VECTOR_SIZE);
+            this.vec4DCache[i] = new MappedVec4D(this, this.dataD, 0, this.dataD.length - GLVec4D.VECTOR_SIZE);            
         }
 
         for (int i = 0; i < vec4FCache.length; i++) {
-            this.vec4FCache[i] = new MappedVec4F(this, this.dataF, 0, this.dataF.length - GLVec4F.VECTOR_SIZE);
+            this.vec4FCache[i] = new MappedVec4F(this, this.dataF, 0, this.dataF.length - GLVec4F.VECTOR_SIZE);            
+        }             
+        
+        for(int i = 0; i < this.vecNFCache.length; i++) {
+            this.vecNFCache[i] = new MappedVecNF(this, this.dataF, 0, this.dataF.length - 1, 1);
+        }
+        
+        for(int i = 0 ; i < this.vecNDCache.length; i++) {
+            this.vecNDCache[i] = new MappedVecND(this, this.dataD, 0, this.dataD.length - 1, 1);
         }
     }
 
@@ -144,6 +159,18 @@ public class CyclicalVectorFactory implements VectorFactory {
         final int testID = this.vec4FID + 1;
 
         return this.vec4FID = testID % this.vec4FCache.length;
+    }
+    
+    private int nextVecNFID() {
+        final int testID = this.vecNFID + 1;
+        
+        return this.vecNFID = testID % this.vecNFCache.length;
+    }
+    
+    private int nextVecNDID() {
+        final int testID = this.vecNDID + 1;
+        
+        return this.vecNDID = testID % this.vecNDCache.length;
     }
 
     private int nextVec2DOffset() {
@@ -308,16 +335,24 @@ public class CyclicalVectorFactory implements VectorFactory {
 
     @Override
     public GLVecND nextGLVecND(final int vecSize) {
+        final int id = this.nextVecNDID();
         final int offset = this.nextVecNDOffset(vecSize);
-
-        return new MappedVecND(this, this.dataD, offset, vecSize, vecSize);
+        final MappedVecND out = this.vecNDCache[id];
+        
+        out.remap(offset).resize(vecSize);        
+        
+        return out;
     }
 
     @Override
     public GLVecNF nextGLVecNF(final int vecSize) {
+        final int id = this.nextVecNFID();
         final int offset = this.nextVecNFOffset(vecSize);
-
-        return new MappedVecNF(this, this.dataF, offset, vecSize, vecSize);
+        final MappedVecNF out = this.vecNFCache[id];
+        
+        out.remap(offset).resize(vecSize);
+        
+        return out;
     }
 
     @Override
