@@ -1,13 +1,6 @@
-buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.0"
-  }
+plugins {
+  id "com.jfrog.artifactory" version "3.1.1"
 }
-
-apply plugin: "com.jfrog.artifactory"
 apply plugin: 'java'
 
 sourceCompatibility = '1.8'
