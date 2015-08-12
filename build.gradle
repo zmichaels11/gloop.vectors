@@ -5,7 +5,7 @@ buildscript {
     }
 }
 
-group = "org.longlinkislong.gloop"
+group = "com.longlinkislong.gloop"
 version = currentVersion
 
 apply plugin: 'java'
