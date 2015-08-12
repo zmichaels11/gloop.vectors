@@ -5,6 +5,9 @@ buildscript {
     }
 }
 
+group = "org.longlinkislong.gloop"
+version = currentVersion
+
 apply plugin: 'java'
 
 ant.importBuild 'm4-build.xml'
