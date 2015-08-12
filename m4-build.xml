@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gloop-vectors-m4" default="compileM4" basedir=".">
+    <macrodef name="m4">
+        <attribute name="path" default="com/longlinkislong/gloop"/>
+        <attribute name="input"/>
+        <attribute name="output"/>
+        <attribute name="type" default="float"/>
+        <attribute name="size" default="4"/>
+        <sequential>
+            <exec                
+                executable="m4"
+                dir="src/main/"
+                input="src/main/m4/@{path}/@{input}"
+                output="src/main/java/@{path}/@{output}">
+                <arg value="-P"/>
+                <arg value="--define=TYPE=@{type}"/>
+                <arg value="--define=VEC_SIZE=@{size}"/>
+                <arg value="--define=MAT_SIZE=@{size}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+    
+    <target name="testAnt">
+        <echo>Ant works!</echo>
+    </target>
+    
+    <target name="compileM4">
+        <parallel>     
+            <m4 input="matrices.m4" output="Matrices.java"/>
+            <m4 input="vectors.m4" output="Vectors.java"/>
+            <m4 input="glvecx.m4" output="GLVec2F.java" type="float" size="2"/>
+            <m4 input="glvecx.m4" output="GLVec3F.java" type="float" size="3"/>
+            <m4 input="glvecx.m4" output="GLVec4F.java" type="float" size="4"/>
+            <m4 input="glvecx.m4" output="GLVec2D.java" type="double" size="2"/>        
+            <m4 input="glvecx.m4" output="GLVec3D.java" type="double" size="3"/>
+            <m4 input="glvecx.m4" output="GLVec4D.java" type="double" size="4"/>            
+            
+            <m4 input="glvecnx.m4" output="GLVecNF.java" type="float" size="N"/>
+            <m4 input="glvecnx.m4" output="GLVecND.java" type="double" size="N"/>
+
+            <m4 input="mappedvecx.m4" output="MappedVec2F.java" type="float" size="2"/>
+            <m4 input="mappedvecx.m4" output="MappedVec3F.java" type="float" size="3"/>
+            <m4 input="mappedvecx.m4" output="MappedVec4F.java" type="float" size="4"/>
+            <m4 input="mappedvecx.m4" output="MappedVec2D.java" type="double" size="2"/>
+            <m4 input="mappedvecx.m4" output="MappedVec3D.java" type="double" size="3"/>
+            <m4 input="mappedvecx.m4" output="MappedVec4D.java" type="double" size="4"/>
+            
+            <m4 input="mappedvecnx.m4" output="MappedVecNF.java" type="float" size="N"/>
+            <m4 input="mappedvecnx.m4" output="MappedVecND.java" type="double" size="N"/>
+            
+            <m4 input="staticvecx.m4" output="StaticVec2F.java" type="float" size="2"/>
+            <m4 input="staticvecx.m4" output="StaticVec3F.java" type="float" size="3"/>
+            <m4 input="staticvecx.m4" output="StaticVec4F.java" type="float" size="4"/>
+            <m4 input="staticvecx.m4" output="StaticVec2D.java" type="double" size="2"/>
+            <m4 input="staticvecx.m4" output="StaticVec3D.java" type="double" size="3"/>
+            <m4 input="staticvecx.m4" output="StaticVec4D.java" type="double" size="4"/>
+            
+            <m4 input="staticvecnx.m4" output="StaticVecNF.java" type="float" size="N"/>
+            <m4 input="staticvecnx.m4" output="StaticVecND.java" type="double" size="N"/>
+            
+            <m4 input="glmatx.m4" output="GLMat2F.java" type="float" size="2"/>
+            <m4 input="glmatx.m4" output="GLMat3F.java" type="float" size="3"/>
+            <m4 input="glmatx.m4" output="GLMat4F.java" type="float" size="4"/>
+            <m4 input="glmatx.m4" output="GLMat2D.java" type="double" size="2"/>
+            <m4 input="glmatx.m4" output="GLMat3D.java" type="double" size="3"/>
+            <m4 input="glmatx.m4" output="GLMat4D.java" type="double" size="4"/>
+            
+            <m4 input="glmatnx.m4" output="GLMatNF.java" type="float" size="N"/>
+            <m4 input="glmatnx.m4" output="GLMatND.java" type="double" size="N"/>
+            
+            <m4 input="mappedmatx.m4" output="MappedMat2F.java" type="float" size="2"/>
+            <m4 input="mappedmatx.m4" output="MappedMat3F.java" type="float" size="3"/>
+            <m4 input="mappedmatx.m4" output="MappedMat4F.java" type="float" size="4"/>
+            <m4 input="mappedmatx.m4" output="MappedMat2D.java" type="double" size="2"/>
+            <m4 input="mappedmatx.m4" output="MappedMat3D.java" type="double" size="3"/>
+            <m4 input="mappedmatx.m4" output="MappedMat4D.java" type="double" size="4"/>
+            
+            <m4 input="mappedmatnx.m4" output="MappedMatNF.java" type="float" size="N"/>
+            <m4 input="mappedmatnx.m4" output="MappedMatND.java" type="double" size="N"/>
+            
+            <m4 input="staticmatx.m4" output="StaticMat2F.java" type="float" size="2"/>
+            <m4 input="staticmatx.m4" output="StaticMat3F.java" type="float" size="3"/>
+            <m4 input="staticmatx.m4" output="StaticMat4F.java" type="float" size="4"/>
+            <m4 input="staticmatx.m4" output="StaticMat2D.java" type="double" size="2"/>
+            <m4 input="staticmatx.m4" output="StaticMat3D.java" type="double" size="3"/>
+            <m4 input="staticmatx.m4" output="StaticMat4D.java" type="double" size="4"/>
+            
+            <m4 input="realtimevecx.m4" output="RealTimeVec2F.java" type="float" size="2"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec3F.java" type="float" size="3"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec4F.java" type="float" size="4"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec2D.java" type="double" size="2"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec3D.java" type="double" size="3"/>
+            <m4 input="realtimevecx.m4" output="RealTimeVec4D.java" type="double" size="4"/>                        
+            
+            <m4 input="realtimematx.m4" output="RealTimeMat2F.java" type="float" size="2"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat3F.java" type="float" size="3"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat4F.java" type="float" size="4"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat2D.java" type="double" size="2"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat3D.java" type="double" size="3"/>
+            <m4 input="realtimematx.m4" output="RealTimeMat4D.java" type="double" size="4"/>            
+            
+            <m4 input="staticmatnx.m4" output="StaticMatNF.java" type="float" size="N"/>
+            <m4 input="staticmatnx.m4" output="StaticMatND.java" type="double" size="N"/>
+        </parallel>
+    </target>
+</project>

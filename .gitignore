@@ -1,0 +1,171 @@
+# Created by https://www.gitignore.io
+
+### Java ###
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+.nb-gradle/
+
+
+### Gradle ###
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+
+### Linux ###
+*~
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+
+### Windows ###
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+**/Matrices.java
+**/Vectors.java
+
+**/GLVec2F.java
+**/GLVec2D.java
+**/GLVec3F.java
+**/GLVec3D.java
+**/GLVec4F.java
+**/GLVec4D.java
+**/GLVecNF.java
+**/GLVecND.java
+
+**/MappedVec2F.java
+**/MappedVec2D.java
+**/MappedVec3F.java
+**/MappedVec3D.java
+**/MappedVec4F.java
+**/MappedVec4D.java
+**/MappedVecNF.java
+**/MappedVecND.java
+
+**/StaticVec2F.java
+**/StaticVec2D.java
+**/StaticVec3F.java
+**/StaticVec3D.java
+**/StaticVec4F.java
+**/StaticVec4D.java
+**/StaticVecNF.java
+**/StaticVecND.java
+
+**/GLMat2F.java
+**/GLMat2D.java
+**/GLMat3F.java
+**/GLMat3D.java
+**/GLMat4F.java
+**/GLMat4D.java
+**/GLMatNF.java
+**/GLMatND.java
+
+**/MappedMat2F.java
+**/MappedMat2D.java
+**/MappedMat3F.java
+**/MappedMat3D.java
+**/MappedMat4F.java
+**/MappedMat4D.java
+**/MappedMatNF.java
+**/MappedMatND.java
+
+**/StaticMat2F.java
+**/StaticMat2D.java
+**/StaticMat3F.java
+**/StaticMat3D.java
+**/StaticMat4F.java
+**/StaticMat4D.java
+**/StaticMatNF.java
+**/StaticMatND.java
+
+**/RealTimeVec2F.java
+**/RealTimeVec2D.java
+**/RealTimeVec3F.java
+**/RealTimeVec3D.java
+**/RealTimeVec4F.java
+**/RealTimeVec4D.java
+**/RealTimeVecNF.java
+**/RealTimeVecND.java
+
+**/RealTimeMat2F.java
+**/RealTimeMat2D.java
+**/RealTimeMat3F.java
+**/RealTimeMat3D.java
+**/RealTimeMat4F.java
+**/RealTimeMat4D.java
+**/RealTimeMatNF.java
+**/RealTimeMatND.java
