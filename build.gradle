@@ -1,3 +1,7 @@
+plugins {
+  id "com.jfrog.artifactory" version "3.1.1"
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
 
@@ -31,7 +35,4 @@ dependencies {
     // You can read more about how to add dependency here:
     //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
     testCompile group: 'junit', name: 'junit', version: '4.10'
-    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.0"
 }
-
-apply plugin: "com.jfrog.artifactory"
