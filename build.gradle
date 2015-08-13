@@ -3,13 +3,15 @@ buildscript {
         mavenCentral()
         jcenter()
     }
+    dependencies {
+        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '3.1.1')
+    }
 }
 
 group = "com.longlinkislong"
 version = currentVersion
 
 apply plugin: 'java'
-apply plugin: 'maven-publish'
 
 ant.importBuild 'm4-build.xml'
 
@@ -24,21 +26,9 @@ publishing {
 }
 
 repositories {
-    mavenCentral()   
-    // You may define additional repositories, or even remove "mavenCentral()".
-    // Read more about repositories here:
-    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:repositories
+    mavenCentral()       
 }
 
-dependencies {
-    // TODO: Add dependencies here ...
-    // You can read more about how to add dependency here:
-    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
+dependencies {    
     testCompile group: 'junit', name: 'junit', version: '4.10'
-}
-
-artifactory {
-    defaults {
-        publications ('mavenJava')
-    }
 }
