@@ -14,6 +14,14 @@ ant.importBuild 'm4-build.xml'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
 repositories {
     mavenCentral()   
     // You may define additional repositories, or even remove "mavenCentral()".
