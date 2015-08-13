@@ -1,28 +1,53 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '3.1.1')
-    }
-}
+// ***************************************************************************
+// **                          Requirements                                 **
+// **    - Gradle 2.6                                                       **
+// **    - add 'artifactoryUser' to [GRADLE_HOME]/gradle.properties         **
+// **    - add 'artifactoryPassword' to [GRADLE_HOME]/gradle.properties     **
+// **                                                                       **
+// ***************************************************************************
 
-group = "com.longlinkislong"
-version = currentVersion
+// artifactory plugin
+plugins {
+    id 'com.jfrog.artifactory' version '3.1.1'
+}
 
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
+// needed for M4 generation
 ant.importBuild 'm4-build.xml'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+artifactory {
+    contextUrl = "${artifactoryContextURL}"
+    publish {
+        repository {
+            repoKey = "${artifactoryPublishRepo}"
+            username = "${artifactoryUser}"
+            password = "${artifactoryPassword}"
+            maven = true
+        }
+        defaults {
+            publications ('mavenJava')
+        }
+    }
+    resolve {
+        repository {
+            repoKey = "${artifactoryResolveRepo}"
+            username = "${artifactoryUser}"
+            password = "${artifactoryPassword}"
+            maven = true
+        }
+    }
+}
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = 'com.longlinkislong'
+            groupId = "${group}"
+            version = "${version}"
         }
     }
 }
