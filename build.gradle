@@ -22,6 +22,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            groupId = 'com.longlinkislong'
         }
     }
 }
