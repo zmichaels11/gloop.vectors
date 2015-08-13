@@ -9,6 +9,7 @@ group = "com.longlinkislong"
 version = currentVersion
 
 apply plugin: 'java'
+apply plugin: 'maven-publish'
 
 ant.importBuild 'm4-build.xml'
 
