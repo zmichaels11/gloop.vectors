@@ -21,9 +21,76 @@ artifactory {
     }
 }
 
+def getSnapshotVersion() {
+    return new Date().format('yy-MM') + "-SNAPSHOT"
+}
+
+task incrementMajor << {
+    def versionPropsFile = file('version.properties')
+    
+    if(versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        
+        versionProps.load(new FileInputStream(versionPropsFile))
+        
+        def major = versionProps['major'].toInteger() + 1
+        def minor = versionProps['minor']
+        def revision = versionProps['revision']
+        
+        versionProps['major'] = major.toString()
+        versionProps.store(versionPropsFile.newWriter(), null) 
+        
+        println "Version is now: " + major + "." + minor + "r" + revision
+    } else {
+        throw new RuntimeException("Could not read version.properties!")
+    }
+}
+
+task incrementMinor << {
+    def versionPropsFile = file('version.properties')
+    
+    if(versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        
+        versionProps.load(new FileInputStream(versionPropsFile))
+        
+        def major = versionProps['major']
+        def minor = versionProps['minor'].toInteger() + 1
+        def revision = versionProps['revision']
+        
+        versionProps['major'] = major.toString()
+        versionProps.store(versionPropsFile.newWriter(), null) 
+        
+        println "Version is now: " + major + "." + minor + "r" + revision
+    } else {
+        throw new RuntimeException("Could not read version.properties!")
+    }
+}
+
+def incrementRevision() {
+    def versionPropsFile = file('version.properties')
+    
+    if(versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        
+        versionProps.load(new FileInputStream(versionPropsFile))
+        
+        def major = versionProps['major']
+        def minor = versionProps['minor']
+        def revision = versionProps['revision'].toInteger() + 1
+        
+        versionProps['major'] = major.toString()
+        versionProps.store(versionPropsFile.newWriter(), null) 
+        
+        println "Version is now: " + major + "." + minor + "r" + revision
+    } else {
+        throw new RuntimeException("Could not read version.properties!")
+    }
+}
+
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        snapshot(MavenPublication) {
             from components.java
             groupId = "${group}"
             version = "${version}"
