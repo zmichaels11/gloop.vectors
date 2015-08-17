@@ -1,28 +1,35 @@
-artifactory {
-    contextUrl = "${artifactoryContextURL}"
-    publish {
-        repository {
-            repoKey = "${artifactoryPublishRepo}"
-            username = "${artifactoryUser}"
-            password = "${artifactoryPassword}"
-            maven = true
+publishing {
+    publications {
+        snapshot(MavenPublication) {
+            from components.java
+            groupId = "${group}"
+            version = getSnapshotVersion()
         }
-        defaults {
-            publications ('mavenJava')
-        }
-    }
-    resolve {
-        repository {
-            repoKey = "${artifactoryResolveRepo}"
-            username = "${artifactoryUser}"
-            password = "${artifactoryPassword}"
-            maven = true
+        release(MavenPublication) {
+            from components.java
+            groupId = "${group}"
+            version = getReleaseVersion()
         }
     }
 }
 
-def getSnapshotVersion() {
-    return new Date().format('yy-MM') + "-SNAPSHOT"
+artifactoryPublish {
+    contextUrl = "${artifactoryContextURL}"
+    publications("${buildType}")
+    
+    clientConfig.publisher.username = "${artifactoryUser}"
+    clientConfig.publisher.password = "${artifactoryPassword}"
+    
+    switch("${buildType}") {
+    case 'release':        
+        clientConfig.publisher.repoKey = artifactoryReleaseRepo        
+        break;
+    case 'snapshot':
+        clientConfig.publisher.repoKey = artifactorySnapshotRepo
+        break;
+    default:
+        throw new RuntimeException("Invalid buildType: ${buildType}")        
+    }
 }
 
 task incrementMajor << {
@@ -67,7 +74,7 @@ task incrementMinor << {
     }
 }
 
-def incrementRevision() {
+def getReleaseVersion() {
     def versionPropsFile = file('version.properties')
     
     if(versionPropsFile.canRead()) {
@@ -77,23 +84,20 @@ def incrementRevision() {
         
         def major = versionProps['major']
         def minor = versionProps['minor']
-        def revision = versionProps['revision'].toInteger() + 1
+        def revision = versionProps['revision'].toInteger()
         
-        versionProps['major'] = major.toString()
-        versionProps.store(versionPropsFile.newWriter(), null) 
+        if(buildType.equalsIgnoreCase('release')) {
+            revision = revision + 1
+            versionProps['revision'] = "" + revision
+            versionProps.store(versionPropsFile.newWriter(), null) 
+        }                                        
         
-        println "Version is now: " + major + "." + minor + "r" + revision
+        return major + "." + minor + "r" + revision        
     } else {
         throw new RuntimeException("Could not read version.properties!")
     }
 }
 
-publishing {
-    publications {
-        snapshot(MavenPublication) {
-            from components.java
-            groupId = "${group}"
-            version = "${version}"
-        }
-    }
+def getSnapshotVersion() {    
+    return new Date().format('yy-MM') + "-SNAPSHOT"
 }
