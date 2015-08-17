@@ -29,7 +29,9 @@ publishing {
                     versionProps['minor'] = '0'
                     versionProps['revision'] = '0'
         
-                    versionProps.store(versionPropsFile.newWriter(), null)
+                    if(versioning == 'autoincrement') {
+                        versionProps.store(versionPropsFile.newWriter(), null)
+                    }
                     
                     version = "1.0r0"
                 } else if(versionPropsFile.canRead()) {
@@ -43,7 +45,9 @@ publishing {
                     
                     versionProps['revision'] = revision.toString()
                     
-                    versionProps.store(versionPropsFile.newWriter(), null)
+                    if(versioning == 'autoincrement') {
+                        versionProps.store(versionPropsFile.newWriter(), null)
+                    }
         
                     version = "${major}.${minor}r${revision}"
                 }
