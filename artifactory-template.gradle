@@ -146,7 +146,7 @@ def getReleaseVersion() {
         
         return '1.0r0'
     } else if(versionPropsFile.canRead()) {
-        def Properties versionProps = new Properties()
+        def versionProps = new Properties()
         
         versionProps.load(new FileInputStream(versionPropsFile))
         
