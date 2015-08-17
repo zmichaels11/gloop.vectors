@@ -29,7 +29,7 @@ publishing {
                     versionProps['minor'] = '0'
                     versionProps['revision'] = '0'
         
-                    if(versioning == 'autoincrement') {
+                    if(versioning == 'auto') {
                         versionProps.store(versionPropsFile.newWriter(), null)
                     }
                     
@@ -45,7 +45,7 @@ publishing {
                     
                     versionProps['revision'] = revision.toString()
                     
-                    if(versioning == 'autoincrement') {
+                    if(versioning == 'auto') {
                         versionProps.store(versionPropsFile.newWriter(), null)
                     }
         
