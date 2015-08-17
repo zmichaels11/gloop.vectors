@@ -45,6 +45,9 @@ task incrementMajor << {
         def revision = versionProps['revision']
         
         versionProps['major'] = major.toString()
+        versionProps['minor'] = '0'
+        versionProps['revision'] = '0'
+        
         versionProps.store(versionPropsFile.newWriter(), null) 
         
         println "Version is now: " + major + "." + minor + "r" + revision
@@ -65,12 +68,34 @@ task incrementMinor << {
         def minor = versionProps['minor'].toInteger() + 1
         def revision = versionProps['revision']
         
-        versionProps['major'] = major.toString()
+        versionProps['minor'] = minor.toString()
+        versionProps['revision'] = '0'
+        
         versionProps.store(versionPropsFile.newWriter(), null) 
         
         println "Version is now: " + major + "." + minor + "r" + revision
     } else {
         throw new RuntimeException("Could not read version.properties!")
+    }
+}
+
+def getVersion() {
+    if(buildType.equalsIgnoreCase('release')) {
+        def versionPropsFile = file('version.properties')
+        
+        if(versionPropsFile.canRead()) {
+            def versionProps = new Properties()
+            
+            versionProps.load(new FileInputStream(versionPropsFile))
+            
+            def major = versionProps['major']
+            def minor = versionProps['minor']
+            def revision = versionProps['revision']
+            
+            return "${major}.${minor}r${revision}"
+        }
+    } else {
+        return getSnapshotVersion()
     }
 }
 
