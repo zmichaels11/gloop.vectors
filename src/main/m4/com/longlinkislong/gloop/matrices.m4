@@ -17,22 +17,22 @@ public final class Matrices {
 
         switch(def.toLowerCase()) {
             case "static":
-                System.out.println("Using matrix factory: StaticMatrixFactory");
+                System.out.println("[Matrices]: Using matrix factory: StaticMatrixFactory");
                 DEFAULT_FACTORY = StaticMatrixFactory.getInstance();
                 break;
             case "atomic":
-                System.out.println("Using matrix factory: AtomicMatrixFactory");
+                System.out.println("[Matrices]: Using matrix factory: AtomicMatrixFactory");
                 DEFAULT_FACTORY = new AtomicMatrixFactory(cacheSize);
                 break;
             case "threadsafe":
                 if(DEBUG) {
-                    System.out.println("Using matrix factory: ThreadSafeMatrixFactory");
+                    System.out.println("[Matrices]: Using matrix factory: ThreadSafeMatrixFactory");
                 }
                 DEFAULT_FACTORY = new ThreadSafeMatrixFactory(cacheSize);
                 break;
             case "realtime":
                 if(DEBUG) {
-                    System.out.println("Using matrix factory: RealTimeMatrixFactory");
+                    System.out.println("[Matrices]: Using matrix factory: RealTimeMatrixFactory");
                 }
                 try {
                     DEFAULT_FACTORY = new RealTimeMatrixFactory(cacheSize);
@@ -42,7 +42,7 @@ public final class Matrices {
                 break;
             default:
             case "cyclical":
-                System.out.println("Using matrix factory: Cyclical");
+                System.out.println("[Matrices]: Using matrix factory: CyclicalMatrixFactory");
                 DEFAULT_FACTORY = new CyclicalMatrixFactory(cacheSize);
                 break;
         }

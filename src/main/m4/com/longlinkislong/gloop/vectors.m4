@@ -19,25 +19,25 @@ public final class Vectors {
         switch(def.toLowerCase()) {
             case "static":
                 if(DEBUG) {
-                    System.out.println("Using vector factory: StaticVectorFactory");
+                    System.out.println("[Vectors]: Using vector factory: StaticVectorFactory");
                 }
                 DEFAULT_FACTORY = StaticVectorFactory.getInstance();
                 break;
             case "atomic":
                 if(DEBUG) {
-                    System.out.println("Using vector factory: AtomicVectorFactory");
+                    System.out.println("[Vectors]: Using vector factory: AtomicVectorFactory");
                 }
                 DEFAULT_FACTORY = new AtomicVectorFactory(cacheSize);
                 break;
             case "threadsafe":
                 if(DEBUG) {
-                    System.out.println("Using vector factory: ThreadSafeVectorFactory");
+                    System.out.println("[Vectors]: Using vector factory: ThreadSafeVectorFactory");
                 }
                 DEFAULT_FACTORY = new ThreadSafeVectorFactory(cacheSize);
                 break;
             case "realtime":
                 if(DEBUG) {
-                    System.out.println("Using vector factory: RealTimeVectorFactory");
+                    System.out.println("[Vectors]: Using vector factory: RealTimeVectorFactory");
                 }
 
                 try {
@@ -49,7 +49,7 @@ public final class Vectors {
             default:
             case "cyclical":
                 if(DEBUG) {
-                    System.out.println("Using vector factory: CyclicalVectorFactory");
+                    System.out.println("[Vectors]: Using vector factory: CyclicalVectorFactory");
                 }
                 DEFAULT_FACTORY = new CyclicalVectorFactory(cacheSize);
                 break;
