@@ -1,5 +1,5 @@
 artifactory {
-    contextUrl = "http://longlinkislong.com:8080/artifactory/"
+    contextUrl = 'http://jartifacts.longlinkislong.com'
     publish {
         repository {
             repoKey = "libs-${buildType}-local"
