@@ -7,6 +7,7 @@ package com.longlinkislong.gloop;
 
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -47,7 +48,8 @@ public final class ThreadSafeVectorFactory implements VectorFactory {
      * Constructs a new ThreadSafeVectorFactory using the specified cache size.
      *
      * @param cacheSize the cache size in kilobytes.
-     * @throws IllegalArgumentException if cache size specified is less than 1KB.
+     * @throws IllegalArgumentException if cache size specified is less than
+     * 1KB.
      * @since 15.07.13
      */
     public ThreadSafeVectorFactory(final int cacheSize) {
@@ -57,7 +59,7 @@ public final class ThreadSafeVectorFactory implements VectorFactory {
     }
 
     private VectorFactory getFactory() {
-        while (lock.isLocked()) {
+        while (lock.isLocked()) {            
             Thread.yield();
         }
 
@@ -86,26 +88,28 @@ public final class ThreadSafeVectorFactory implements VectorFactory {
     }
 
     private void repoolOldThreads() {
-        lock.lock();
+        try {            
+            lock.lock();
 
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+            final Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+            final List<PooledFactory> keep = new ArrayList<>(map.size());
 
-        ArrayList<PooledFactory> keep = new ArrayList<>(map.size());
-
-        map.values().forEach((PooledFactory pooledFactory) -> {
-            if (threadSet.contains(pooledFactory.getThread())) {
-                keep.add(pooledFactory);
-            } else {
-                factoryPool.add(pooledFactory);
+            for (PooledFactory factory : map.values()) {
+                if (threadSet.contains(factory.getThread())) {
+                    keep.add(factory);
+                } else {
+                    factoryPool.add(factory);
+                }
             }
-        });
 
-        map.clear();
+            map.clear();
 
-        keep.forEach((pooledFactory) -> {
-            map.put(pooledFactory.getThreadId(), pooledFactory);
-        });
-        lock.unlock();
+            for (PooledFactory factory : keep) {
+                map.put(factory.getThreadId(), factory);
+            }
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override

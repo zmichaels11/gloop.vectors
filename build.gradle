@@ -7,10 +7,17 @@
 // ***************************************************************************
 
 // artifactory plugin
-plugins {
-    id 'com.jfrog.artifactory' version '3.1.1'
+buildscript {
+    repositories {        
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    
+    dependencies {        
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1'
+    }
 }
 
+apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply from: 'artifactory-template.gradle'
@@ -18,6 +25,7 @@ apply from: 'artifactory-template.gradle'
 // needed for M4 generation
 ant.importBuild 'm4-build.xml'
 
+sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 
@@ -26,5 +34,5 @@ repositories {
 }
 
 dependencies {    
-    testCompile group: 'junit', name: 'junit', version: '4.10'
+    testCompile group: 'junit', name: 'junit', version: '4.10'    
 }

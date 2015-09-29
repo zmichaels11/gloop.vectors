@@ -35,7 +35,8 @@ public final class ThreadSafeMatrixFactory implements MatrixFactory {
     /**
      * Constructs a new ThreadSafeMatrixFactory using the default cache size.
      *
-     * @throws IllegalArgumentException if default cache size is set to less than 1KB.
+     * @throws IllegalArgumentException if default cache size is set to less
+     * than 1KB.
      * @since 15.07.12
      */
     public ThreadSafeMatrixFactory() {
@@ -85,26 +86,28 @@ public final class ThreadSafeMatrixFactory implements MatrixFactory {
     }
 
     private void repoolOldThreads() {
-        lock.lock();
+        try {
+            lock.lock();
 
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+            final Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+            final ArrayList<PooledFactory> keep = new ArrayList<>(map.size());
 
-        ArrayList<PooledFactory> keep = new ArrayList<>(map.size());
+            for(PooledFactory factory : map.values()) {
+                if(threadSet.contains(factory.getThread())) {
+                    keep.add(factory);
+                } else {
+                    factoryPool.add(factory);
+                }
+            }            
 
-        map.values().forEach((PooledFactory pooledFactory) -> {
-            if (threadSet.contains(pooledFactory.getThread())) {
-                keep.add(pooledFactory);
-            } else {
-                factoryPool.add(pooledFactory);
-            }
-        });
+            map.clear();
 
-        map.clear();
-
-        keep.forEach((pooledFactory) -> {
-            map.put(pooledFactory.getThreadId(), pooledFactory);
-        });
-        lock.unlock();
+            for(PooledFactory factory : keep) {
+                map.put(factory.getThreadId(), factory);
+            }            
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override

@@ -258,5 +258,10 @@ m4_ifelse(m4_eval(VEC_SIZE > 3), 1,m4_dnl
 
         out.set(this);
         return out;
+    }    
+
+    @Override
+    public final OVecT _fdef(`asGLVec', VEC_SIZE, OTHER)() {
+        return this._fdef(`asGLVec',, OTHER)()._fdef(`asGLVec', VEC_SIZE, OTHER)();
     }
 }

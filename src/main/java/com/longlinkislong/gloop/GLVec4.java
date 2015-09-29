@@ -38,9 +38,7 @@ public interface GLVec4 {
      * @return the GLVec4F.
      * @since 15.06.17
      */
-    default public GLVec4F asGLVec4F() {
-        return this.asGLVecF().asGLVec4F();
-    }
+    public GLVec4F asGLVec4F();
 
     /**
      * Attempts to coerce the vector into a GLVec4D. It is allowed to return
@@ -49,7 +47,5 @@ public interface GLVec4 {
      * @return the GLVec4D.
      * @since 15.06.17
      */
-    default public GLVec4D asGLVec4D() {
-        return this.asGLVecD().asGLVec4D();
-    }
+    public GLVec4D asGLVec4D();
 }

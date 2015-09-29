@@ -396,4 +396,14 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         out.set(this);
         return out;
     }
+
+    @Override
+    public MatT _fdef(`asGLMat', MAT_SIZE, TYPE)(){
+         return this;
+    }
+
+    @Override
+    public OMatT _fdef(`asGLMat', MAT_SIZE, OTHER)(){
+         return this._fdef(`asGLMat',,OTHER)()._fdef(`asGLMat', MAT_SIZE, OTHER)();
+    }
 }

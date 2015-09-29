@@ -84,10 +84,6 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * @since 15.02.26
      */
     public GLMat2F asGLMat2F() {
-        if (this instanceof GLMat2F) {
-            return (GLMat2F) this;
-        }
-
         final GLMat2F out = this.getFactory().nextGLMat2F();
         final int len = Math.min(this.size(), 2);
 
@@ -107,11 +103,7 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * @return a 3x3 matrix.
      * @since 15.02.26
      */
-    public final GLMat3F asGLMat3F() {
-        if (this instanceof GLMat3F) {
-            return (GLMat3F) this;
-        }
-
+    public GLMat3F asGLMat3F() {
         final GLMat3F out = this.getFactory().nextGLMat3F();
         final int len = Math.min(this.size(), 3);
 
@@ -132,10 +124,6 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * @since 15.02.26
      */
     public GLMat4F asGLMat4F() {
-        if (this instanceof GLMat4F) {
-            return (GLMat4F) this;
-        }
-
         final GLMat4F out = this.getFactory().nextGLMat4F().identity();
         final int len = Math.min(this.size(), 4);
 
@@ -227,18 +215,18 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
     public final GLMatT set(final GLMat other) {
         final GLMatF mat = other.asGLMatF();
         final GLMatT out = this.identity();
-        
-        if(other.size() == this.size()){
+
+        if (other.size() == this.size()) {
             final int length = this.size();
             // gotta go fast
             System.arraycopy(mat.data(), mat.offset(), out.data(), out.offset(), length * length);
-            
+
             return out;
-        }else{
+        } else {
             final int length = Math.min(other.size(), this.size());
-            
-            for(int i = 0; i < length; i++) {
-                for(int j = 0; j < length; j++) {
+
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
                     out.set(i, j, mat.get(i, j));
                 }
             }

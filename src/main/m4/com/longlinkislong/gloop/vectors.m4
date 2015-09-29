@@ -23,29 +23,12 @@ public final class Vectors {
                 }
                 DEFAULT_FACTORY = StaticVectorFactory.getInstance();
                 break;
-            case "atomic":
-                if(DEBUG) {
-                    System.out.println("[Vectors]: Using vector factory: AtomicVectorFactory");
-                }
-                DEFAULT_FACTORY = new AtomicVectorFactory(cacheSize);
-                break;
             case "threadsafe":
                 if(DEBUG) {
                     System.out.println("[Vectors]: Using vector factory: ThreadSafeVectorFactory");
                 }
                 DEFAULT_FACTORY = new ThreadSafeVectorFactory(cacheSize);
-                break;
-            case "realtime":
-                if(DEBUG) {
-                    System.out.println("[Vectors]: Using vector factory: RealTimeVectorFactory");
-                }
-
-                try {
-                    DEFAULT_FACTORY = new RealTimeVectorFactory(cacheSize);
-                } catch(Exception ex) {
-                    throw new RuntimeException("Unable to initialize RealTimeVectorFactory!", ex);
-                }
-                break;
+                break;            
             default:
             case "cyclical":
                 if(DEBUG) {

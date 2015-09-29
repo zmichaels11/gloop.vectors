@@ -19,26 +19,12 @@ public final class Matrices {
             case "static":
                 System.out.println("[Matrices]: Using matrix factory: StaticMatrixFactory");
                 DEFAULT_FACTORY = StaticMatrixFactory.getInstance();
-                break;
-            case "atomic":
-                System.out.println("[Matrices]: Using matrix factory: AtomicMatrixFactory");
-                DEFAULT_FACTORY = new AtomicMatrixFactory(cacheSize);
-                break;
+                break;            
             case "threadsafe":
                 if(DEBUG) {
                     System.out.println("[Matrices]: Using matrix factory: ThreadSafeMatrixFactory");
                 }
                 DEFAULT_FACTORY = new ThreadSafeMatrixFactory(cacheSize);
-                break;
-            case "realtime":
-                if(DEBUG) {
-                    System.out.println("[Matrices]: Using matrix factory: RealTimeMatrixFactory");
-                }
-                try {
-                    DEFAULT_FACTORY = new RealTimeMatrixFactory(cacheSize);
-                } catch(Exception ex) {
-                    throw new RuntimeException("Unable to initialize RealTimeMatrixFactory!", ex);
-                }
                 break;
             default:
             case "cyclical":

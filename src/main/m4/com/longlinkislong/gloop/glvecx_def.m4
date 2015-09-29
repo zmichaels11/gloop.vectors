@@ -18,3 +18,4 @@ m4_define(`_asVec', `m4_dnl
     }
 ')
 m4_define(`OTHER', `m4_ifelse(TYPE, `float', `double', `float')')
+m4_define(`OVecT', _fdef(`GLVec',VEC_SIZE,OTHER))

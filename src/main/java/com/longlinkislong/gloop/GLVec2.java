@@ -38,9 +38,7 @@ public interface GLVec2 {
      * @return the vector as a GLVec2F.
      * @since 15.06.17
      */
-    default public GLVec2F asGLVec2F() {
-        return this.asGLVecF().asGLVec2F();
-    }
+    public GLVec2F asGLVec2F();
 
     /**
      * Converts the vector into a GLVec2D. This is allowed to return itself in
@@ -49,7 +47,5 @@ public interface GLVec2 {
      * @return the vector as a GLVec2D.
      * @since 15.06.17
      */
-    default public GLVec2D asGLVec2D() {
-        return this.asGLVecD().asGLVec2D();
-    }
+    public GLVec2D asGLVec2D();
 }

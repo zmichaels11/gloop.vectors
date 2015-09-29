@@ -38,9 +38,7 @@ public interface GLVec3 {
      * @return the GLVec3F.
      * @since 15.06.17
      */
-    default public GLVec3F asGLVec3F() {
-        return this.asGLVecF().asGLVec3F();
-    }
+    public GLVec3F asGLVec3F();
 
     /**
      * Coerces the vector into a GLVec3D. If the vector is already a GLVec3D, it
@@ -49,7 +47,5 @@ public interface GLVec3 {
      * @return the GLVec3D.
      * @since 15.06.17
      */
-    default public GLVec3D asGLVec3D() {
-        return this.asGLVecD().asGLVec3D();
-    }
+    public GLVec3D asGLVec3D();
 }

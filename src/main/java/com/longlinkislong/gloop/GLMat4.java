@@ -44,9 +44,7 @@ public interface GLMat4 {
      * @return the 4x4 single precision matrix
      * @since 15.06.26
      */
-    default public GLMat4F asGLMat4F() {
-        return this.asGLMatF().asGLMat4F();
-    }
+    public GLMat4F asGLMat4F();
 
     /**
      * Converts the matrix to a 4x4 double precision matrix. The default
@@ -58,7 +56,5 @@ public interface GLMat4 {
      * @return the 4x4 double precision matrix
      * @since 15.06.26
      */
-    default public GLMat4D asGLMat4D() {
-        return this.asGLMatD().asGLMat4D();
-    }
+    public GLMat4D asGLMat4D();
 }

@@ -39,9 +39,7 @@ public interface GLMat2 {
      * @return the matrix as a GLMat2F.
      * @since 15.05.26
      */
-    default public GLMat2F asGLMat2F() {
-        return this.asGLMatF().asGLMat2F();
-    }
+    public GLMat2F asGLMat2F();
 
     /**
      * Converts the matrix to a 2x2 double precision matrix. The default
@@ -51,7 +49,5 @@ public interface GLMat2 {
      * @return the matrix as a GLMatD.
      * @since 15.05.26
      */
-    default public GLMat2D asGLMat2D() {
-        return this.asGLMatD().asGLMat2D();
-    }
+    public GLMat2D asGLMat2D();
 }

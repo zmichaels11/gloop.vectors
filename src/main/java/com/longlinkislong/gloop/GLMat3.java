@@ -41,9 +41,7 @@ public interface GLMat3 {
      * @return the 3x3 single precision matrix.
      * @since 15.06.26
      */
-    default public GLMat3F asGLMat3F() {
-        return this.asGLMatF().asGLMat3F();
-    }
+    public GLMat3F asGLMat3F();
 
     /**
      * Converts the matrix to a 3x3 double precision matrix. The default
@@ -54,7 +52,5 @@ public interface GLMat3 {
      * @return the 3x3 double precision matrix.
      * @since 15.06.26
      */
-    default public GLMat3D asGLMat3D() {
-        return this.asGLMatD().asGLMat3D();
-    }
+    public GLMat3D asGLMat3D();
 }

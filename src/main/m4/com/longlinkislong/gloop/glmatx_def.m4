@@ -20,3 +20,4 @@ m4_define(`_asMat', `m4_dnl
     }
 ')
 m4_define(`OTHER', `m4_ifelse(TYPE, `float', `double', `float')')
+m4_define(`OMatT', _fdef(`GLMat',MAT_SIZE,OTHER))

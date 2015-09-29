@@ -25,8 +25,6 @@
  */
 package com.longlinkislong.gloop;
 
-import java.nio.ByteBuffer;
-
 /**
  * The base interface for all matrices.
  *

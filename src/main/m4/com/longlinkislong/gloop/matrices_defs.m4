@@ -472,9 +472,9 @@ m4_define(`VecT', _fdef(`GLVec', 3, $1))m4_dnl
         final $1[] out, final int outOffset,
         final VecT eye, final VecT center, final VecT up) {
 
-        final VecT z = eye.multiply(center).normalize();
-        final VecT x = up.multiply(z).normalize();
-        final VecT y = z.multiply(x);
+        final VecT z = eye.cross(center).normalize();
+        final VecT x = up.cross(z).normalize();
+        final VecT y = z.cross(x);
 
         final $1[] m = {
                 x.x(), y.x(), z.x(), 0,
