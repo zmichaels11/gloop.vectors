@@ -9,7 +9,7 @@ package com.longlinkislong.gloop;
  *
  * @author zmichaels
  */
-final class ObjectMappers {
+public final class ObjectMappers {
     static {
         final String objMapper = System.getProperty("gloop.object_mapper", "com.longlinkislong.gloop.PassthroughObjectMapper");                
 
@@ -24,7 +24,7 @@ final class ObjectMappers {
         DEFAULT_INSTANCE = mapper;
     }
     
-    static final ObjectMapper DEFAULT_INSTANCE;
+    public static final ObjectMapper DEFAULT_INSTANCE;
     
     private ObjectMappers() {}
 }
