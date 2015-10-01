@@ -78,50 +78,51 @@ public class CyclicalVectorFactory implements VectorFactory {
      * @since 15.02.09
      */
     public CyclicalVectorFactory(final int cacheSize) {
+        final ObjectMapper map = ObjectMappers.DEFAULT_INSTANCE;
         final int cacheBytes = cacheSize * 1000;
 
-        this.dataD = new double[cacheBytes / 8];
-        this.dataF = new float[cacheBytes / 4];
+        this.dataD = map.map(new double[cacheBytes / 8]);
+        this.dataF = map.map(new float[cacheBytes / 4]);
 
-        this.vec2DCache = new MappedVec2D[cacheBytes / GLVec2D.VECTOR_WIDTH];
-        this.vec2FCache = new MappedVec2F[cacheBytes / GLVec2F.VECTOR_WIDTH];
-        this.vec3DCache = new MappedVec3D[cacheBytes / GLVec3D.VECTOR_WIDTH];
-        this.vec3FCache = new MappedVec3F[cacheBytes / GLVec3F.VECTOR_WIDTH];
-        this.vec4DCache = new MappedVec4D[cacheBytes / GLVec4D.VECTOR_WIDTH];
-        this.vec4FCache = new MappedVec4F[cacheBytes / GLVec4F.VECTOR_WIDTH];
-        this.vecNFCache = new MappedVecNF[this.vec4FCache.length / 2];
-        this.vecNDCache = new MappedVecND[this.vec4DCache.length / 2];
+        this.vec2DCache = map.map(new MappedVec2D[cacheBytes / GLVec2D.VECTOR_WIDTH]);
+        this.vec2FCache = map.map(new MappedVec2F[cacheBytes / GLVec2F.VECTOR_WIDTH]);
+        this.vec3DCache = map.map(new MappedVec3D[cacheBytes / GLVec3D.VECTOR_WIDTH]);
+        this.vec3FCache = map.map(new MappedVec3F[cacheBytes / GLVec3F.VECTOR_WIDTH]);
+        this.vec4DCache = map.map(new MappedVec4D[cacheBytes / GLVec4D.VECTOR_WIDTH]);
+        this.vec4FCache = map.map(new MappedVec4F[cacheBytes / GLVec4F.VECTOR_WIDTH]);
+        this.vecNFCache = map.map(new MappedVecNF[this.vec4FCache.length / 2]);
+        this.vecNDCache = map.map(new MappedVecND[this.vec4DCache.length / 2]);
 
         for (int i = 0; i < vec2DCache.length; i++) {
-            this.vec2DCache[i] = new MappedVec2D(this, this.dataD, 0, this.dataD.length - GLVec2D.VECTOR_SIZE);
+            this.vec2DCache[i] = map.map(new MappedVec2D(this, this.dataD, 0, this.dataD.length - GLVec2D.VECTOR_SIZE));
         }
 
         for (int i = 0; i < vec2FCache.length; i++) {
-            this.vec2FCache[i] = new MappedVec2F(this, this.dataF, 0, this.dataF.length - GLVec2F.VECTOR_SIZE);
+            this.vec2FCache[i] = map.map(new MappedVec2F(this, this.dataF, 0, this.dataF.length - GLVec2F.VECTOR_SIZE));
         }
 
         for (int i = 0; i < vec3DCache.length; i++) {
-            this.vec3DCache[i] = new MappedVec3D(this, this.dataD, 0, this.dataD.length - GLVec3D.VECTOR_SIZE);
+            this.vec3DCache[i] = map.map(new MappedVec3D(this, this.dataD, 0, this.dataD.length - GLVec3D.VECTOR_SIZE));
         }
 
         for (int i = 0; i < vec3FCache.length; i++) {
-            this.vec3FCache[i] = new MappedVec3F(this, this.dataF, 0, this.dataF.length - GLVec3F.VECTOR_SIZE);
+            this.vec3FCache[i] = map.map(new MappedVec3F(this, this.dataF, 0, this.dataF.length - GLVec3F.VECTOR_SIZE));
         }
 
         for (int i = 0; i < vec4DCache.length; i++) {
-            this.vec4DCache[i] = new MappedVec4D(this, this.dataD, 0, this.dataD.length - GLVec4D.VECTOR_SIZE);            
+            this.vec4DCache[i] = map.map(new MappedVec4D(this, this.dataD, 0, this.dataD.length - GLVec4D.VECTOR_SIZE)); 
         }
 
         for (int i = 0; i < vec4FCache.length; i++) {
-            this.vec4FCache[i] = new MappedVec4F(this, this.dataF, 0, this.dataF.length - GLVec4F.VECTOR_SIZE);            
+            this.vec4FCache[i] = map.map(new MappedVec4F(this, this.dataF, 0, this.dataF.length - GLVec4F.VECTOR_SIZE));
         }             
         
         for(int i = 0; i < this.vecNFCache.length; i++) {
-            this.vecNFCache[i] = new MappedVecNF(this, this.dataF, 0, this.dataF.length - 1, 1);
+            this.vecNFCache[i] = map.map(new MappedVecNF(this, this.dataF, 0, this.dataF.length - 1, 1));
         }
         
         for(int i = 0 ; i < this.vecNDCache.length; i++) {
-            this.vecNDCache[i] = new MappedVecND(this, this.dataD, 0, this.dataD.length - 1, 1);
+            this.vecNDCache[i] = map.map(new MappedVecND(this, this.dataD, 0, this.dataD.length - 1, 1));
         }
     }
 

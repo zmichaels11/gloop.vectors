@@ -77,56 +77,57 @@ public class CyclicalMatrixFactory implements MatrixFactory {
      * @since 15.02.26
      */
     public CyclicalMatrixFactory(final int cacheSize) {
+        final ObjectMapper map = ObjectMappers.DEFAULT_INSTANCE;        
         final int cacheBytes = cacheSize * 1000;
 
-        this.dataD = new double[cacheBytes / 8];
-        this.dataF = new float[cacheBytes / 4];
+        this.dataD = map.map(new double[cacheBytes / 8]);
+        this.dataF = map.map(new float[cacheBytes / 4]);
 
-        this.mat2DCache = new MappedMat2D[cacheBytes / GLMat2D.MATRIX_WIDTH];
-        this.mat2FCache = new MappedMat2F[cacheBytes / GLMat2F.MATRIX_WIDTH];
-        this.mat3DCache = new MappedMat3D[cacheBytes / GLMat3D.MATRIX_WIDTH];
-        this.mat3FCache = new MappedMat3F[cacheBytes / GLMat3F.MATRIX_WIDTH];
-        this.mat4DCache = new MappedMat4D[cacheBytes / GLMat4D.MATRIX_WIDTH];
-        this.mat4FCache = new MappedMat4F[cacheBytes / GLMat4F.MATRIX_WIDTH];
-        this.matNDCache = new MappedMatND[this.mat4DCache.length / 2];
-        this.matNFCache = new MappedMatNF[this.mat4FCache.length / 2];
+        this.mat2DCache = map.map(new MappedMat2D[cacheBytes / GLMat2D.MATRIX_WIDTH]);
+        this.mat2FCache = map.map(new MappedMat2F[cacheBytes / GLMat2F.MATRIX_WIDTH]);
+        this.mat3DCache = map.map(new MappedMat3D[cacheBytes / GLMat3D.MATRIX_WIDTH]);
+        this.mat3FCache = map.map(new MappedMat3F[cacheBytes / GLMat3F.MATRIX_WIDTH]);
+        this.mat4DCache = map.map(new MappedMat4D[cacheBytes / GLMat4D.MATRIX_WIDTH]);
+        this.mat4FCache = map.map(new MappedMat4F[cacheBytes / GLMat4F.MATRIX_WIDTH]);
+        this.matNDCache = map.map(new MappedMatND[this.mat4DCache.length / 2]);
+        this.matNFCache = map.map(new MappedMatNF[this.mat4FCache.length / 2]);
 
         int msize = GLMat2D.MATRIX_SIZE * GLMat2D.MATRIX_SIZE;
         for (int i = 0; i < this.mat2DCache.length; i++) {
-            this.mat2DCache[i] = new MappedMat2D(this, this.dataD, 0, this.dataD.length - msize);
+            this.mat2DCache[i] = map.map(new MappedMat2D(this, this.dataD, 0, this.dataD.length - msize));
         }
 
         msize = GLMat2F.MATRIX_SIZE * GLMat2F.MATRIX_SIZE;
         for (int i = 0; i < this.mat2FCache.length; i++) {
-            this.mat2FCache[i] = new MappedMat2F(this, this.dataF, 0, this.dataF.length - msize);
+            this.mat2FCache[i] = map.map(new MappedMat2F(this, this.dataF, 0, this.dataF.length - msize));
         }
 
         msize = GLMat3D.MATRIX_SIZE * GLMat3D.MATRIX_SIZE;
         for (int i = 0; i < this.mat3DCache.length; i++) {
-            this.mat3DCache[i] = new MappedMat3D(this, this.dataD, 0, this.dataD.length - msize);
+            this.mat3DCache[i] = map.map(new MappedMat3D(this, this.dataD, 0, this.dataD.length - msize));
         }
 
         msize = GLMat3F.MATRIX_SIZE * GLMat3F.MATRIX_SIZE;
         for (int i = 0; i < this.mat3FCache.length; i++) {
-            this.mat3FCache[i] = new MappedMat3F(this, this.dataF, 0, this.dataF.length - msize);
+            this.mat3FCache[i] = map.map(new MappedMat3F(this, this.dataF, 0, this.dataF.length - msize));
         }
 
         msize = GLMat4D.MATRIX_SIZE * GLMat4D.MATRIX_SIZE;
         for (int i = 0; i < this.mat4DCache.length; i++) {
-            this.mat4DCache[i] = new MappedMat4D(this, this.dataD, 0, this.dataD.length - msize);
+            this.mat4DCache[i] = map.map(new MappedMat4D(this, this.dataD, 0, this.dataD.length - msize));
         }
 
         msize = GLMat4F.MATRIX_SIZE * GLMat4F.MATRIX_SIZE;
         for (int i = 0; i < this.mat4FCache.length; i++) {
-            this.mat4FCache[i] = new MappedMat4F(this, this.dataF, 0, this.dataF.length - msize);
+            this.mat4FCache[i] = map.map(new MappedMat4F(this, this.dataF, 0, this.dataF.length - msize));
         }
         
         for (int i = 0; i < this.matNFCache.length; i++) {
-            this.matNFCache[i] = new MappedMatNF(this, this.dataF, 0, this.dataF.length - 1, 1);
+            this.matNFCache[i] = map.map(new MappedMatNF(this, this.dataF, 0, this.dataF.length - 1, 1));
         }
         
         for(int i = 0; i < this.matNDCache.length; i++) {
-            this.matNDCache[i] = new MappedMatND(this, this.dataD, 0, this.dataD.length - 1, 1);
+            this.matNDCache[i] = map.map(new MappedMatND(this, this.dataD, 0, this.dataD.length - 1, 1));
         }
     }
 
