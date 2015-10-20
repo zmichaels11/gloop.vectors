@@ -188,4 +188,11 @@ public interface GLVec<GLVecT extends GLVec> {
      * @since 15.05.13
      */
     public GLVecT copyTo(final VectorFactory factory);
+    
+    /**
+     * Copies the current vector to the default vector factory.
+     * @return the copied vector.
+     * @since 15.10.19
+     */
+    public GLVecT copyTo();
 }

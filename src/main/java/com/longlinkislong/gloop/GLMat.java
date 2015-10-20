@@ -160,5 +160,13 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
      * @return the output matrix
      * @since 15.05.13
      */
-    public GLMatT copyTo(final MatrixFactory factory);       
+    public GLMatT copyTo(final MatrixFactory factory);
+    
+    /**
+     * Creates a copy of this matrix. This is shorthand for copyTo(MatrixFactory.DEFAULT_FACTORY).
+     * 
+     * @return a copy of this matrix.
+     * @since 15.10.19
+     */
+    public GLMatT copyTo();
 }

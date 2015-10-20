@@ -35,7 +35,7 @@ import java.util.Arrays;
  * @param <GLVecT> the class that extends GLVecF
  * @since 15.02.26
  */
-public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
+public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT>, Cloneable {
 
     /**
      * Epsilon value used with GLVecF
@@ -337,5 +337,15 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT> {
         for (int i = 0; i < writeCount; i++) {
             out.putFloat(outOffset + i * Float.BYTES, in0.data()[in0.offset() + in0Offset]);
         }
+    }
+    
+    @Override
+    public final GLVecT copyTo() {
+        return this.copyTo(Vectors.DEFAULT_FACTORY);
+    }
+    
+    @Override
+    public final Object clone() {
+        return this.copyTo(this.getFactory());
     }
 }

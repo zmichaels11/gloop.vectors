@@ -41,7 +41,7 @@ import java.util.Arrays;
  * @param <GLVecT> the associated vector to the child of GLMatD.
  * @since 15.02.26
  */
-public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> implements GLMat<GLMatT, GLVecT> {
+public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> implements GLMat<GLMatT, GLVecT>, Cloneable {
 
     /**
      * Epsilon value used with GLMatD.
@@ -363,5 +363,15 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
         for (int i = 0; i < writeCount; i++) {
             out.putDouble(outOffset + i * Double.BYTES, in0.data()[in0.offset() + in0Offset]);
         }
+    }
+    
+    @Override
+    public final GLMatT copyTo() {
+        return this.copyTo(Matrices.DEFAULT_FACTORY);
+    }
+    
+    @Override
+    public final Object clone() {
+        return this.copyTo(this.getFactory());
     }
 }
