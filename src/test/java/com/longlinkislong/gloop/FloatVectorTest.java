@@ -15,7 +15,7 @@ import org.junit.Test;
  */
 public class FloatVectorTest {
 
-    private static final int TEST_COUNT = 100000;
+    private static final int TEST_COUNT = 1000000;
     private final Random random = new Random();        
     
     @Test
@@ -286,6 +286,55 @@ public class FloatVectorTest {
             Assert.assertNotSame(ex.offset(), ac.offset());
         }
     }
+    
+    @Test
+    public void testArrayAddSpeed() {
+        final int arraySize = TEST_COUNT;
+        System.out.println("Testing array add speed...");
+        
+        GLVec4FArray in0 = new GLVec4FArray(arraySize);
+        GLVec4FArray in1 = new GLVec4FArray(arraySize);        
+        
+        in0.setX(0, random.nextFloat(), arraySize);
+        in0.setY(0, random.nextFloat(), arraySize);
+        in0.setZ(0, random.nextFloat(), arraySize);
+        in0.setW(0, random.nextFloat(), arraySize);
+                
+        long start = System.currentTimeMillis();
+        for(int i = 0; i < TEST_COUNT / arraySize; i++) {
+            in1.setX(0, random.nextFloat(), arraySize);
+            in1.setY(0, random.nextFloat(), arraySize);
+            in1.setZ(0, random.nextFloat(), arraySize);
+            in1.setW(0, random.nextFloat(), arraySize);
+        
+           GLVec4FArray.apply(VectorArrays::arrayAddF, in0, 0, in0, 0, in1, 0, arraySize);
+        }
+        long end = System.currentTimeMillis();
+        double elapsedSeconds = (end - start) * 1e-7;
+        double vps = TEST_COUNT / elapsedSeconds * 1e-10;
+        System.out.printf("GLVec4FArray: %.2fE10 per second\n", vps);
+        
+        System.out.println("Testing array add async speed...");
+        
+        in0.setX(0, random.nextFloat(), arraySize);
+        in0.setY(0, random.nextFloat(), arraySize);
+        in0.setZ(0, random.nextFloat(), arraySize);
+        in0.setW(0, random.nextFloat(), arraySize);
+        
+        start = System.currentTimeMillis();
+        for(int i = 0; i < TEST_COUNT / arraySize; i++) {
+            in1.setX(0, random.nextFloat(), arraySize);
+            in1.setY(0, random.nextFloat(), arraySize);
+            in1.setZ(0, random.nextFloat(), arraySize);
+            in1.setW(0, random.nextFloat(), arraySize);
+            
+            GLVec4FArray.applyAsync(VectorArrays::arrayAddF, in0, 0, in0, 0, in1, 0, arraySize, true);
+        }
+        end = System.currentTimeMillis();
+        elapsedSeconds = (end - start) * 1e-7;
+        vps = TEST_COUNT / elapsedSeconds * 1e-10;
+        System.out.printf("GLVec4FArray (async): %.2fE10 per second\n", vps);
+    }
 
     @Test
     public void testAddSpeed() {
@@ -326,33 +375,5 @@ public class FloatVectorTest {
         elapsedSeconds = (end - start) * 1e-7;
         vps = TEST_COUNT / elapsedSeconds * 1e-10;
         System.out.printf("GLVec4F: %.2fe10 per second\n", vps);
-    }
-
-    @Test
-    public void testPlusN() {
-        System.out.println("Testing plusN speed");
-        float[] in0 = new float[10];
-        float[] in1 = new float[10];
-        float[] sum = new float[10];
-
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < TEST_COUNT; i++) {
-            Vectors.plus4F(sum, 0, in0, 0, in1, 0);
-            Vectors.plus4F(sum, 4, in0, 4, in1, 4);
-            Vectors.plus2F(sum, 8, in0, 8, in1, 8);
-        }
-        long end = System.currentTimeMillis();
-        double elapsedSeconds = (end - start) * 1e-7;
-        double vps = TEST_COUNT / elapsedSeconds * 1e-10;
-        System.out.printf("sum(plus4F, plus4F, plus2F): %.2fE10 per second\n", vps);
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < TEST_COUNT; i++) {
-            Vectors.plusNF(sum, 0, in0, 0, in1, 0, 10);
-        }
-        end = System.currentTimeMillis();
-        elapsedSeconds = (end - start) * 1e-7;
-        vps = TEST_COUNT / elapsedSeconds * 1e-10;
-        System.out.printf("Vectors.plusNF: %.2fE10 per second\n", vps);
-    }
+    }    
 }
