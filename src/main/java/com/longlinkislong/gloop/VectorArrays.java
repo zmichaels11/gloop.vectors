@@ -983,7 +983,7 @@ public final class VectorArrays {
     /**
      * Rounds each element in an array. This performs the operation:
      * <code>[r0, r1, r2, ..., rn] = [round(a0), round(r1), round(r2), ..., round(rn)]</code>
-     * where <code>round = fract(in) < 0.5 ? floor(in) : ceil(in)</code>
+     * where <code>round = fract(in) lessThan(0.5) ? floor(in) : ceil(in)</code>
      *
      * @param out the array to write the outputs to.
      * @param outOffset the offset to begin writing outputs.
@@ -1005,7 +1005,7 @@ public final class VectorArrays {
     /**
      * Rounds each element in an array. This performs the operation:
      * <code>[r0, r1, r2, ..., rn] = [round(a0), round(r1), round(r2), ..., round(rn)]</code>
-     * where <code>round = fract(in) < 0.5 ? floor(in) : ceil(in)</code>
+     * where <code>round = fract(in) lessThan(0.5) ? floor(in) : ceil(in)</code>
      *
      * @param out the array to write the outputs to.
      * @param outOffset the offset to begin writing outputs.
