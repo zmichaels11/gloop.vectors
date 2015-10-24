@@ -13,9 +13,14 @@ import static com.longlinkislong.gloop.VectorArrays.arraySetF;
 import static java.lang.Math.sqrt;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -29,11 +34,73 @@ import java.util.stream.Stream;
 public final class GLVec4FArray {
 
     private static final ExecutorService TASKS = Executors.newCachedThreadPool();
+    private final Map<Object, Integer> objMap = new HashMap<>();
+    private Deque<Integer> availableVecs;
+
     private final int size;
     private final float[] x;
     private final float[] y;
     private final float[] z;
     private final float[] w;
+
+    /**
+     * Maps an owner object to an indexed vector.
+     *
+     * @param owner the index to add.
+     * @since 15.10.23
+     */
+    public void mapVector(Object owner) {
+        if (this.availableVecs == null) {
+            this.availableVecs = new LinkedList<>(IntStream.range(0, size).boxed().collect(Collectors.toList()));
+        }
+
+        final int index = this.availableVecs.poll();
+
+        this.objMap.put(owner, index);
+    }
+
+    /**
+     * Unmaps an owner object from an indexed vector.
+     *
+     * @param owner the index to remove.
+     * @since 15.10.23
+     */
+    public void unmapVector(final Object owner) {
+        final int index = this.objMap.get(owner);
+
+        this.availableVecs.offer(index);
+        this.objMap.remove(owner);
+    }
+
+    /**
+     * Retrieves a vector by its index.
+     *
+     * @param owner the index.
+     * @return the vector.
+     * @since 15.10.23
+     */
+    public GLVec4F get(Object owner) {
+        final int index = this.objMap.get(owner);
+
+        return GLVec4F.create(this.x[index], this.y[index], this.z[index], this.w[index]);
+    }
+
+    /**
+     * Sets a vector by its index.
+     *
+     * @param owner the index.
+     * @param vec the vector to set.
+     * @since 15.10.23
+     */
+    public void set(final Object owner, final GLVec<?> vec) {
+        final int index = this.objMap.get(owner);
+        final GLVec4F vecF = vec.asGLVecF().asGLVec4F();
+
+        this.x[index] = vecF.x();
+        this.y[index] = vecF.y();
+        this.z[index] = vecF.z();
+        this.w[index] = vecF.w();
+    }
 
     /**
      * Constructs a new GLVec4FArray with the specified number of elements.
@@ -345,6 +412,7 @@ public final class GLVec4FArray {
 
     /**
      * Calculates the length of each vector.
+     *
      * @param out the array to store the vector length in.
      * @param outOffset the offset to begin writing the outputs.
      * @param in0 the array to read the inputs from.
@@ -362,7 +430,7 @@ public final class GLVec4FArray {
             final float y = in0.y[i + in0Offset];
             final float z = in0.z[i + in0Offset];
             final float w = in0.w[i + in0Offset];
-            
+
             out[i + outOffset] = (float) sqrt(x * x + y * y + z * z + w * w);
         }
     }
@@ -385,9 +453,9 @@ public final class GLVec4FArray {
         for (int i = 0; i < count; i++) {
             final float x = in0.x[i + in0Offset];
             final float y = in0.y[i + in0Offset];
-            final float z = in0.z[i + in0Offset];         
+            final float z = in0.z[i + in0Offset];
             final float w = in0.w[i + in0Offset];
-            
+
             final float scale = 1.0f / (float) sqrt(x * x + y * y + z * z + w * w);
 
             out.x[i + outOffset] = scale * x;
@@ -404,7 +472,7 @@ public final class GLVec4FArray {
      * @param out the array of vectors to write the result to.
      * @param outOffset the offset to begin the write.
      * @param in0 the first array of vectors to read from.
-     * @param in0Offset the read offset for the first input.     
+     * @param in0Offset the read offset for the first input.
      * @param count the number of elements to process.
      * @since 15.10.23
      */
@@ -428,7 +496,7 @@ public final class GLVec4FArray {
      * @param out the array of vectors to write.
      * @param outOffset the offset to begin writing to.
      * @param in0 the first array to read inputs from.
-     * @param in0Offset the offset to begin reading from.     
+     * @param in0Offset the offset to begin reading from.
      * @param count the number of elements to process.
      * @param waitForComplete signals if the operation should busy wait until
      * the task completes.
@@ -461,7 +529,7 @@ public final class GLVec4FArray {
      * @param in0 the first array of vectors to read from.
      * @param in0Offset the read offset for the first input.
      * @param in1 the second array of vectors to read from.
-     * @param in1Offset the read offset for the second input.     
+     * @param in1Offset the read offset for the second input.
      * @param count the number of elements to process.
      * @since 15.10.23
      */
@@ -632,75 +700,75 @@ public final class GLVec4FArray {
             }
         }
     }
-    
+
     public ByteBuffer wrapX(final int offset, final int count) {
         final ByteBuffer out = ByteBuffer.allocateDirect(Float.BYTES * count).order(ByteOrder.nativeOrder());
-        
-        for(int i = 0; i < count; i++) {
+
+        for (int i = 0; i < count; i++) {
             out.putFloat(this.x[offset + i]);
         }
-        
+
         out.flip();
-        
+
         return out;
     }
-    
+
     public void setX(final int writeOffset, final ByteBuffer data, final int count) {
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             this.x[writeOffset + i] = data.getFloat();
         }
     }
-    
+
     public ByteBuffer wrapY(final int offset, final int count) {
         final ByteBuffer out = ByteBuffer.allocateDirect(Float.BYTES * count).order(ByteOrder.nativeOrder());
-        
-        for(int i = 0; i < count; i++) {
+
+        for (int i = 0; i < count; i++) {
             out.putFloat(this.y[offset + i]);
         }
-        
+
         out.flip();
-        
+
         return out;
     }
-    
+
     public void setY(final int writeOffset, final ByteBuffer data, final int count) {
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             this.y[writeOffset + i] = data.getFloat();
         }
     }
-    
+
     public ByteBuffer wrapZ(final int offset, final int count) {
         final ByteBuffer out = ByteBuffer.allocateDirect(Float.BYTES * count).order(ByteOrder.nativeOrder());
-        
-        for(int i = 0; i < count; i++) {
+
+        for (int i = 0; i < count; i++) {
             out.putFloat(this.z[offset + i]);
         }
-        
+
         out.flip();
-        
+
         return out;
     }
-    
+
     public void setZ(final int writeOffset, final ByteBuffer data, final int count) {
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             this.z[writeOffset + i] = data.getFloat();
         }
     }
-    
+
     public ByteBuffer wrapW(final int offset, final int count) {
         final ByteBuffer out = ByteBuffer.allocateDirect(Float.BYTES * count).order(ByteOrder.nativeOrder());
-        
-        for(int i = 0; i < count; i++) {
+
+        for (int i = 0; i < count; i++) {
             out.putFloat(this.w[offset + i]);
         }
-        
+
         out.flip();
-        
+
         return out;
     }
-    
+
     public void setW(final int writeOffset, final ByteBuffer data, final int count) {
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             this.w[writeOffset + i] = data.getFloat();
         }
     }
