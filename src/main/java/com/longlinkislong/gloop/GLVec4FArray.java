@@ -33,13 +33,13 @@ import java.util.stream.Stream;
  */
 public final class GLVec4FArray {
 
-    private static final ExecutorService TASKS = Executors.newCachedThreadPool();    
+    private static final ExecutorService TASKS = Executors.newCachedThreadPool();
 
     private final int size;
     private final float[] x;
     private final float[] y;
     private final float[] z;
-    private final float[] w;    
+    private final float[] w;
 
     /**
      * Constructs a new GLVec4FArray with the specified number of elements.
@@ -709,6 +709,42 @@ public final class GLVec4FArray {
     public void setW(final int writeOffset, final ByteBuffer data, final int count) {
         for (int i = 0; i < count; i++) {
             this.w[writeOffset + i] = data.getFloat();
+        }
+    }
+
+    /**
+     * Sets all values within the given range to 0.0
+     *
+     * @param start the position to start.
+     * @param count the number of elements to process.
+     * @since 15.10.26
+     */
+    public void zero(final int start, final int count) {
+        VectorArrays.arraySetF(this.x, start, 0f, count);
+        VectorArrays.arraySetF(this.y, start, 0f, count);
+        VectorArrays.arraySetF(this.z, start, 0f, count);
+        VectorArrays.arraySetF(this.w, start, 0f, count);
+    }
+
+    /**
+     * Multi-threaded implementation of zero.
+     *
+     * @param start the position to start.
+     * @param count the number of elements to process.
+     * @param waitForComplete Signals that the operation should wait before
+     * returning.
+     * @since 15.10.26
+     */
+    public void zeroAsync(final int start, final int count, final boolean waitForComplete) {
+        final Future<?> taskX = TASKS.submit(() -> arraySetF(this.x, start, 0f, count));
+        final Future<?> taskY = TASKS.submit(() -> arraySetF(this.y, start, 0f, count));
+        final Future<?> taskZ = TASKS.submit(() -> arraySetF(this.z, start, 0f, count));
+        final Future<?> taskW = TASKS.submit(() -> arraySetF(this.w, start, 0f, count));
+
+        if (waitForComplete) {
+            while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
+                Thread.yield();
+            }
         }
     }
 }
