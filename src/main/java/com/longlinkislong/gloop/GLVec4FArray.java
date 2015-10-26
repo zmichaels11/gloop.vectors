@@ -33,74 +33,13 @@ import java.util.stream.Stream;
  */
 public final class GLVec4FArray {
 
-    private static final ExecutorService TASKS = Executors.newCachedThreadPool();
-    private final Map<Object, Integer> objMap = new HashMap<>();
-    private Deque<Integer> availableVecs;
+    private static final ExecutorService TASKS = Executors.newCachedThreadPool();    
 
     private final int size;
     private final float[] x;
     private final float[] y;
     private final float[] z;
-    private final float[] w;
-
-    /**
-     * Maps an owner object to an indexed vector.
-     *
-     * @param owner the index to add.
-     * @since 15.10.23
-     */
-    public void mapVector(Object owner) {
-        if (this.availableVecs == null) {
-            this.availableVecs = new LinkedList<>(IntStream.range(0, size).boxed().collect(Collectors.toList()));
-        }
-
-        final int index = this.availableVecs.poll();
-
-        this.objMap.put(owner, index);
-    }
-
-    /**
-     * Unmaps an owner object from an indexed vector.
-     *
-     * @param owner the index to remove.
-     * @since 15.10.23
-     */
-    public void unmapVector(final Object owner) {
-        final int index = this.objMap.get(owner);
-
-        this.availableVecs.offer(index);
-        this.objMap.remove(owner);
-    }
-
-    /**
-     * Retrieves a vector by its index.
-     *
-     * @param owner the index.
-     * @return the vector.
-     * @since 15.10.23
-     */
-    public GLVec4F get(Object owner) {
-        final int index = this.objMap.get(owner);
-
-        return GLVec4F.create(this.x[index], this.y[index], this.z[index], this.w[index]);
-    }
-
-    /**
-     * Sets a vector by its index.
-     *
-     * @param owner the index.
-     * @param vec the vector to set.
-     * @since 15.10.23
-     */
-    public void set(final Object owner, final GLVec<?> vec) {
-        final int index = this.objMap.get(owner);
-        final GLVec4F vecF = vec.asGLVecF().asGLVec4F();
-
-        this.x[index] = vecF.x();
-        this.y[index] = vecF.y();
-        this.z[index] = vecF.z();
-        this.w[index] = vecF.w();
-    }
+    private final float[] w;    
 
     /**
      * Constructs a new GLVec4FArray with the specified number of elements.
