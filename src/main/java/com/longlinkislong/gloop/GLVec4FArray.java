@@ -29,7 +29,10 @@ import java.util.stream.Stream;
  */
 public final class GLVec4FArray {
 
-    private static final ExecutorService TASKS = Executors.newCachedThreadPool();
+    private static final ExecutorService X_TASKS = Executors.newSingleThreadExecutor();
+    private static final ExecutorService Y_TASKS = Executors.newSingleThreadExecutor();
+    private static final ExecutorService Z_TASKS = Executors.newSingleThreadExecutor();
+    private static final ExecutorService W_TASKS = Executors.newSingleThreadExecutor();
 
     private final int size;
     private final float[] x;
@@ -259,21 +262,18 @@ public final class GLVec4FArray {
             final GLVec4FArray in0, final int in0Offset,
             final GLVec4FArray in1, final int in1Offset,
             final int count, final boolean waitForComplete) {
+        
+        X_TASKS.submit(() -> arrayMultiplyF(out.x, outOffset, in0.z, in0Offset, in1.y, in1Offset, count));
+        Y_TASKS.submit(() -> arrayMultiplyF(out.y, outOffset, in0.x, in0Offset, in1.z, in1Offset, count));
+        Z_TASKS.submit(() -> arrayMultiplyF(out.z, outOffset, in0.y, in0Offset, in1.x, in1Offset, count));
 
-        {
-            final Future<?> taskX = TASKS.submit(() -> arrayMultiplyF(out.x, outOffset, in0.z, in0Offset, in1.y, in1Offset, count));
-            final Future<?> taskY = TASKS.submit(() -> arrayMultiplyF(out.y, outOffset, in0.x, in0Offset, in1.z, in1Offset, count));
-            final Future<?> taskZ = TASKS.submit(() -> arrayMultiplyF(out.z, outOffset, in0.y, in0Offset, in1.x, in1Offset, count));
-
-            while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone()) {
-                Thread.yield();
-            }
-        }
-
-        final Future<?> taskX = TASKS.submit(() -> arrayMultiplySubtractF(out.x, outOffset, in0.y, in0Offset, in1.z, in1Offset, out.x, outOffset, count));
-        final Future<?> taskY = TASKS.submit(() -> arrayMultiplySubtractF(out.y, outOffset, in0.z, in0Offset, in1.x, in1Offset, out.y, outOffset, count));
-        final Future<?> taskZ = TASKS.submit(() -> arrayMultiplySubtractF(out.z, outOffset, in0.x, in0Offset, in1.y, in1Offset, out.z, outOffset, count));
-        final Future<?> taskW = TASKS.submit(() -> arraySetF(out.w, outOffset, 1.0f, count));
+        // these tasks wont start until the previous XYZ tasks complete.
+        final Future<?> taskX = X_TASKS.submit(() -> arrayMultiplySubtractF(out.x, outOffset, in0.y, in0Offset, in1.z, in1Offset, out.x, outOffset, count));
+        final Future<?> taskY = Y_TASKS.submit(() -> arrayMultiplySubtractF(out.y, outOffset, in0.z, in0Offset, in1.x, in1Offset, out.y, outOffset, count));
+        final Future<?> taskZ = Z_TASKS.submit(() -> arrayMultiplySubtractF(out.z, outOffset, in0.x, in0Offset, in1.y, in1Offset, out.z, outOffset, count));
+        
+        // this task is independent
+        final Future<?> taskW = W_TASKS.submit(() -> arraySetF(out.w, outOffset, 1.0f, count));
 
         if (waitForComplete) {
             while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
@@ -408,10 +408,10 @@ public final class GLVec4FArray {
             final GLVec4FArray in0, final int in0Offset,
             final int count, final boolean waitForComplete) {
 
-        final Future<?> taskX = TASKS.submit(() -> op.apply(out.x, outOffset, in0.x, in0Offset, count));
-        final Future<?> taskY = TASKS.submit(() -> op.apply(out.y, outOffset, in0.y, in0Offset, count));
-        final Future<?> taskZ = TASKS.submit(() -> op.apply(out.z, outOffset, in0.z, in0Offset, count));
-        final Future<?> taskW = TASKS.submit(() -> op.apply(out.w, outOffset, in0.w, in0Offset, count));
+        final Future<?> taskX = X_TASKS.submit(() -> op.apply(out.x, outOffset, in0.x, in0Offset, count));
+        final Future<?> taskY = Y_TASKS.submit(() -> op.apply(out.y, outOffset, in0.y, in0Offset, count));
+        final Future<?> taskZ = Z_TASKS.submit(() -> op.apply(out.z, outOffset, in0.z, in0Offset, count));
+        final Future<?> taskW = W_TASKS.submit(() -> op.apply(out.w, outOffset, in0.w, in0Offset, count));
 
         if (waitForComplete) {
             while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
@@ -469,10 +469,10 @@ public final class GLVec4FArray {
             final GLVec4FArray in1, final int in1Offset,
             final int count, final boolean waitForComplete) {
 
-        final Future<?> taskX = TASKS.submit(() -> op.apply(out.x, outOffset, in0.x, in0Offset, in1.x, in1Offset, count));
-        final Future<?> taskY = TASKS.submit(() -> op.apply(out.y, outOffset, in0.y, in0Offset, in1.y, in1Offset, count));
-        final Future<?> taskZ = TASKS.submit(() -> op.apply(out.z, outOffset, in0.z, in0Offset, in1.z, in1Offset, count));
-        final Future<?> taskW = TASKS.submit(() -> op.apply(out.w, outOffset, in0.w, in0Offset, in1.w, in1Offset, count));
+        final Future<?> taskX = X_TASKS.submit(() -> op.apply(out.x, outOffset, in0.x, in0Offset, in1.x, in1Offset, count));
+        final Future<?> taskY = Y_TASKS.submit(() -> op.apply(out.y, outOffset, in0.y, in0Offset, in1.y, in1Offset, count));
+        final Future<?> taskZ = Z_TASKS.submit(() -> op.apply(out.z, outOffset, in0.z, in0Offset, in1.z, in1Offset, count));
+        final Future<?> taskW = W_TASKS.submit(() -> op.apply(out.w, outOffset, in0.w, in0Offset, in1.w, in1Offset, count));
 
         if (waitForComplete) {
             while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
@@ -535,10 +535,10 @@ public final class GLVec4FArray {
             final GLVec4FArray in2, final int in2Offset,
             final int count, final boolean waitForComplete) {
 
-        final Future<?> taskX = TASKS.submit(() -> op.apply(out.x, outOffset, in0.x, in0Offset, in1.x, in1Offset, in2.x, in2Offset, count));
-        final Future<?> taskY = TASKS.submit(() -> op.apply(out.y, outOffset, in0.y, in0Offset, in1.y, in1Offset, in2.y, in2Offset, count));
-        final Future<?> taskZ = TASKS.submit(() -> op.apply(out.z, outOffset, in0.z, in0Offset, in1.z, in1Offset, in2.z, in2Offset, count));
-        final Future<?> taskW = TASKS.submit(() -> op.apply(out.w, outOffset, in0.w, in0Offset, in1.w, in1Offset, in2.w, in2Offset, count));
+        final Future<?> taskX = X_TASKS.submit(() -> op.apply(out.x, outOffset, in0.x, in0Offset, in1.x, in1Offset, in2.x, in2Offset, count));
+        final Future<?> taskY = Y_TASKS.submit(() -> op.apply(out.y, outOffset, in0.y, in0Offset, in1.y, in1Offset, in2.y, in2Offset, count));
+        final Future<?> taskZ = Z_TASKS.submit(() -> op.apply(out.z, outOffset, in0.z, in0Offset, in1.z, in1Offset, in2.z, in2Offset, count));
+        final Future<?> taskW = W_TASKS.submit(() -> op.apply(out.w, outOffset, in0.w, in0Offset, in1.w, in1Offset, in2.w, in2Offset, count));
 
         if (waitForComplete) {
             while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
@@ -593,10 +593,10 @@ public final class GLVec4FArray {
 
         final GLVec4F scaleF = scale.asGLVec4F();
 
-        final Future<?> taskX = TASKS.submit(() -> arrayScaleF(out.x, outOffset, in0.x, in0Offset, scaleF.x(), count));
-        final Future<?> taskY = TASKS.submit(() -> arrayScaleF(out.y, outOffset, in0.y, in0Offset, scaleF.y(), count));
-        final Future<?> taskZ = TASKS.submit(() -> arrayScaleF(out.z, outOffset, in0.z, in0Offset, scaleF.z(), count));
-        final Future<?> taskW = TASKS.submit(() -> arrayScaleF(out.w, outOffset, in0.w, in0Offset, scaleF.w(), count));
+        final Future<?> taskX = X_TASKS.submit(() -> arrayScaleF(out.x, outOffset, in0.x, in0Offset, scaleF.x(), count));
+        final Future<?> taskY = Y_TASKS.submit(() -> arrayScaleF(out.y, outOffset, in0.y, in0Offset, scaleF.y(), count));
+        final Future<?> taskZ = Z_TASKS.submit(() -> arrayScaleF(out.z, outOffset, in0.z, in0Offset, scaleF.z(), count));
+        final Future<?> taskW = W_TASKS.submit(() -> arrayScaleF(out.w, outOffset, in0.w, in0Offset, scaleF.w(), count));
 
         if (waitForComplete) {
             while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
@@ -652,10 +652,10 @@ public final class GLVec4FArray {
 
         final GLVec4F vecF = vec.asGLVec4F();
 
-        final Future<?> taskX = TASKS.submit(() -> arrayAddConstantF(out.x, outOffset, in0.x, in0Offset, vecF.x(), count));
-        final Future<?> taskY = TASKS.submit(() -> arrayAddConstantF(out.y, outOffset, in0.y, in0Offset, vecF.y(), count));
-        final Future<?> taskZ = TASKS.submit(() -> arrayAddConstantF(out.z, outOffset, in0.z, in0Offset, vecF.z(), count));
-        final Future<?> taskW = TASKS.submit(() -> arrayAddConstantF(out.w, outOffset, in0.w, in0Offset, vecF.w(), count));
+        final Future<?> taskX = X_TASKS.submit(() -> arrayAddConstantF(out.x, outOffset, in0.x, in0Offset, vecF.x(), count));
+        final Future<?> taskY = Y_TASKS.submit(() -> arrayAddConstantF(out.y, outOffset, in0.y, in0Offset, vecF.y(), count));
+        final Future<?> taskZ = Z_TASKS.submit(() -> arrayAddConstantF(out.z, outOffset, in0.z, in0Offset, vecF.z(), count));
+        final Future<?> taskW = W_TASKS.submit(() -> arrayAddConstantF(out.w, outOffset, in0.w, in0Offset, vecF.w(), count));
 
         if (waitForComplete) {
             while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
@@ -668,7 +668,7 @@ public final class GLVec4FArray {
      * Sets a section of the array of vectors to a constant.
      *
      * @param out the array of vectors to write the changes to.
-     * @param outOffset the position of the array to write to.     
+     * @param outOffset the position of the array to write to.
      * @param vec the constant to assign.
      * @param count the number of elements to scale.
      * @since 15.10.23
@@ -690,9 +690,11 @@ public final class GLVec4FArray {
      * Multi-threaded implementation of setConstant.
      *
      * @param out the array of vectors to write the changes to.
-     * @param outOffset the position of the array to write to.     
+     * @param outOffset the position of the array to write to.
      * @param vec the constant to assign.
      * @param count the number of elements to scale.
+     * @param waitForComplete signals if the operation should busy wait until
+     * the task completes.
      * @since 15.10.23
      */
     public static void setConstantAsync(
@@ -702,14 +704,14 @@ public final class GLVec4FArray {
             final boolean waitForComplete) {
 
         final GLVec4F vecF = vec.asGLVec4F();
-        
-        final Future<?> taskX = TASKS.submit(() -> arraySetF(out.x, outOffset, vecF.x(), count));
-        final Future<?> taskY = TASKS.submit(() -> arraySetF(out.y, outOffset, vecF.y(), count));
-        final Future<?> taskZ = TASKS.submit(() -> arraySetF(out.z, outOffset, vecF.z(), count));
-        final Future<?> taskW = TASKS.submit(() -> arraySetF(out.w, outOffset, vecF.w(), count));
-        
-        if(waitForComplete) {
-            while(!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
+
+        final Future<?> taskX = X_TASKS.submit(() -> arraySetF(out.x, outOffset, vecF.x(), count));
+        final Future<?> taskY = Y_TASKS.submit(() -> arraySetF(out.y, outOffset, vecF.y(), count));
+        final Future<?> taskZ = Z_TASKS.submit(() -> arraySetF(out.z, outOffset, vecF.z(), count));
+        final Future<?> taskW = W_TASKS.submit(() -> arraySetF(out.w, outOffset, vecF.w(), count));
+
+        if (waitForComplete) {
+            while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
                 Thread.yield();
             }
         }
@@ -811,10 +813,10 @@ public final class GLVec4FArray {
      * @since 15.10.26
      */
     public void zeroAsync(final int start, final int count, final boolean waitForComplete) {
-        final Future<?> taskX = TASKS.submit(() -> arraySetF(this.x, start, 0f, count));
-        final Future<?> taskY = TASKS.submit(() -> arraySetF(this.y, start, 0f, count));
-        final Future<?> taskZ = TASKS.submit(() -> arraySetF(this.z, start, 0f, count));
-        final Future<?> taskW = TASKS.submit(() -> arraySetF(this.w, start, 0f, count));
+        final Future<?> taskX = X_TASKS.submit(() -> arraySetF(this.x, start, 0f, count));
+        final Future<?> taskY = Y_TASKS.submit(() -> arraySetF(this.y, start, 0f, count));
+        final Future<?> taskZ = Z_TASKS.submit(() -> arraySetF(this.z, start, 0f, count));
+        final Future<?> taskW = W_TASKS.submit(() -> arraySetF(this.w, start, 0f, count));
 
         if (waitForComplete) {
             while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
