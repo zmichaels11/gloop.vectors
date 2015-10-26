@@ -788,6 +788,54 @@ public final class VectorArrays {
     }
 
     /**
+     * Adds a constant to every element inside an array. This performs the
+     * operation
+     * <code>[r0, r1, r2, ..., rn] = [a0+k, a1+k, a2+k, ..., an+k]</code>
+     *
+     * @param out the array to write the outputs to.
+     * @param outOffset the offset to begin writing outputs.
+     * @param in0 the array to read the inputs from.
+     * @param in0Offset the offset ot begin reading inputs.
+     * @param constant the constant to increment each element by.
+     * @param count the number of elements to process.
+     * @since 15.10.26
+     */
+    public static void arrayAddConstantF(
+            final float[] out, final int outOffset,
+            final float[] in0, final int in0Offset,
+            final float constant,
+            final int count) {
+
+        for (int i = 0; i < count; i++) {
+            out[outOffset + i] = in0[in0Offset + i] + constant;
+        }
+    }
+
+     /**
+     * Adds a constant to every element inside an array. This performs the
+     * operation
+     * <code>[r0, r1, r2, ..., rn] = [a0+k, a1+k, a2+k, ..., an+k]</code>
+     *
+     * @param out the array to write the outputs to.
+     * @param outOffset the offset to begin writing outputs.
+     * @param in0 the array to read the inputs from.
+     * @param in0Offset the offset ot begin reading inputs.
+     * @param constant the constant to increment each element by.
+     * @param count the number of elements to process.
+     * @since 15.10.26
+     */
+    public static void arrayAddConstantD(
+            final double[] out, final int outOffset,
+            final double[] in0, final int in0Offset,
+            final double constant,
+            final int count) {
+
+        for (int i = 0; i < count; i++) {
+            out[outOffset + i] = in0[in0Offset + i] + constant;
+        }
+    }
+
+    /**
      * Calculates a scaled array. This performs the operation:
      * <code>[r0, r1, r2, ..., rn] = [a0*s, a1*s, a2*s, ..., an*s]</code>
      *

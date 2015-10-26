@@ -5,6 +5,7 @@
  */
 package com.longlinkislong.gloop;
 
+import static com.longlinkislong.gloop.VectorArrays.arrayAddConstantF;
 import static com.longlinkislong.gloop.VectorArrays.arrayMultiplyAddF;
 import static com.longlinkislong.gloop.VectorArrays.arrayMultiplyF;
 import static com.longlinkislong.gloop.VectorArrays.arrayMultiplySubtractF;
@@ -13,14 +14,9 @@ import static com.longlinkislong.gloop.VectorArrays.arraySetF;
 import static java.lang.Math.sqrt;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -214,41 +210,6 @@ public final class GLVec4FArray {
      */
     public void setW(final int offset, final float value, final int count) {
         arraySetF(this.w, offset, value, count);
-    }
-
-    /**
-     * Assigns a segment of vectors to the specified value.
-     *
-     * @param offset the offset to begin writing.
-     * @param vec the vector to assign.
-     * @param count the number of sequential vectors to assign.
-     * @since 15.10.23
-     */
-    public void set(final int offset, final GLVec<?> vec, final int count) {
-        final GLVec4F vecF = vec.asGLVecF().asGLVec4F();
-
-        for (int i = 0; i < count; i++) {
-            this.x[offset + i] = vecF.x();
-            this.y[offset + i] = vecF.y();
-            this.z[offset + i] = vecF.z();
-            this.w[offset + i] = vecF.w();
-        }
-    }
-
-    /**
-     * Assigns a segment of vectors to values read from an array of vectors.
-     *
-     * @param <VecT> the type of vector array.
-     * @param writeIndex the offset to begin writing.
-     * @param read the array of vectors to read from.
-     * @param readIndex the offset to begin reading.
-     * @param count the number of elements to process.
-     * @since 15.10.23
-     */
-    public <VecT extends GLVec<?>> void set(final int writeIndex, final VecT[] read, final int readIndex, final int count) {
-        for (int i = 0; i < count; i++) {
-            this.set(writeIndex + i, read[readIndex + i], 1);
-        }
     }
 
     /**
@@ -600,13 +561,15 @@ public final class GLVec4FArray {
     public static void scale(
             final GLVec4FArray out, final int outOffset,
             final GLVec4FArray in0, final int in0Offset,
-            final float scale,
+            final GLVec4 scale,
             final int count) {
 
-        arrayScaleF(out.x, outOffset, in0.x, in0Offset, scale, count);
-        arrayScaleF(out.y, outOffset, in0.y, in0Offset, scale, count);
-        arrayScaleF(out.z, outOffset, in0.z, in0Offset, scale, count);
-        arrayScaleF(out.w, outOffset, in0.w, in0Offset, scale, count);
+        final GLVec4F scaleF = scale.asGLVec4F();
+
+        arrayScaleF(out.x, outOffset, in0.x, in0Offset, scaleF.x(), count);
+        arrayScaleF(out.y, outOffset, in0.y, in0Offset, scaleF.y(), count);
+        arrayScaleF(out.z, outOffset, in0.z, in0Offset, scaleF.z(), count);
+        arrayScaleF(out.w, outOffset, in0.w, in0Offset, scaleF.w(), count);
     }
 
     /**
@@ -625,16 +588,128 @@ public final class GLVec4FArray {
     public static void scaleAsync(
             final GLVec4FArray out, final int outOffset,
             final GLVec4FArray in0, final int in0Offset,
-            final float scale,
+            final GLVecF scale,
             final int count, final boolean waitForComplete) {
 
-        final Future<?> taskX = TASKS.submit(() -> arrayScaleF(out.x, outOffset, in0.x, in0Offset, scale, count));
-        final Future<?> taskY = TASKS.submit(() -> arrayScaleF(out.y, outOffset, in0.y, in0Offset, scale, count));
-        final Future<?> taskZ = TASKS.submit(() -> arrayScaleF(out.z, outOffset, in0.z, in0Offset, scale, count));
-        final Future<?> taskW = TASKS.submit(() -> arrayScaleF(out.w, outOffset, in0.w, in0Offset, scale, count));
+        final GLVec4F scaleF = scale.asGLVec4F();
+
+        final Future<?> taskX = TASKS.submit(() -> arrayScaleF(out.x, outOffset, in0.x, in0Offset, scaleF.x(), count));
+        final Future<?> taskY = TASKS.submit(() -> arrayScaleF(out.y, outOffset, in0.y, in0Offset, scaleF.y(), count));
+        final Future<?> taskZ = TASKS.submit(() -> arrayScaleF(out.z, outOffset, in0.z, in0Offset, scaleF.z(), count));
+        final Future<?> taskW = TASKS.submit(() -> arrayScaleF(out.w, outOffset, in0.w, in0Offset, scaleF.w(), count));
 
         if (waitForComplete) {
             while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
+                Thread.yield();
+            }
+        }
+    }
+
+    /**
+     * Increments a section of the array of vectors by a constant.
+     *
+     * @param out the array of vectors to write the changes to.
+     * @param outOffset the position of the array to write to.
+     * @param in0 the array of vectors to read the values from.
+     * @param in0Offset the offset of the array to read from.
+     * @param vec the constant to increment each element by.
+     * @param count the number of elements to scale.
+     * @since 15.10.23
+     */
+    public static void addConstant(
+            final GLVec4FArray out, final int outOffset,
+            final GLVec4FArray in0, final int in0Offset,
+            final GLVec4 vec,
+            final int count) {
+
+        final GLVec4F vecF = vec.asGLVec4F();
+
+        arrayAddConstantF(out.x, outOffset, in0.x, in0Offset, vecF.x(), count);
+        arrayAddConstantF(out.y, outOffset, in0.y, in0Offset, vecF.y(), count);
+        arrayAddConstantF(out.z, outOffset, in0.z, in0Offset, vecF.z(), count);
+        arrayAddConstantF(out.w, outOffset, in0.w, in0Offset, vecF.w(), count);
+    }
+
+    /**
+     * Multi-threaded implementation of addConstant
+     *
+     * @param out the array of vectors to write the changes to.
+     * @param outOffset the position of the array to write to.
+     * @param in0 the array of vectors to read the values from.
+     * @param in0Offset the offset of the array to read from.
+     * @param vec the constant to increment each element by.
+     * @param count the number of elements to scale.
+     * @param waitForComplete signals if the operation should busy wait until
+     * the task completes.
+     * @since 15.10.23
+     */
+    public static void addConstantAsync(
+            final GLVec4FArray out, final int outOffset,
+            final GLVec4FArray in0, final int in0Offset,
+            final GLVec4 vec,
+            final int count,
+            final boolean waitForComplete) {
+
+        final GLVec4F vecF = vec.asGLVec4F();
+
+        final Future<?> taskX = TASKS.submit(() -> arrayAddConstantF(out.x, outOffset, in0.x, in0Offset, vecF.x(), count));
+        final Future<?> taskY = TASKS.submit(() -> arrayAddConstantF(out.y, outOffset, in0.y, in0Offset, vecF.y(), count));
+        final Future<?> taskZ = TASKS.submit(() -> arrayAddConstantF(out.z, outOffset, in0.z, in0Offset, vecF.z(), count));
+        final Future<?> taskW = TASKS.submit(() -> arrayAddConstantF(out.w, outOffset, in0.w, in0Offset, vecF.w(), count));
+
+        if (waitForComplete) {
+            while (!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
+                Thread.yield();
+            }
+        }
+    }
+
+    /**
+     * Sets a section of the array of vectors to a constant.
+     *
+     * @param out the array of vectors to write the changes to.
+     * @param outOffset the position of the array to write to.     
+     * @param vec the constant to assign.
+     * @param count the number of elements to scale.
+     * @since 15.10.23
+     */
+    public static void setConstant(
+            final GLVec4FArray out, final int outOffset,
+            final GLVec4 vec,
+            final int count) {
+
+        final GLVec4F vecF = vec.asGLVec4F();
+
+        VectorArrays.arraySetF(out.x, outOffset, vecF.x(), count);
+        VectorArrays.arraySetF(out.y, outOffset, vecF.y(), count);
+        VectorArrays.arraySetF(out.z, outOffset, vecF.z(), count);
+        VectorArrays.arraySetF(out.w, outOffset, vecF.w(), count);
+    }
+
+    /**
+     * Multi-threaded implementation of setConstant.
+     *
+     * @param out the array of vectors to write the changes to.
+     * @param outOffset the position of the array to write to.     
+     * @param vec the constant to assign.
+     * @param count the number of elements to scale.
+     * @since 15.10.23
+     */
+    public static void setConstantAsync(
+            final GLVec4FArray out, final int outOffset,
+            final GLVec4 vec,
+            final int count,
+            final boolean waitForComplete) {
+
+        final GLVec4F vecF = vec.asGLVec4F();
+        
+        final Future<?> taskX = TASKS.submit(() -> arraySetF(out.x, outOffset, vecF.x(), count));
+        final Future<?> taskY = TASKS.submit(() -> arraySetF(out.y, outOffset, vecF.y(), count));
+        final Future<?> taskZ = TASKS.submit(() -> arraySetF(out.z, outOffset, vecF.z(), count));
+        final Future<?> taskW = TASKS.submit(() -> arraySetF(out.w, outOffset, vecF.w(), count));
+        
+        if(waitForComplete) {
+            while(!taskX.isDone() || !taskY.isDone() || !taskZ.isDone() || !taskW.isDone()) {
                 Thread.yield();
             }
         }
