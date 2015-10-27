@@ -221,7 +221,7 @@ public class GLVec3FArray {
             out.y[i + outOffset] = scale * y;
             out.z[i + outOffset] = scale * z;
         }
-    }
+    }        
 
     public static void apply(
             final VectorArrays.UnaryOp<float[]> op,
