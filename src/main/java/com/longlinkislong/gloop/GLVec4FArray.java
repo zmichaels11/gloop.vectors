@@ -5,17 +5,10 @@
  */
 package com.longlinkislong.gloop;
 
-import static com.longlinkislong.gloop.VectorArrays.arrayAddConstantF;
-import static com.longlinkislong.gloop.VectorArrays.arrayMultiplyAddF;
-import static com.longlinkislong.gloop.VectorArrays.arrayMultiplyF;
-import static com.longlinkislong.gloop.VectorArrays.arrayMultiplySubtractF;
-import static com.longlinkislong.gloop.VectorArrays.arrayScaleF;
-import static com.longlinkislong.gloop.VectorArrays.arraySetF;
-import static java.lang.Math.sqrt;
+import static com.longlinkislong.gloop.VectorArrays.*;
+import static java.lang.Math.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -27,13 +20,7 @@ import java.util.stream.Stream;
  * @author zmichaels
  * @since 15.10.23
  */
-public final class GLVec4FArray {
-
-    private static final ExecutorService X_TASKS = Executors.newSingleThreadExecutor();
-    private static final ExecutorService Y_TASKS = Executors.newSingleThreadExecutor();
-    private static final ExecutorService Z_TASKS = Executors.newSingleThreadExecutor();
-    private static final ExecutorService W_TASKS = Executors.newSingleThreadExecutor();
-
+public final class GLVec4FArray {   
     private final int size;
     private final float[] x;
     private final float[] y;
@@ -127,6 +114,16 @@ public final class GLVec4FArray {
     public void getX(final int readOffset, final float[] out, final int writeOffset, final int count) {
         System.arraycopy(this.x, readOffset, out, writeOffset, count);
     }
+    
+    public void getXAsync(final int readOffset, final float[] out, final int writeOffset, final int count, final boolean waitForComplete) {
+        final Future<?> xTask = X_TASKS.submit(() -> System.arraycopy(this.x, readOffset, out, writeOffset, count));
+
+        if (waitForComplete) {
+            while (!xTask.isDone()) {
+                Thread.yield();
+            }
+        }
+    }
 
     /**
      * Retrieves a chunk of y-elements.
@@ -141,6 +138,16 @@ public final class GLVec4FArray {
         System.arraycopy(this.y, readOffset, out, writeOffset, count);
     }
 
+    public void getYAsync(final int readOffset, final float[] out, final int writeOffset, final int count, final boolean waitForComplete) {
+        final Future<?> yTask = Y_TASKS.submit(() -> System.arraycopy(this.y, readOffset, out, writeOffset, count));
+
+        if (waitForComplete) {
+            while (!yTask.isDone()) {
+                Thread.yield();
+            }
+        }
+    }
+    
     /**
      * Retrieves a chunk of z-elements.
      *
@@ -152,6 +159,16 @@ public final class GLVec4FArray {
      */
     public void getZ(final int readOffset, final float[] out, final int writeOffset, final int count) {
         System.arraycopy(this.z, readOffset, out, writeOffset, count);
+    }
+    
+    public void getZAsync(final int readOffset, final float[] out, final int writeOffset, final int count, final boolean waitForComplete) {
+        final Future<?> zTask = Z_TASKS.submit(() -> System.arraycopy(this.z, readOffset, out, writeOffset, count));
+
+        if (waitForComplete) {
+            while (!zTask.isDone()) {
+                Thread.yield();
+            }
+        }
     }
 
     /**
@@ -166,6 +183,16 @@ public final class GLVec4FArray {
     public void getW(final int readOffset, final float[] out, final int writeOffset, final int count) {
         System.arraycopy(this.w, readOffset, out, writeOffset, count);
     }
+    
+    public void getWAsync(final int readOffset, final float[] out, final int writeOffset, final int count, final boolean waitForComplete) {
+        final Future<?> wTask = W_TASKS.submit(() -> System.arraycopy(this.w, readOffset, out, writeOffset, count));
+
+        if (waitForComplete) {
+            while (!wTask.isDone()) {
+                Thread.yield();
+            }
+        }
+    }
 
     /**
      * Sets each x-element to the specified value.
@@ -177,6 +204,16 @@ public final class GLVec4FArray {
      */
     public void setX(final int offset, final float value, final int count) {
         arraySetF(this.x, offset, value, count);
+    }
+    
+    public void setXAsync(final int offset, final float value, final int count, final boolean waitForComplete) {
+        final Future<?> xTask = X_TASKS.submit(() -> arraySetF(this.x, offset, value, count));
+
+        if (waitForComplete) {
+            while (!xTask.isDone()) {
+                Thread.yield();
+            }
+        }
     }
 
     /**
@@ -190,6 +227,16 @@ public final class GLVec4FArray {
     public void setY(final int offset, final float value, final int count) {
         arraySetF(this.y, offset, value, count);
     }
+    
+    public void setYAsync(final int offset, final float value, final int count, final boolean waitForComplete) {
+        final Future<?> yTask = Y_TASKS.submit(() -> arraySetF(this.y, offset, value, count));
+
+        if (waitForComplete) {
+            while (!yTask.isDone()) {
+                Thread.yield();
+            }
+        }
+    }
 
     /**
      * Sets each z-element to the specified value.
@@ -202,6 +249,16 @@ public final class GLVec4FArray {
     public void setZ(final int offset, final float value, final int count) {
         arraySetF(this.z, offset, value, count);
     }
+    
+    public void setZAsync(final int offset, final float value, final int count, final boolean waitForComplete) {
+        final Future<?> zTask = Z_TASKS.submit(() -> arraySetF(this.z, offset, value, count));
+
+        if (waitForComplete) {
+            while (!zTask.isDone()) {
+                Thread.yield();
+            }
+        }
+    }
 
     /**
      * Sets each y-element to the specified value.
@@ -213,6 +270,16 @@ public final class GLVec4FArray {
      */
     public void setW(final int offset, final float value, final int count) {
         arraySetF(this.w, offset, value, count);
+    }
+    
+    public void setWAsync(final int offset, final float value, final int count, final boolean waitForComplete) {
+        final Future<?> wTask = W_TASKS.submit(() -> arraySetF(this.w, offset, value, count));
+
+        if (waitForComplete) {
+            while (!wTask.isDone()) {
+                Thread.yield();
+            }
+        }
     }
 
     /**

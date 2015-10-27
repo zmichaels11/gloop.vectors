@@ -12,6 +12,8 @@ import static java.lang.Math.floor;
 import static java.lang.Math.log;
 import static java.lang.Math.log10;
 import static java.lang.Math.round;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * VectorArrays is a collection of math algorithms that run on each element in
@@ -21,7 +23,11 @@ import static java.lang.Math.round;
  * @since 15.10.23
  */
 public final class VectorArrays {
-
+    static final ExecutorService X_TASKS = Executors.newSingleThreadExecutor();
+    static final ExecutorService Y_TASKS = Executors.newSingleThreadExecutor();
+    static final ExecutorService Z_TASKS = Executors.newSingleThreadExecutor();
+    static final ExecutorService W_TASKS = Executors.newSingleThreadExecutor();
+    
     /**
      * A unary operation for applying a math operation to each element in an
      * array.
