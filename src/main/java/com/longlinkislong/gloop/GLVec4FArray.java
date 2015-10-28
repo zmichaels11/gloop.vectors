@@ -22,10 +22,10 @@ import java.util.stream.Stream;
  */
 public final class GLVec4FArray {   
     private final int size;
-    private final float[] x;
-    private final float[] y;
-    private final float[] z;
-    private final float[] w;
+    public final float[] x;
+    public final float[] y;
+    public final float[] z;
+    public final float[] w;
 
     /**
      * Constructs a new GLVec4FArray with the specified number of elements.

@@ -21,9 +21,9 @@ import java.util.stream.Stream;
 public class GLVec3FArray {
 
     private final int size;
-    private final float[] x;
-    private final float[] y;
-    private final float[] z;
+    public final float[] x;
+    public final float[] y;
+    public final float[] z;
 
     public GLVec3FArray(final int size) {
         this.size = size;
