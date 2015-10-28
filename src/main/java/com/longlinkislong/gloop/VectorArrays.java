@@ -238,6 +238,31 @@ public final class VectorArrays {
     }
 
     /**
+     * Adds elements if the condition passes
+     *
+     * @param out the array to store the results.
+     * @param outOffset the offset to begin writing the results.
+     * @param in0 the array to read the first input from.
+     * @param in0Offset the offset for the first input.
+     * @param in1 the array to read the second input from.
+     * @param in1Offset the offset for the second input.
+     * @param count the number of elements to process.
+     * @param cnd the conditional to test.
+     * @since 15.10.28
+     */
+    public static void arrayAddFCnd(
+            final float[] out, final int outOffset,
+            final float[] in0, final int in0Offset,
+            final float[] in1, final int in1Offset,
+            final int count,
+            final Conditional cnd) {
+
+        for (int i = 0; i < count; i++) {
+            cnd.ifThen(i, index -> out[outOffset + index] = in0[in0Offset + index] + in1[in1Offset + index]);
+        }
+    }
+
+    /**
      * Assigns a value if the conditional passes.
      *
      * @param out the array to write to.
@@ -281,6 +306,31 @@ public final class VectorArrays {
             out[outOffset + i] = in0[in0Offset + i] + in1[in1Offset + i];
         }
     }
+    
+    /**
+     * Adds elements if the condition passes
+     *
+     * @param out the array to store the results.
+     * @param outOffset the offset to begin writing the results.
+     * @param in0 the array to read the first input from.
+     * @param in0Offset the offset for the first input.
+     * @param in1 the array to read the second input from.
+     * @param in1Offset the offset for the second input.
+     * @param count the number of elements to process.
+     * @param cnd the conditional to test.
+     * @since 15.10.28
+     */
+    public static void arrayAddDCnd(
+            final double[] out, final int outOffset,
+            final double[] in0, final int in0Offset,
+            final double[] in1, final int in1Offset,
+            final int count,
+            final Conditional cnd) {
+
+        for (int i = 0; i < count; i++) {
+            cnd.ifThen(i, index -> out[outOffset + index] = in0[in0Offset + index] + in1[in1Offset + index]);
+        }
+    }
 
     /**
      * Subtracts elements from one array by another. This performs the
@@ -306,7 +356,7 @@ public final class VectorArrays {
             out[outOffset + i] = in0[in0Offset + i] - in1[in1Offset + i];
         }
     }
-    
+
     /**
      * Subtracts one element from another if the conditional passes.
      *
