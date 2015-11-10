@@ -5,74 +5,73 @@ m4_include(`m4/com/longlinkislong/gloop/matrices_defs.m4')
 m4_divert(0)m4_dnl 
 package com.longlinkislong.gloop;
 
-public final class Matrices {    
-    private Matrices() {}   
-    public static MatrixFactory DEFAULT_FACTORY;
-    public static final boolean DEBUG;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    static {
-        DEBUG = Boolean.getBoolean("debug") && !System.getProperty("debug.exclude", "").contains("matrices");
+public final class Matrices {    
+    private static final Logger LOGGER = LoggerFactory.getLogger(Matrices.class);
+    private Matrices() {}   
+    public static final MatrixFactory DEFAULT_FACTORY;
+
+    static {        
         final String def = System.getProperty("gloop.matrices.factory", "cyclical");        
         final int cacheSize = Integer.getInteger("gloop.matrices.cache", 16);
 
         switch(def.toLowerCase()) {
-            case "static":
-                System.out.println("[Matrices]: Using matrix factory: StaticMatrixFactory");
+            case "static":                
                 DEFAULT_FACTORY = StaticMatrixFactory.getInstance();
                 break;            
-            case "threadsafe":
-                if(DEBUG) {
-                    System.out.println("[Matrices]: Using matrix factory: ThreadSafeMatrixFactory");
-                }
+            case "threadsafe":                
                 DEFAULT_FACTORY = new ThreadSafeMatrixFactory(cacheSize);
                 break;
             default:
-            case "cyclical":
-                System.out.println("[Matrices]: Using matrix factory: CyclicalMatrixFactory");
+            case "cyclical":                
                 DEFAULT_FACTORY = new CyclicalMatrixFactory(cacheSize);
                 break;
         }
+
+        LOGGER.debug("Matrices.DEFAULT_FACTORY set to {}", DEFAULT_FACTORY.getClass());
     }
  
-    protected static final int E11 = 0;
-    protected static final int E12 = 1;
-    protected static final int E13 = 2;
-    protected static final int E14 = 3;
-    protected static final int E21 = 4;
-    protected static final int E22 = 5;
-    protected static final int E23 = 6;
-    protected static final int E24 = 7;
-    protected static final int E31 = 8;
-    protected static final int E32 = 9;
-    protected static final int E33 = 10;
-    protected static final int E34 = 11;
-    protected static final int E41 = 12;
-    protected static final int E42 = 13;
-    protected static final int E43 = 14;
-    protected static final int E44 = 15;
+    static final int E11 = 0;
+    static final int E12 = 1;
+    static final int E13 = 2;
+    static final int E14 = 3;
+    static final int E21 = 4;
+    static final int E22 = 5;
+    static final int E23 = 6;
+    static final int E24 = 7;
+    static final int E31 = 8;
+    static final int E32 = 9;
+    static final int E33 = 10;
+    static final int E34 = 11;
+    static final int E41 = 12;
+    static final int E42 = 13;
+    static final int E43 = 14;
+    static final int E44 = 15;
 
-    protected static final float[] NULL_MATRIXF = {
+    static final float[] NULL_MATRIXF = {
         0f, 0f, 0f, 0f,
         0f, 0f, 0f, 0f,
         0f, 0f, 0f, 0f,
         0f, 0f, 0f, 0f
     };
 
-    protected static final double[] NULL_MATRIXD = {
+    static final double[] NULL_MATRIXD = {
         0d, 0d, 0d, 0d,
         0d, 0d, 0d, 0d,
         0d, 0d, 0d, 0d,
         0d, 0d, 0d, 0d
     };
 
-    protected static final float[] IDENTITY_MATRIXF = {
+    static final float[] IDENTITY_MATRIXF = {
         1f, 0f, 0f, 0f,
         0f, 1f, 0f, 0f,
         0f, 0f, 1f, 0f,
         0f, 0f, 0f, 1f
     };
 
-    protected static final double[] IDENTITY_MATRIXD = {
+    static final double[] IDENTITY_MATRIXD = {
         1d, 0d, 0d, 0d,
         0d, 1d, 0d, 0d,
         0d, 0d, 1d, 0d,

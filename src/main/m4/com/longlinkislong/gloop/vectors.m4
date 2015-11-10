@@ -5,42 +5,37 @@ m4_include(`m4/com/longlinkislong/gloop/vectors_defs.m4')
 m4_divert(0)m4_dnl 
 package com.longlinkislong.gloop;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class Vectors {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Vectors.class);
     private Vectors() {}
 
-    public static VectorFactory DEFAULT_FACTORY;
-    private static final boolean DEBUG;
+    public static final VectorFactory DEFAULT_FACTORY;    
 
-    static {
-        DEBUG = Boolean.getBoolean("debug") && !System.getProperty("debug.exclude", "").contains("vectors");
+    static {        
         final String def = System.getProperty("gloop.vectors.factory", "cyclical");
         final int cacheSize = Integer.getInteger("gloop.vectors.cache", 16);
 
         switch(def.toLowerCase()) {
-            case "static":
-                if(DEBUG) {
-                    System.out.println("[Vectors]: Using vector factory: StaticVectorFactory");
-                }
+            case "static":                                
                 DEFAULT_FACTORY = StaticVectorFactory.getInstance();
                 break;
-            case "threadsafe":
-                if(DEBUG) {
-                    System.out.println("[Vectors]: Using vector factory: ThreadSafeVectorFactory");
-                }
+            case "threadsafe":                
                 DEFAULT_FACTORY = new ThreadSafeVectorFactory(cacheSize);
                 break;            
             default:
-            case "cyclical":
-                if(DEBUG) {
-                    System.out.println("[Vectors]: Using vector factory: CyclicalVectorFactory");
-                }
+            case "cyclical":                
                 DEFAULT_FACTORY = new CyclicalVectorFactory(cacheSize);
                 break;
         }
+
+        LOGGER.debug("Vectors.DEFAULT_FACTORY set to {}", DEFAULT_FACTORY.getClass());
     }
 
-    protected static final double[] NULL_VECTORD = {0.0, 0.0, 0.0, 0.0};
-    protected static final float[] NULL_VECTORF = {0f, 0f, 0f, 0f};
+    static final double[] NULL_VECTORD = {0.0, 0.0, 0.0, 0.0};
+    static final float[] NULL_VECTORF = {0f, 0f, 0f, 0f};
 
     public static final int X = 0;
     public static final int Y = 1;
