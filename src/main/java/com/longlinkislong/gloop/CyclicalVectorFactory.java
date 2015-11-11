@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2015, zmichaels
+ * Copyright (c) 2015, Zachary Michaels
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +25,9 @@
  */
 package com.longlinkislong.gloop;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A VectorFactory that shares the same data across each vector. This allows for
  * improved vector caching and reduced allocation times. However vectors will be
@@ -35,7 +38,8 @@ package com.longlinkislong.gloop;
  * @since 15.02.26
  */
 public class CyclicalVectorFactory implements VectorFactory {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(CyclicalVectorFactory.class);
+    
     private final double[] dataD;
     private final float[] dataF;
     private final MappedVec2D[] vec2DCache;
@@ -80,6 +84,8 @@ public class CyclicalVectorFactory implements VectorFactory {
     public CyclicalVectorFactory(final int cacheSize) {
         final ObjectMapper map = ObjectMappers.DEFAULT_INSTANCE;
         final int cacheBytes = cacheSize * 1000;
+        
+        LOGGER.debug("Constructing vector cache; size = {}B", cacheBytes);
 
         this.dataD = map.map(new double[cacheBytes / 8]);
         this.dataF = map.map(new float[cacheBytes / 4]);
