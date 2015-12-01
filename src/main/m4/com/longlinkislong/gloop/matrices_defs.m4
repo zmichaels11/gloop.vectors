@@ -174,7 +174,7 @@ m4_define(`_vecmultN', `m4_dnl
         for(int i = 0; i < size; i++) {
             out[outOffset + i] = 0;
             for(int j = 0; j < size; j++) {
-                out[outOffset + j] += in0[in0Offset + (j*size+i)] * in1[in1Offset + j];
+                out[outOffset + i] += in0[in0Offset + (j*size+i)] * in1[in1Offset + j];
             }
         }
     }
