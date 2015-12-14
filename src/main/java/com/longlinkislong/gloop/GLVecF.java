@@ -312,7 +312,7 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT>, Cl
      * @param length the number of elements to copy. Must be less than size.
      * @since 15.05.13
      */
-    public void copyToArray(
+    public final void copyToArray(
             final float[] array, final int offset, final int length) {
 
         if (length > this.size()) {
@@ -320,6 +320,16 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT>, Cl
         }
 
         System.arraycopy(this.data(), this.offset(), array, offset, length);
+    }
+
+    @Override
+    public final void copyToBuffer(final ByteBuffer buffer) {
+        final float[] data = this.data();
+        final int offset = this.offset();
+
+        for (int i = 0; i < this.size(); i++) {
+            buffer.putFloat(i, data[offset + i]);
+        }
     }
 
     /**
@@ -338,12 +348,12 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT>, Cl
             out.putFloat(outOffset + i * Float.BYTES, in0.data()[in0.offset() + in0Offset]);
         }
     }
-    
+
     @Override
     public final GLVecT copyTo() {
         return this.copyTo(Vectors.DEFAULT_FACTORY);
     }
-    
+
     @Override
     public final Object clone() {
         return this.copyTo(this.getFactory());

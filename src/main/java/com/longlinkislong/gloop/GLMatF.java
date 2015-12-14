@@ -319,7 +319,7 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
      * squared.
      * @since 15.05.13
      */
-    public void copyToArray(
+    public final void copyToArray(
             final float[] array, final int offset, final int length) {
 
         if (length > (this.size() * this.size())) {
@@ -327,6 +327,16 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
         }
 
         System.arraycopy(this.data(), this.offset(), array, offset, length);
+    }
+
+    @Override
+    public final void copyToBuffer(final ByteBuffer buffer) {
+        final float[] data = this.data();
+        final int offset = this.offset();
+
+        for (int i = 0; i < (this.size() * this.size()); i++) {            
+            buffer.putDouble(i * Float.BYTES, data[offset + i]);
+        }
     }
 
     /**
@@ -344,12 +354,12 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
             out.putFloat(outOffset + i * Float.BYTES, in0.data()[in0.offset() + in0Offset]);
         }
     }
-    
+
     @Override
     public final GLMatT copyTo() {
         return this.copyTo(Matrices.DEFAULT_FACTORY);
     }
-    
+
     @Override
     public final Object clone() {
         return this.copyTo(this.getFactory());

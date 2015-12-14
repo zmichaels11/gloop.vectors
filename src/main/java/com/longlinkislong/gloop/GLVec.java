@@ -25,6 +25,8 @@
  */
 package com.longlinkislong.gloop;
 
+import java.nio.ByteBuffer;
+
 /**
  * The base interface for all vectors.
  *
@@ -112,7 +114,7 @@ public interface GLVec<GLVecT extends GLVec> {
      * @return self reference
      * @since 15.02.26
      */
-    public GLVecT set(GLVec other);    
+    public GLVecT set(GLVec other);
 
     /**
      * Calculates the hadamard product between this vector and another vector
@@ -124,7 +126,7 @@ public interface GLVec<GLVecT extends GLVec> {
      * @return a vector with all elements being the product of the inputs.
      * @since 15.06.17
      */
-    public GLVecT hadamard(GLVec other);    
+    public GLVecT hadamard(GLVec other);
 
     /**
      * Calculates the negative form of this vector. This is the same as
@@ -188,11 +190,20 @@ public interface GLVec<GLVecT extends GLVec> {
      * @since 15.05.13
      */
     public GLVecT copyTo(final VectorFactory factory);
-    
+
     /**
      * Copies the current vector to the default vector factory.
+     *
      * @return the copied vector.
      * @since 15.10.19
      */
     public GLVecT copyTo();
+
+    /**
+     * Copies the vector to a ByteBuffer.
+     *
+     * @param buffer the ByteBuffer to copy to.
+     * @since 15.12.14
+     */
+    public void copyToBuffer(ByteBuffer buffer);
 }

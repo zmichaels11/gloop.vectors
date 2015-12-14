@@ -25,6 +25,8 @@
  */
 package com.longlinkislong.gloop;
 
+import java.nio.ByteBuffer;
+
 /**
  * The base interface for all matrices.
  *
@@ -34,6 +36,14 @@ package com.longlinkislong.gloop;
  * @since 15.02.26
  */
 public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
+
+    /**
+     * Copies the matrix to a ByteBuffer.
+     *
+     * @param buffer the ByteBuffer to copy the matrix to.
+     * @since 15.12.14
+     */
+    public void copyToBuffer(ByteBuffer buffer);
 
     /**
      * Coerces the GLMat to a single precision matrix. This is allowed to return
@@ -80,7 +90,7 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
      * @return A matrix with aspects of both matrices.
      * @since 15.02.26
      */
-    public GLMatT multiply(GLMat other);        
+    public GLMatT multiply(GLMat other);
 
     /**
      * Multiplies this matrix by a vector of similar length and returns the
@@ -136,7 +146,7 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
      * @return the size of the matrix.
      * @since 15.02.26
      */
-    public int size();        
+    public int size();
 
     /**
      * Coerces the matrix to a static instance of itself. The static form is
@@ -147,24 +157,26 @@ public interface GLMat<GLMatT extends GLMat, GLVecT extends GLVec> {
      * @since 15.02.26
      */
     public GLMatT asStaticMat();
-    
+
     public GLVecT get(int rowID);
-    
+
     public GLVecT map(int rowID);
-    
+
     public GLMatT set(int rowID, GLVec vec);
-    
+
     /**
      * Copies this matrix to a matrix created by the supplied MatrixFactory.
+     *
      * @param factory the factory to create the output matrix
      * @return the output matrix
      * @since 15.05.13
      */
     public GLMatT copyTo(final MatrixFactory factory);
-    
+
     /**
-     * Creates a copy of this matrix. This is shorthand for copyTo(MatrixFactory.DEFAULT_FACTORY).
-     * 
+     * Creates a copy of this matrix. This is shorthand for
+     * copyTo(MatrixFactory.DEFAULT_FACTORY).
+     *
      * @return a copy of this matrix.
      * @since 15.10.19
      */
