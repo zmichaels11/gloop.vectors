@@ -328,7 +328,7 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT>, Cl
         final int offset = this.offset();
 
         for (int i = 0; i < this.size(); i++) {
-            buffer.putFloat(i, data[offset + i]);
+            buffer.putFloat(i * Float.BYTES, data[offset + i]);
         }
     }
 
