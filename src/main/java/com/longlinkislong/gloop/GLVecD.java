@@ -357,4 +357,13 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT>, Cl
     public final Object clone() {
         return this.copyTo(this.getFactory());
     }
+    
+    /**
+     * Calculates the squared length of the vector.
+     * @return the squared length.
+     * @since 15.12.30
+     */
+    public final double length2() {
+        return this.dot(this);
+    }
 }
