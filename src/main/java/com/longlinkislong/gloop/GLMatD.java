@@ -355,7 +355,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
         final int offset = this.offset();
 
         for (int i = 0; i < (this.size() * this.size()); i++) {
-            buffer.putDouble(i * Double.BYTES, data[offset + i]);
+            buffer.putDouble(data[offset + i]);
         }
     }
 

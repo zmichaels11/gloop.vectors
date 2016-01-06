@@ -333,9 +333,9 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
     public final void copyToBuffer(final ByteBuffer buffer) {
         final float[] data = this.data();
         final int offset = this.offset();
-
+        
         for (int i = 0; i < (this.size() * this.size()); i++) {            
-            buffer.putDouble(i * Float.BYTES, data[offset + i]);
+            buffer.putFloat(data[offset + i]);
         }
     }
 
