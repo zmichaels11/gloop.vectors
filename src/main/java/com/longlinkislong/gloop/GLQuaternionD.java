@@ -90,7 +90,7 @@ public abstract class GLQuaternionD implements GLQuaternion<GLQuaternionD, GLMat
     }
 
     /**
-     * Creates a new quaternion. The default values of &lt0,0,0,1&gt are used.
+     * Creates a new quaternion. The default values of &lt;0,0,0,1&gt; are used.
      *
      * @return the quaternion.
      * @since 16.01.13
