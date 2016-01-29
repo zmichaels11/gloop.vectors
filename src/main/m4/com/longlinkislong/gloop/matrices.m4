@@ -48,10 +48,13 @@ public final class Matrices {
                 break;            
             case "threadsafe":                
                 DEFAULT_FACTORY = new ThreadSafeMatrixFactory(cacheSize);
-                break;
-            default:
+                break;            
             case "cyclical":                
                 DEFAULT_FACTORY = new CyclicalMatrixFactory(cacheSize);
+                break;
+            default:
+            case "smart":
+                DEFAULT_FACTORY = SmartFactory.getInstance();
                 break;
         }
 

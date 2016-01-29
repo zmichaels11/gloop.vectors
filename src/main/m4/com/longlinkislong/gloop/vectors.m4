@@ -49,10 +49,13 @@ public final class Vectors {
                 break;
             case "threadsafe":                
                 DEFAULT_FACTORY = new ThreadSafeVectorFactory(cacheSize);
-                break;            
-            default:
+                break;                        
             case "cyclical":                
                 DEFAULT_FACTORY = new CyclicalVectorFactory(cacheSize);
+                break;
+            default:
+            case "smart":
+                DEFAULT_FACTORY = SmartFactory.getInstance();
                 break;
         }
 

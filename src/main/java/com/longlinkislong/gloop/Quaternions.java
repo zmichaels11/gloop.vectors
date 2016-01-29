@@ -52,11 +52,13 @@ public final class Quaternions {
         switch (def.toLowerCase()) {
             case "static":
                 DEFAULT_FACTORY = StaticQuaternionFactory.getInstance();
-                break;
-            default:
+                break;            
             case "cyclical":
                 DEFAULT_FACTORY = new CyclicalQuaternionFactory(cacheSize);
                 break;
+            default:
+            case "smart":
+                DEFAULT_FACTORY = SmartFactory.getInstance();
         }
 
         LOGGER.debug(MARKER, "Quaternions.DEFAULT_FACTORY set to {}", DEFAULT_FACTORY.getClass());
