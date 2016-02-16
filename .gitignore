@@ -169,3 +169,5 @@ Temporary Items
 **/RealTimeMat4D.java
 **/RealTimeMatNF.java
 **/RealTimeMatND.java
+*.dll
+*.so
