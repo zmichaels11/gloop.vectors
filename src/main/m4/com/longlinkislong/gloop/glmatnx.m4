@@ -35,7 +35,7 @@ package com.longlinkislong.gloop;
  * @author zmichaels
  * @since 15.02.27
  */
-public abstract class MatT extends BaseT<MatT, VecT> {
+public abstract class MatT extends BaseT<MatT, VecT> implements GLMatN {
 
     /**
      * Creates a new square identity matrix of the specified size.
@@ -289,5 +289,15 @@ public abstract class MatT extends BaseT<MatT, VecT> {
 
         out.set(this);
         return out;
+    }
+
+    @Override
+    public MatT _fdef(`asGLMat', `N', TYPE)() {
+        return this;
+    }
+
+    @Override
+    public OMatT _fdef(`asGLMat', `N', OTHER)(){
+        return this._fdef(`asGLMat',,OTHER)()._fdef(`asGLMat', `N', OTHER)(this.size());
     }
 }

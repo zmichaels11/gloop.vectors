@@ -5,6 +5,7 @@
  */
 package com.longlinkislong.gloop;
 
+import com.runouw.util.FastRandom;
 import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import org.junit.Test;
 public class FloatVectorTest {
 
     private static final int TEST_COUNT = 1000000;
-    private final Random random = new Random();        
+    private final Random random = new FastRandom();        
     
     @Test
     public void testLengthVec2() {

@@ -340,7 +340,7 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
      * @since 15.05.13
      */
     public final void copyToArray(
-            final float[] array, final int offset, final int length) {
+            final double[] array, final int offset, final int length) {
 
         if (length > (this.size() * this.size())) {
             throw new IndexOutOfBoundsException();

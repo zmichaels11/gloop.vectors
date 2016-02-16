@@ -5,6 +5,7 @@
  */
 package com.longlinkislong.gloop;
 
+import com.runouw.util.FastRandom;
 import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import org.junit.Test;
 public class SubVectorTest {
 
     final int tests = 1000;
-    final Random rand = new Random();
+    final Random rand = new FastRandom();
 
     @Test
     public void testSubVector2F() {

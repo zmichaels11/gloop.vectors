@@ -5,6 +5,7 @@ package com.longlinkislong.gloop;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.runouw.util.FastRandom;
 import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class DoubleVectorTest {
 
     private static final int TEST_COUNT = 100000;
 
-    private final Random random = new Random();
+    private final Random random = new FastRandom();
 
     @Test
     public void testLengthVec2() {

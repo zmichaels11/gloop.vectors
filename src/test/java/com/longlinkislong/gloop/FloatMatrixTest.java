@@ -5,6 +5,7 @@
  */
 package com.longlinkislong.gloop;
 
+import com.runouw.util.FastRandom;
 import java.util.Arrays;
 import java.util.Random;
 import org.junit.Assert;
@@ -18,7 +19,7 @@ public class FloatMatrixTest {
 
     private static final float EPSILON = 1e-7f;
     private static final int TEST_COUNT = 1000000;
-    private final Random random = new Random();
+    private final Random random = new FastRandom();
     
     @Test
     public void testStaticMat2x2() {

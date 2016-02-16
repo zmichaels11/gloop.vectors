@@ -5,6 +5,7 @@
  */
 package com.longlinkislong.gloop;
 
+import com.runouw.util.FastRandom;
 import java.util.Arrays;
 import java.util.Random;
 import org.junit.Assert;
@@ -18,7 +19,7 @@ public class DoubleMatrixTest {
 
     private static final double EPSILON = 1e-7f;
     private static final int TEST_COUNT = 1000000;
-    private final Random random = new Random();  
+    private final Random random = new FastRandom();  
     
     @Test
     public void testStaticMat2x2() {
@@ -39,7 +40,7 @@ public class DoubleMatrixTest {
             final float y = random.nextFloat();
             final float z = random.nextFloat();
             
-            final GLMatD m0 = GLMat3D.translation(x, y);
+            final GLMatD m0 = GLMat3D.translation(x, y, z);
             final GLMatD m1 = m0.asStaticMat();
             
             Assert.assertNotSame(m0, m1);
