@@ -39,7 +39,7 @@ public final class Matrices {
     public static final MatrixFactory DEFAULT_FACTORY;
 
     static {        
-        final String def = System.getProperty("gloop.matrices.factory", "cyclical");        
+        final String def = System.getProperty("gloop.matrices.factory", "smart");        
         final int cacheSize = Integer.getInteger("gloop.matrices.cache", 16);
 
         switch(def.toLowerCase()) {

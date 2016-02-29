@@ -40,7 +40,7 @@ public final class Vectors {
     public static final VectorFactory DEFAULT_FACTORY;    
 
     static {        
-        final String def = System.getProperty("gloop.vectors.factory", "cyclical");
+        final String def = System.getProperty("gloop.vectors.factory", "smart");
         final int cacheSize = Integer.getInteger("gloop.vectors.cache", 16);
 
         switch(def.toLowerCase()) {

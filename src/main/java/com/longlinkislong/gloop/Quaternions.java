@@ -46,7 +46,7 @@ public final class Quaternions {
     public static final QuaternionFactory DEFAULT_FACTORY;
 
     static {
-        final String def = System.getProperty("gloop.quaternions.factory", "cyclical");
+        final String def = System.getProperty("gloop.quaternions.factory", "smart");
         final int cacheSize = Integer.getInteger("gloop.quaternions.cache", 16);
 
         switch (def.toLowerCase()) {
