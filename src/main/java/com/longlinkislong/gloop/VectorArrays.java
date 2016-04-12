@@ -50,30 +50,31 @@ public final class VectorArrays {
     static final ExecutorService Y_TASKS = Executors.newSingleThreadExecutor();
     static final ExecutorService Z_TASKS = Executors.newSingleThreadExecutor();
     static final ExecutorService W_TASKS = Executors.newSingleThreadExecutor();
+    static final ExecutorService V_TASKS = Executors.newSingleThreadExecutor();
 
     public static Future<?> submitToTaskQueueX(final Runnable task) {
         return X_TASKS.submit(task);
     }
-    
+
     public static Future<?> submitToTaskQueueY(final Runnable task) {
         return Y_TASKS.submit(task);
     }
-    
+
     public static Future<?> submitToTaskQueueZ(final Runnable task) {
         return Z_TASKS.submit(task);
     }
-    
+
     public static Future<?> submitToTaskQueueW(final Runnable task) {
         return W_TASKS.submit(task);
     }
-    
+
     public static void shutdownTaskQueues() {
         X_TASKS.shutdown();
         Y_TASKS.shutdown();
         Z_TASKS.shutdown();
         W_TASKS.shutdown();
     }
-    
+
     /**
      * A functional interface representing a test on an index.
      *
@@ -188,6 +189,18 @@ public final class VectorArrays {
                 ArrayT in0, int in0Offset,
                 ArrayT in1, int in1Offset,
                 ArrayT in2, int in2Offset,
+                int count);
+    }
+
+    @FunctionalInterface
+    public static interface QuaternaryOp<ArrayT> {
+
+        void apply(
+                ArrayT out, int outOffset,
+                ArrayT in0, int in0Offset,
+                ArrayT in1, int in1Offset,
+                ArrayT in2, int in2Offset,
+                ArrayT in3, int in3Offset,
                 int count);
     }
 
@@ -350,7 +363,7 @@ public final class VectorArrays {
             out[outOffset + i] = in0[in0Offset + i] + in1[in1Offset + i];
         }
     }
-    
+
     /**
      * Adds elements if the condition passes
      *
