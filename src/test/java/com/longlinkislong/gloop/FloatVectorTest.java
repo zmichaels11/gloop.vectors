@@ -15,7 +15,8 @@ import org.junit.Test;
  * @author zmichaels
  */
 public class FloatVectorTest {
-
+    
+    
     private static final int TEST_COUNT = 1000000;
     private final Random random = new FastRandom();        
     
@@ -289,7 +290,7 @@ public class FloatVectorTest {
     }       
 
     @Test
-    public void testAddSpeed() {
+    public void testAddSpeed() {        
         System.out.println("Testing add speed...");
 
         GLVec a = GLVec2F.create(random.nextFloat(), random.nextFloat());

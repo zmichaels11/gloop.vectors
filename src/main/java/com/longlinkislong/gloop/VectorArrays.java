@@ -35,6 +35,7 @@ import static java.lang.Math.round;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 import java.util.function.IntConsumer;
 
 /**
@@ -46,11 +47,28 @@ import java.util.function.IntConsumer;
  */
 public final class VectorArrays {
 
-    static final ExecutorService X_TASKS = Executors.newSingleThreadExecutor();
-    static final ExecutorService Y_TASKS = Executors.newSingleThreadExecutor();
-    static final ExecutorService Z_TASKS = Executors.newSingleThreadExecutor();
-    static final ExecutorService W_TASKS = Executors.newSingleThreadExecutor();
-    static final ExecutorService V_TASKS = Executors.newSingleThreadExecutor();
+    private static ThreadFactory newThreadFactory(final String name) {
+        return task -> {
+            final SecurityManager s = System.getSecurityManager();
+            final ThreadGroup group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
+            final Thread thread = new Thread(group, task, "Vector Arrays - " + name);
+            
+            if(!thread.isDaemon()) {
+                thread.setDaemon(true);
+            }
+            
+            if(thread.getPriority() != Thread.NORM_PRIORITY) {
+                thread.setPriority(Thread.NORM_PRIORITY);
+            }
+            
+            return thread;
+        };
+    }
+    
+    static final ExecutorService X_TASKS = Executors.newSingleThreadExecutor(newThreadFactory("X - Tasks"));
+    static final ExecutorService Y_TASKS = Executors.newSingleThreadExecutor(newThreadFactory("Y - Tasks"));
+    static final ExecutorService Z_TASKS = Executors.newSingleThreadExecutor(newThreadFactory("Z - Tasks"));
+    static final ExecutorService W_TASKS = Executors.newSingleThreadExecutor(newThreadFactory("W - Tasks"));    
 
     public static Future<?> submitToTaskQueueX(final Runnable task) {
         return X_TASKS.submit(task);
@@ -66,14 +84,7 @@ public final class VectorArrays {
 
     public static Future<?> submitToTaskQueueW(final Runnable task) {
         return W_TASKS.submit(task);
-    }
-
-    public static void shutdownTaskQueues() {
-        X_TASKS.shutdown();
-        Y_TASKS.shutdown();
-        Z_TASKS.shutdown();
-        W_TASKS.shutdown();
-    }
+    }    
 
     /**
      * A functional interface representing a test on an index.
