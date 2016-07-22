@@ -127,7 +127,7 @@ public abstract class MatT extends BaseT<MatT, VecT> implements GLMatN {
     }    
 
     @Override
-    public final MatT set(final int i, final int j, final TYPE value) {
+    public MatT set(final int i, final int j, final TYPE value) {
         if(i < 0 || j < 0 || i >= this.size() || j >= this.size()) {
             throw new IndexOutOfBoundsException();
         }
@@ -139,7 +139,7 @@ public abstract class MatT extends BaseT<MatT, VecT> implements GLMatN {
     }
 
     @Override
-    public final MatT set(final int rowID, final GLVec vec) {
+    public MatT set(final int rowID, final GLVec vec) {
         final _fdef(`GLVec',,TYPE) v = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')();
         final int length = Math.min(this.size(), v.size());
 
@@ -259,7 +259,7 @@ public abstract class MatT extends BaseT<MatT, VecT> implements GLMatN {
     }
 
     @Override
-    public final MatT set(
+    public MatT set(
         final int i, final int j,
         final TYPE[] data, final int offset, final int length,
         final int stride) {

@@ -265,7 +265,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
     }
 
     @Override
-    public final MatT set(final int i, final int j, final TYPE value) {
+    public MatT set(final int i, final int j, final TYPE value) {
         final int index = this.offset() + this.index(i, j);
 
         this.data()[index] = value;
@@ -273,7 +273,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
     }
 
     @Override
-    public final MatT set(
+    public MatT set(
         final int i, final int j,
         final TYPE[] data, final int offset, final int length,
         final int stride) {
@@ -292,7 +292,7 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
     }
 
     @Override
-    public final MatT set(final int rowID, final GLVec vec) {
+    public MatT set(final int rowID, final GLVec vec) {
         final _fdef(`GLVec',,TYPE) v = vec.m4_ifelse(TYPE,`float',`asGLVecF',`asGLVecD')();
         final int length = Math.min(this.size(), v.size());
 
