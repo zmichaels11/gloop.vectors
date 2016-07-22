@@ -213,16 +213,16 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
 
     @Override
     public final GLMatT set(final GLMat other) {
-        final GLMatF mat = other.asGLMatF();
-        final GLMatT out = this.identity();
+        final GLMatF mat = other.asGLMatF();        
 
         if (other.size() == this.size()) {
             final int length = this.size();
             // gotta go fast
-            System.arraycopy(mat.data(), mat.offset(), out.data(), out.offset(), length * length);
+            System.arraycopy(mat.data(), mat.offset(), this.data(), this.offset(), length * length);
 
-            return out;
+            return (GLMatT) this;
         } else {
+            final GLMatT out = this.identity();
             final int length = Math.min(other.size(), this.size());
 
             for (int i = 0; i < length; i++) {
