@@ -148,7 +148,7 @@ m4_ifelse(m4_eval(VEC_SIZE > 3), 1,m4_dnl
     }
 
     @Override
-    public final VecT set(final TYPE[] values, final int offset, final int length) {
+    public VecT set(final TYPE[] values, final int offset, final int length) {
         if(offset < 0 || length < 0 || length > VEC_SIZE || values.length - offset < length) {
             throw new IndexOutOfBoundsException();
         }
@@ -158,7 +158,7 @@ m4_ifelse(m4_eval(VEC_SIZE > 3), 1,m4_dnl
     }
 
     @Override
-    public final VecT set(final int index, final TYPE value) {
+    public VecT set(final int index, final TYPE value) {
         if(index < 0 || index > this.size()) {
             throw new IndexOutOfBoundsException();
         }

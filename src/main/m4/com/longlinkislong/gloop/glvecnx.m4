@@ -127,7 +127,7 @@ public abstract class VecT extends BaseT<VecT> {
     }
 
     @Override
-    public final VecT set(final TYPE[] values, final int offset, final int length) {
+    public VecT set(final TYPE[] values, final int offset, final int length) {
         if(offset < 0 || length < 0 || length < this.size() || values.length - offset < length) {
             throw new IndexOutOfBoundsException();
         }
@@ -137,7 +137,7 @@ public abstract class VecT extends BaseT<VecT> {
     }
 
     @Override
-    public final VecT set(final int index, final TYPE value) {
+    public VecT set(final int index, final TYPE value) {
         if(index < 0 || index > this.size()) {
             throw new IndexOutOfBoundsException();
         }
