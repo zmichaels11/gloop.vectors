@@ -95,4 +95,9 @@ public class VecT extends BaseT implements StaticVec<TYPE[]> {
     public int size() {
         return this.vecSize;
     }
+
+    @Override
+    public final BaseT asStaticVec() {
+        return this;
+    }
 }

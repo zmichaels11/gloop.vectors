@@ -65,6 +65,11 @@ public class MatT extends BaseT implements StaticMat<TYPE[]> {
     }
 
     @Override
+    public final BaseT asStaticMat() {
+        return this;
+    }
+
+    @Override
     public final TYPE[] data() {
         return this.data;
     }
