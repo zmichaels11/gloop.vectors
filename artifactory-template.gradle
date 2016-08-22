@@ -106,7 +106,7 @@ task versionIncrementMinor << {
 def setVersion(major, minor, revision) {    
     def process = new ProcessBuilder('sqlite3', database, "REPLACE INTO versioning (library, hash, major, minor, revision) VALUES ('$project.name', '${getHash()}', $major, $minor, $revision)").redirectErrorStream(true).start()
 
-    process.inputStream.eachLine { println $it }
+    process.inputStream.eachLine { println it }
     
     println "Set version to $major.$minor.$revision"
 }
@@ -149,7 +149,8 @@ def getRelease(projectName) {
     def version = new ProcessBuilder('sqlite3', database, "SELECT major,minor,revision FROM versioning WHERE library='$projectName'").start().text.trim()
     
     if (version.empty) {
-        System.err.println("Library [$projectName] was not found in database: $database")
+        def dbFile = new File(database).absolutePath
+        System.err.println("Library [$projectName] was not found in database: $dbFile")
         return null
     } else {
         return version.replace('|', '.')
@@ -189,7 +190,7 @@ task versionDump << {
     } else {
         def process = new ProcessBuilder('sqlite3', database, "UPDATE versioning SET hash='$revHash' WHERE library='$project.name'").redirectErrorStream(true).start()
         
-        process.inputStream.eachLine { println $it }
+        process.inputStream.eachLine { println it }
     }
                                                 
     snapshot.write snapshotVersion
