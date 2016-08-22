@@ -104,7 +104,7 @@ task versionIncrementMinor << {
 }
 
 def setVersion(major, minor, revision) {    
-    def process = new ProcessBuilder('sqlite3', database, "REPLACE INTO versioning (library, hash, major, minor, revision) VALUES ('$project.name', '${getHash()}', $major, $minor, $revision)").redirectError(true).start()
+    def process = new ProcessBuilder('sqlite3', database, "REPLACE INTO versioning (library, hash, major, minor, revision) VALUES ('$project.name', '${getHash()}', $major, $minor, $revision)").redirectErrorStream(true).start()
 
     process.inputStream.eachLine { println $it }
     
@@ -187,7 +187,7 @@ task versionDump << {
         setVersion(0, 0, 0)
         releaseVersion = '0.0.0'
     } else {
-        def process = new ProcessBuilder('sqlite3', database, "UPDATE versioning SET hash='$revHash' WHERE library='$project.name'").redirectError(true).start()
+        def process = new ProcessBuilder('sqlite3', database, "UPDATE versioning SET hash='$revHash' WHERE library='$project.name'").redirectErrorStream(true).start()
         
         process.inputStream.eachLine { println $it }
     }
