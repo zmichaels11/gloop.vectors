@@ -117,6 +117,10 @@ def getSnapshot(projectName) {
     return "$result-SNAPSHOT"
 }
 
+def getVersion(projectName) {
+    return getVersion(projectName, build)
+}
+
 def getVersion(projectName, buildType) {
     if (isJenkins.toBoolean()) {
         if (buildType == 'snapshot') {
