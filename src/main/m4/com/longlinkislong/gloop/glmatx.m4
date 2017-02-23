@@ -234,6 +234,18 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
             .set(1, 1, ca).set(2, 1, sa)
             .set(1, 2, -sa).set(2, 2, ca);
     }
+
+    public static MatT shear(
+        final TYPE xy, final TYPE xz,
+        final TYPE yx, final TYPE yz,
+        final TYPE zx, final TYPE zy) {
+
+        return create().set(
+            1, xy, xz, 0,
+            yx, 1, yz, 0,
+            zx, zy, 1, 0,
+            0, 0, 0, 1);
+    }
     
     public static MatT rotateY(final TYPE angle) {
         final TYPE sa = (TYPE) Math.sin(angle);

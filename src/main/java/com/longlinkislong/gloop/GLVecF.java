@@ -62,9 +62,15 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT>, Cl
 
     @Override
     public final GLVecT normalize() {
-        final double scale = 1.0 / this.length();
-
-        return this.scale((float) scale);
+        final double len2 = this.length2();
+        
+        if (len2 < 1E-8) {
+            return this.copyTo();
+        } else {
+            final double scale = 1.0 / Math.sqrt(len2);
+            
+            return this.scale((float) scale);
+        }
     }
 
     /**
