@@ -104,7 +104,7 @@ public final class Matrices {
         0d, 1d, 0d, 0d,
         0d, 0d, 1d, 0d,
         0d, 0d, 0d, 1d
-    };
+    };    
 
 foreach(`type', `m4_dnl 
     _det2(type)
@@ -120,6 +120,16 @@ foreach(`type', `m4_dnl
     _perspective(type)
     _ortho(type)
     _lookat(type)
+    _makeIdentityN(type)
+    _makeTranslationN(type)
+    _makeRotation2(type)
+    _makeRotationX2(type)
+    _makeRotationX3(type)
+    _makeRotationX4(type)
+    _makeRotationY3(type)
+    _makeRotationY4(type)
+    _makeRotationZ3(type)
+    _makeRotationZ4(type)
 ', `float', `double')  
 
 forloop(`i', 2, 4, `m4_dnl 
@@ -128,6 +138,9 @@ foreach(`type', `m4_dnl
     _matmult(i, type)
     _vecmult(i, type)
     _transpose(i, type)
+    _makeIdentity(i, type)
+    _makeTranslation(i, type)
+    _makeScale(i, type)
 ', `float', `double')')
     
 }

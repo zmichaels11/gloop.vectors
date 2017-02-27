@@ -53,7 +53,18 @@ public abstract class MatT extends BaseT<MatT, VecT> implements GenT {
      * @since 15.02.27
      */
     public static MatT create() {
-        return Matrices.DEFAULT_FACTORY._fdef(`nextGLMat', MAT_SIZE, TYPE)().identity();
+        return _call(`DEFAULT_FACTORY.nextGLMat')().identity();
+    }
+
+    /**
+     * Creates a new identity matrix based on the supplied data array.
+     * @param data the array to read the elements from
+     * @param offset the offset to begin reading elements at
+     * @return the new matrix
+     * @since 17.02.24
+     */
+    public static MatT create(final TYPE[] data, final int offset) {
+        return _call(`DEFAULT_FACTORY.nextGLMat')().set(0, 0, data, offset, MAT_SIZE * MAT_SIZE, MAT_SIZE);
     }
 
     /**
@@ -78,12 +89,20 @@ public abstract class MatT extends BaseT<MatT, VecT> implements GenT {
     public static MatT translation(
         final TYPE[] data, final int offset, final int length) {
 
-        final MatT out = create();
-        final int off = out.offset() + m4_eval(MAT_SIZE * MAT_SIZE - MAT_SIZE);
+        if (length < 4) {            
+            final MatT out = create();
+            final int off = out.offset() + m4_eval(MAT_SIZE * MAT_SIZE - MAT_SIZE);
         
-        System.arraycopy(data, offset, out.data(), off, length);
+            System.arraycopy(data, offset, out.data(), off, length);
 
-        return out;
+            return out;
+        } else {
+            final MatT out = _call(`DEFAULT_FACTORY.nextGLMat')();
+
+            _call(`makeTranslation')(out.data(), out.offset(), data, offset);
+
+            return out;
+        }
     }
 
     /**
@@ -106,14 +125,22 @@ public abstract class MatT extends BaseT<MatT, VecT> implements GenT {
      * @return the scale matrix.
      * @since 15.02.27
      */
-    public static MatT scale(final TYPE[] data, final int offset, final int length) {
-        final MatT out = create();
+    public static MatT scale(final TYPE[] data, final int offset, final int length) {        
+        if (length < MAT_SIZE) {
+            final MatT out = create();        
 
-        for(int i = 0; i < length; i++) {
-            out.set(i, i, data[offset + i]);
-        }
+            for(int i = 0; i < length; i++) {
+               out.set(i, i, data[offset + i]);
+            }
 
-        return out;
+            return out;
+        } else {
+            final TYPE[] outData = new TYPE[m4_eval(MAT_SIZE*MAT_SIZE)];
+
+            _call(`makeScale')(outData, 0, data, offset);
+
+            return create(outData, 0);
+        }        
     }
 
 m4_ifelse(MAT_SIZE, 4, `m4_dnl
@@ -217,22 +244,20 @@ m4_ifelse(MAT_SIZE, 4, `m4_dnl
 
 m4_ifelse(MAT_SIZE, 2,, `m4_dnl 
     public static MatT rotateZ(final TYPE angle) {
-        final TYPE sa = (TYPE) Math.sin(angle);
-        final TYPE ca = (TYPE) Math.cos(angle);
-        
-        return create()
-            .set(0, 0, ca).set(1,0,sa)
-            .set(0, 1, -sa).set(1,1,ca);
+        final MatT out = _call(`DEFAULT_FACTORY.nextGLMat')();
+
+        _call(`makeRotationZ')(out.data(), out.offset(), angle);
+
+        return out;
     }')
 
 m4_ifelse(MAT_SIZE,4,`m4_dnl
     public static MatT rotateX(final TYPE angle) {
-        final TYPE sa = (TYPE) Math.sin(angle);
-        final TYPE ca = (TYPE) Math.cos(angle);
+        final MatT out = _call(`DEFAULT_FACTORY.nextGLMat')();
 
-        return create()
-            .set(1, 1, ca).set(2, 1, sa)
-            .set(1, 2, -sa).set(2, 2, ca);
+        _call(`makeRotationX')(out.data(), out.offset(), angle);
+
+        return out;
     }
 
     public static MatT shear(
@@ -248,12 +273,11 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
     }
     
     public static MatT rotateY(final TYPE angle) {
-        final TYPE sa = (TYPE) Math.sin(angle);
-        final TYPE ca = (TYPE) Math.cos(angle);
+        final MatT out = _call(`DEFAULT_FACTORY.nextGLMat')();
 
-        return create()
-            .set(0, 0, ca).set(2, 0, -sa)
-            .set(0, 2, sa).set(2, 2, ca);
+        _call(`makeRotationY')(out.data(), out.offset(), angle);
+
+        return out;
     }',`m4_dnl')
 
     @Override
@@ -290,14 +314,20 @@ m4_ifelse(MAT_SIZE,4,`m4_dnl
         final TYPE[] data, final int offset, final int length,
         final int stride) {
 
-        final int scanlineSize = this.size();
-        int yOff = this.offset() + this.index(i, j);
-        int off = offset;
+        // shortcut for setting sequential data
+        if (i == 0 && j == 0 && stride == MAT_SIZE) {
+            System.arraycopy(data, offset, this.data(), this.offset(), MAT_SIZE * MAT_SIZE);            
+        } else {
 
-        for(int yStart = 0; yStart < this.size(); yStart++) {
-            System.arraycopy(data, off, this.data(), yOff, this.size());
-            off += stride;
-            yOff += scanlineSize;
+            final int scanlineSize = this.size();
+            int yOff = this.offset() + this.index(i, j);
+            int off = offset;
+
+            for(int yStart = 0; yStart < this.size(); yStart++) {
+                System.arraycopy(data, off, this.data(), yOff, MAT_SIZE);
+                off += stride;
+                yOff += scanlineSize;
+            }
         }
 
         return this;

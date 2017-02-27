@@ -180,6 +180,327 @@ m4_define(`_vecmultN', `m4_dnl
     }
 ')
 
+m4_define(`_makeIdentityN', `m4_dnl
+/**
+    * Constructs an identity NxN $1 matrix
+    * @param out the output matrix array
+    * @param off the offset to the output matrix
+    * @param n the size of the matrix
+    * @since 17.02.24
+    */
+    public static void _fdef(`makeIdentity', N, $1) (
+        final $1[] out, final int off,
+        final int n) {
+
+        for (int i = 0; i < (n * n); i++) {
+            out[off + i] = (i % (n+1) == 0) ? 1 : 0;
+        }
+    }
+')
+
+m4_define(`_makeIdentity', `m4_dnl
+/**
+    * Constructs an identity $1x$1 $2 matrix
+    * @param out the output matrix array    
+    * @param off the offset to the output matrix
+    */
+    public static void _fdef(`makeIdentity', $1, $2) (
+        final $2[] out, final int off) {
+
+        forloop(`i', 0, m4_eval($1*$1-1), `out[off + i] = m4_eval(i % ($1+1) == 0);
+        ')
+    }
+')
+
+m4_define(`_makeTranslation', `m4_dnl
+/**
+    * Constructs a translation $1x$1 $2 matrix.
+    * @param out the output matrix array
+    * @param outOff the offset to begin writing the matrix
+    * @param in the input translation vector
+    * @param inOff the offset to begin reading the vector.
+    */
+    public static void _fdef(`makeTranslation', $1, $2) (
+        final $2[] out, final int outOff,
+        final $2[] in, final int inOff) {
+
+        forloop(`i', 0, m4_eval($1*$1-$1-1), `out[outOff + i] = m4_eval(i % ($1+1) == 0);
+        ')
+        forloop(`i', 0, m4_eval($1-1), `out[outOff + m4_eval($1*$1-$1+i)] = in[inOff + i];
+        ')
+    }
+')
+
+m4_define(`_makeTranslationN', `m4_dnl
+/**
+    * Constructs a 4x4 $1 matrix
+    * @param out the output matrix
+    * @param outOff the offset to the output
+    * @param n the size of the matrix
+    * @param in the input vector
+    * @param inOff the offset to the vector
+    */
+    public static void _fdef(`makeTranslation', N, $1) (
+        final $1[] out, final int outOff,
+        final int n,
+        final $1[] in, final int inOff) {
+
+        for (int i = 0; i < (n*n) - n; i++) {
+            out[outOff + i] = (i % (n+1) == 0) ? 1 : 0;
+        }
+
+        for (int i = 0; i < n; i++) {
+            out[outOff + n*n-n + i] = in[inOff + i];
+        }
+    }
+')
+
+m4_define(`_makeRotationX2', `m4_dnl
+/**
+    * Constructs a 2x2 $1 x-axis rotation matrix.
+    * @param out the output matrix
+    * @param off the offset to begin writing the matrix
+    * @param angle the angle in radians
+    */
+    public static void _fdef(`makeRotationX', 2, $1) (
+        final $1[] out, final int off,
+        final $1 angle) {
+        
+        throw new UnsupportedOperationException("Cannot rotate a 2x2 matrix along x-axis!");
+    }
+')
+
+m4_define(`_makeRotationX3', `m4_dnl
+/**
+    * Constructs a 3x3 $1 x-axis rotation matrix.
+    * @param out the output matrix array
+    * @param off the offset to begin writing the matrix
+    * @param angle the angle in radians
+    */
+    public static void _fdef(`makeRotationX', 3, $1) (        
+        final $1[] out, final int off,
+        final $1 angle) {
+        
+        final $1 sa = m4_ifelse($1, float, (float),) Math.sin(angle);
+        final $1 ca = m4_ifelse($1, float, (float),) Math.cos(angle);                     
+
+        out[off] = 1;
+        out[off + 1] = 0;
+        out[off + 2] = 0;      
+
+        out[off + 3] = 0;
+        out[off + 4] = ca;
+        out[off + 5] = sa;
+        
+        out[off + 6] = 0;
+        out[off + 7] = -sa;
+        out[off + 8] = ca;        
+    }
+')
+
+m4_define(`_makeRotationX4', `m4_dnl
+/**
+    * Constructs a 4x4 $1 x-axis rotation matrix
+    * @param out the output matrix array
+    * @param off the offset to begin writing the matrix
+    * @param angle the angle in radians
+    */
+    public static void _fdef(`makeRotationX', 4, $1) (
+        final $1[] out, final int off,
+        final $1 angle) {
+        
+        final $1 sa = m4_ifelse($1, float, (float),) Math.sin(angle);
+        final $1 ca = m4_ifelse($1, float, (float),) Math.cos(angle);                     
+
+        out[off] = 1;
+        out[off + 1] = 0;
+        out[off + 2] = 0;       
+        out[off + 3] = 0;
+
+        out[off + 4] = 0;
+        out[off + 5] = ca;
+        out[off + 6] = sa;
+        out[off + 7] = 0;
+        
+        out[off + 8] = 0;
+        out[off + 9] = -sa;
+        out[off + 10] = ca;        
+        out[off + 11] = 0;
+
+        out[off + 12] = 0;
+        out[off + 13] = 0;
+        out[off + 14] = 0;
+        out[off + 15] = 1;
+    }
+')
+
+m4_define(`_makeRotationY3', `m4_dnl
+/**
+    * Constructs a 3x3 $1 y-axis rotation matrix
+    * @param out the output matrix array
+    * @param off the offset to begin writing the matrix
+    * @param angle the angle in radians
+    */
+    public static void _fdef(`makeRotationY', 3, $1) (
+        final $1[] out, final int off,
+        final $1 angle) {
+
+        final $1 sa = m4_ifelse($1, float, (float),) Math.sin(angle);
+        final $1 ca = m4_ifelse($1, float, (float),) Math.cos(angle);
+
+        out[off] = ca;
+        out[off+1] = 0;
+        out[off+2] = -sa;
+
+        out[off+3] = 0;
+        out[off+4] = 1;
+        out[off+5] = 0;
+
+        out[off+6] = sa;
+        out[off+7] = 0;
+        out[off+8] = ca;
+    }
+')
+
+m4_define(`_makeRotationY4', `m4_dnl
+/**
+    * Constructs a 4x4 $1 y-axis rotation matrix
+    * @param out the output matrix array,
+    * @param off the offset to begin writing the matrix
+    * @param angle the angle in radians
+    */
+    public static void _fdef(`makeRotationY', 4, $1) (
+        final $1[] out, final int off,
+        final $1 angle) {
+
+        final $1 sa = m4_ifelse($1, float, (float),) Math.sin(angle);
+        final $1 ca = m4_ifelse($1, float, (float),) Math.cos(angle);
+
+        out[off] = ca;
+        out[off+1] = 0;
+        out[off+2] = -sa;
+        out[off+3] = 0;
+
+        out[off+4] = 0;
+        out[off+5] = 1;
+        out[off+6] = 0;
+        out[off+7] = 0;
+
+        out[off+8] = sa;
+        out[off+9] = 0;
+        out[off+10] = ca;
+        out[off+11] = 0;
+
+        out[off+12] = 0;
+        out[off+13] = 0;
+        out[off+14] = 0;
+        out[off+15] = 1;
+    }
+')
+
+m4_define(`_makeRotationZ3', `m4_dnl
+/**
+    * Constructs a 3x3 $1 z-axis rotation matrix
+    * @param out the output matrix array
+    * @param off the offset to begin writing the matrix
+    * @param angle the angle in radians
+    */
+    public static void _fdef(`makeRotationZ', 3, $1) (
+        final $1[] out, final int off,
+        final $1 angle) {
+
+        final $1 sa = m4_ifelse($1, float, (float),) Math.sin(angle);
+        final $1 ca = m4_ifelse($1, float, (float),) Math.cos(angle);
+
+        out[off] = ca;
+        out[off+1] = sa;
+        out[off+2] = 0;
+
+        out[off+3] = -sa;
+        out[off+4] = 1;
+        out[off+5] = 0;
+
+        out[off+6] = 0;
+        out[off+7] = 0;
+        out[off+8] = 1;
+    }
+')
+
+m4_define(`_makeScale', `m4_dnl
+/** 
+    * Constructs a $1x$1 $2 scale matrix
+    * @param out the output matrix array
+    * @param outOff the offset to begin writing the matrix
+    * @param in the input scale vector
+    * @param inOff the offset to begin reading from the vector
+    */
+    public static void _fdef(`makeScale', $1, $2) (
+        final $2[] out, final int outOff,
+        final $2[] in, final int inOff) {       
+
+        forloop(`i', 0, m4_eval($1-1), `m4_dnl
+forloop(`j', 0, m4_eval($1-1), `out[outOff + m4_eval(i*$1+j)] = m4_ifelse(i, j, `in[inOff+i]', 0);
+        ')')        
+    }
+')
+
+m4_define(`_makeRotationZ4', `m4_dnl
+/**
+    * Constructs a 4x4 $1 z-axis rotation matrix
+    * @param out the output matrix array
+    * @param off the offset to begin writing the matrix
+    * @param angle the angle in radians
+    */
+    public static void _fdef(`makeRotationZ', 4, $1) (
+        final $1[] out, final int off,
+        final $1 angle) {
+
+        final $1 sa = m4_ifelse($1, float, (float),) Math.sin(angle);
+        final $1 ca = m4_ifelse($1, float, (float),) Math.cos(angle);
+
+        out[off] = ca;
+        out[off+1] = sa;
+        out[off+2] = 0;
+        out[off+3] = 0;
+
+        out[off+4] = -sa;
+        out[off+5] = 1;
+        out[off+6] = 0;
+        out[off+7] = 0;
+
+        out[off+8] = 0;
+        out[off+9] = 0;
+        out[off+10] = 1;
+        out[off+11] = 0;
+
+        out[off+12] = 0;
+        out[off+13] = 0;
+        out[off+14] = 0;
+        out[off+15] = 1;
+    }
+')
+
+m4_define(`_makeRotation2', `m4_dnl
+/**
+    * Constructs a 2x2 $1 rotation matrix.
+    * @param out the output matrix array
+    * @param off the offset to begin writing the matrix
+    * @param angle the angle in radians
+    */
+    public static void _fdef(`makeRotation', 2, $1) (
+        final $1[] out, final int off,
+        final $1 angle) {
+
+        final $1 sa = m4_ifelse($1, float, (float),) Math.sin(angle);
+        final $1 ca = m4_ifelse($1, float, (float),) Math.cos(angle);
+
+        out[off] = ca;
+        out[off + 1] = sa;
+        out[off + 2] = -sa;
+        out[off + 3] = ca;
+    }
+')
+
 m4_define(`_det2', `m4_dnl
 /**
     * Calculates the determinant of a 2x2 $1 matrix
