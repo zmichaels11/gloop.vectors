@@ -353,10 +353,10 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
     public final void copyToBuffer(final ByteBuffer buffer) {
         final double[] data = this.data();
         final int offset = this.offset();
-
-        for (int i = 0; i < (this.size() * this.size()); i++) {
-            buffer.putDouble(data[offset + i]);
-        }
+        final int size = this.size() * this.size();
+        
+        buffer.asDoubleBuffer().put(data, offset, size);
+        buffer.position(buffer.position() + size * Double.BYTES);
     }
 
     /**

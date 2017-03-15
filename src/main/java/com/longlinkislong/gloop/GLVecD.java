@@ -332,10 +332,10 @@ public abstract class GLVecD<GLVecT extends GLVecD> implements GLVec<GLVecT>, Cl
     public final void copyToBuffer(final ByteBuffer buffer) {
         final double[] data = this.data();
         final int offset = this.offset();
+        final int size = this.size();
 
-        for (int i = 0; i < this.size(); i++) {
-            buffer.putDouble(data[offset + i]);
-        }
+        buffer.asDoubleBuffer().put(data, offset, size);
+        buffer.position(buffer.position() + size * Double.BYTES);
     }
 
     /**

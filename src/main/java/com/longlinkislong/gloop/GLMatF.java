@@ -213,7 +213,7 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
 
     @Override
     public final GLMatT set(final GLMat other) {
-        final GLMatF mat = other.asGLMatF();        
+        final GLMatF mat = other.asGLMatF();
 
         if (other.size() == this.size()) {
             final int length = this.size();
@@ -333,10 +333,10 @@ public abstract class GLMatF<GLMatT extends GLMatF, GLVecT extends GLVecF> imple
     public final void copyToBuffer(final ByteBuffer buffer) {
         final float[] data = this.data();
         final int offset = this.offset();
-        
-        for (int i = 0; i < (this.size() * this.size()); i++) {            
-            buffer.putFloat(data[offset + i]);
-        }
+        final int size = this.size() * this.size();
+
+        buffer.asFloatBuffer().put(data, offset, size);
+        buffer.position(buffer.position() + size * Float.BYTES);
     }
 
     /**
