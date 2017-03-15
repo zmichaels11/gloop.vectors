@@ -26,6 +26,7 @@
 package com.longlinkislong.gloop;
 
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 /**
@@ -336,6 +337,10 @@ public abstract class GLVecF<GLVecT extends GLVecF> implements GLVec<GLVecT>, Cl
         
         buffer.asFloatBuffer().put(data, offset, size);
         buffer.position(buffer.position() + size * Float.BYTES);
+    }
+    
+    public final void copyToBuffer(final FloatBuffer buffer) {
+        buffer.put(this.data(), this.offset(), this.size());
     }
 
     /**

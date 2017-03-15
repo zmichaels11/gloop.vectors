@@ -26,6 +26,7 @@
 package com.longlinkislong.gloop;
 
 import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 
 /*
@@ -357,6 +358,10 @@ public abstract class GLMatD<GLMatT extends GLMatD, GLVecT extends GLVecD> imple
         
         buffer.asDoubleBuffer().put(data, offset, size);
         buffer.position(buffer.position() + size * Double.BYTES);
+    }
+    
+    public final void copyToBuffer(final DoubleBuffer buffer) {
+        buffer.put(this.data(), this.offset(), this.size() * this.size());
     }
 
     /**
