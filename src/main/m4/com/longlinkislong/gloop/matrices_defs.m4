@@ -417,7 +417,7 @@ m4_define(`_makeRotationZ3', `m4_dnl
         out[off+2] = 0;
 
         out[off+3] = -sa;
-        out[off+4] = 1;
+        out[off+4] = ca;
         out[off+5] = 0;
 
         out[off+6] = 0;
@@ -464,7 +464,7 @@ m4_define(`_makeRotationZ4', `m4_dnl
         out[off+3] = 0;
 
         out[off+4] = -sa;
-        out[off+5] = 1;
+        out[off+5] = ca;
         out[off+6] = 0;
         out[off+7] = 0;
 
